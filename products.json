@@ -1,0 +1,148 @@
+[
+  {
+    "id": 1,
+    "name": "Black Oversize Tee",
+    "price": 3500,
+    "category": "T-Shirts",
+    "image": "./assets/images/products/black oversize 1.jpg",
+    "thumbnails": [
+      "./assets/images/products/black oversize 1.jpg",
+      "./assets/images/products/black oversize 2.jpg",
+      "./assets/images/products/black oversize 3.jpg",
+      "./assets/images/products/black oversize 4.jpg"
+    ],
+    "description": "Premium oversized t-shirt crafted from 100% cotton for maximum comfort during your workouts. Features the iconic Muscle Bull logo and a relaxed fit perfect for training or casual wear.",
+    "isBestSeller": true,
+    "isFeatured": false
+  },
+  {
+    "id": 2,
+    "name": "White Hoodie",
+    "price": 5200,
+    "category": "Hoodies",
+    "image": "./assets/images/products/white hoodie 1.jpg",
+    "thumbnails": [
+      "./assets/images/products/white hoodie 1.jpg",
+      "./assets/images/products/white hoodie 2 .jpg",
+      "./assets/images/products/white hoodie 3.jpg"
+    ],
+    "description": "Stay warm and stylish with our premium white hoodie. Perfect for pre and post-workout.",
+    "isBestSeller": true,
+    "isFeatured": true
+  },
+  {
+    "id": 3,
+    "name": "Blue Skinny Pants",
+    "price": 4800,
+    "category": "Pants",
+    "image": "./assets/images/products/blue skinny 2.jpg",
+    "thumbnails": [
+      "./assets/images/products/blue skinny 2.jpg",
+      "./assets/images/products/blue skinny 1.jpg"
+    ],
+    "description": "Flexible and durable skinny pants designed for maximum mobility during leg days.",
+    "isBestSeller": true,
+    "isFeatured": false
+  },
+  {
+    "id": 4,
+    "name": "Green Hoodie",
+    "price": 5500,
+    "category": "Hoodies",
+    "image": "./assets/images/products/green hoodie 4.jpg",
+    "thumbnails": [
+      "./assets/images/products/green hoodie 4.jpg"
+    ],
+    "description": "Stand out with this vibrant green hoodie. Comfortable and built to last.",
+    "isBestSeller": true,
+    "isFeatured": false
+  },
+  {
+    "id": 5,
+    "name": "Gray Hoodie",
+    "price": 5000,
+    "category": "Hoodies",
+    "image": "./assets/images/products/gray hoodie 1.jpg",
+    "thumbnails": [
+      "./assets/images/products/gray hoodie 1.jpg",
+      "./assets/images/products/gray hoodie 2.jpg",
+      "./assets/images/products/gray hoodie 3.jpg"
+    ],
+    "description": "A classic gray hoodie that fits perfectly into any fitness wardrobe.",
+    "isBestSeller": false,
+    "isFeatured": true
+  },
+  {
+    "id": 6,
+    "name": "Green Skinny Pants",
+    "price": 4500,
+    "category": "Pants",
+    "image": "./assets/images/products/green skinny 1.jpg",
+    "thumbnails": [
+      "./assets/images/products/green skinny 1.jpg",
+      "./assets/images/products/green skinny 2.jpg"
+    ],
+    "description": "High-performance green skinny pants for intense training sessions.",
+    "isBestSeller": false,
+    "isFeatured": true
+  },
+  {
+    "id": 7,
+    "name": "Blue Hoodie",
+    "price": 5300,
+    "category": "Hoodies",
+    "image": "./assets/images/products/blue hoodie 1.jpg",
+    "thumbnails": [
+      "./assets/images/products/blue hoodie 1.jpg",
+      "./assets/images/products/blue hoodie 2.jpg",
+      "./assets/images/products/blue hoodie 3.jpg",
+      "./assets/images/products/blue hoodie 4.jpg"
+    ],
+    "description": "Premium blue hoodie with a comfortable fit and stylish design.",
+    "isBestSeller": false,
+    "isFeatured": true
+  },
+  {
+    "id": 8,
+    "name": "White Skinny Pants",
+    "price": 4200,
+    "category": "Pants",
+    "image": "./assets/images/products/white skinny 1.jpg",
+    "thumbnails": [
+      "./assets/images/products/white skinny 1.jpg",
+      "./assets/images/products/white skinny 2.jpg"
+    ],
+    "description": "Clean and crisp white skinny pants for a sharp gym look.",
+    "isBestSeller": false,
+    "isFeatured": false
+  },
+  {
+    "id": 9,
+    "name": "Black Tank",
+    "price": 3000,
+    "category": "Tank Tops",
+    "image": "./assets/images/products/black tank 1.jpg",
+    "thumbnails": [
+      "./assets/images/products/black tank 1.jpg",
+      "./assets/images/products/black tank 2.jpg"
+    ],
+    "description": "Breathable black tank top for those intense upper body workouts.",
+    "isBestSeller": false,
+    "isFeatured": false
+  },
+  {
+    "id": 10,
+    "name": "Red Hoodie",
+    "price": 5400,
+    "category": "Hoodies",
+    "image": "./assets/images/products/red hoodie 1.jpg",
+    "thumbnails": [
+      "./assets/images/products/red hoodie 1.jpg",
+      "./assets/images/products/red hoodie 2.jpg",
+      "./assets/images/products/red hoodie 3.jpg"
+    ],
+    "description": "Bold red hoodie to fuel your passion and energy.",
+    "isBestSeller": false,
+    "isFeatured": false
+  }
+]

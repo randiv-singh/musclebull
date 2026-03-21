@@ -58,7 +58,7 @@
         </section>
 
         <!-- Product Detail Section -->
-        <section class="product-detail-section py-5 bg-white">
+        <section class="product-detail-section py-5 bg-white" id="product-detail-container">
             <div class="container">
                 <div class="row g-5">
                     <!-- Product Images -->
@@ -257,67 +257,8 @@
                 <div class="row mt-5">
                     <div class="col-12">
                         <h3 class="fw-bold text-uppercase mb-4">You May Also Like</h3>
-                        <div class="row g-4">
-                            <div class="col-6 col-md-3">
-                                <a href="product.html" class="product-link">
-                                    <div class="product-card-shop">
-                                        <div class="product-image-wrapper">
-                                            <img src="./assets/images/products/white hoodie 1.jpg" alt="White Hoodie" class="product-image">
-                                            <button class="quick-view-btn">Quick View</button>
-                                        </div>
-                                        <div class="product-info">
-                                            <h6 class="product-name fw-bold text-uppercase">White Hoodie</h6>
-                                            <p class="product-price fw-bold">LKR 5,200</p>
-                                            <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <a href="product.html" class="product-link">
-                                    <div class="product-card-shop">
-                                        <div class="product-image-wrapper">
-                                            <img src="./assets/images/products/gray hoodie 1.jpg" alt="Gray Hoodie" class="product-image">
-                                            <button class="quick-view-btn">Quick View</button>
-                                        </div>
-                                        <div class="product-info">
-                                            <h6 class="product-name fw-bold text-uppercase">Gray Hoodie</h6>
-                                            <p class="product-price fw-bold">LKR 5,000</p>
-                                            <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <a href="product.html" class="product-link">
-                                    <div class="product-card-shop">
-                                        <div class="product-image-wrapper">
-                                            <img src="./assets/images/products/blue hoodie 1.jpg" alt="Blue Hoodie" class="product-image">
-                                            <button class="quick-view-btn">Quick View</button>
-                                        </div>
-                                        <div class="product-info">
-                                            <h6 class="product-name fw-bold text-uppercase">Blue Hoodie</h6>
-                                            <p class="product-price fw-bold">LKR 5,300</p>
-                                            <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <a href="product.html" class="product-link">
-                                    <div class="product-card-shop">
-                                        <div class="product-image-wrapper">
-                                            <img src="./assets/images/products/green hoodie 4.jpg" alt="Green Hoodie" class="product-image">
-                                            <button class="quick-view-btn">Quick View</button>
-                                        </div>
-                                        <div class="product-info">
-                                            <h6 class="product-name fw-bold text-uppercase">Green Hoodie</h6>
-                                            <p class="product-price fw-bold">LKR 5,500</p>
-                                            <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                        <div class="row g-4" id="related-products-container">
+                            <!-- Related products will be loaded here -->
                         </div>
                     </div>
                 </div>
@@ -377,6 +318,7 @@
 
     <!-- Bootstrap JS -->
     <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/app.js"></script>
     <script src="./js/product.js"></script>
 </body>
 </html>

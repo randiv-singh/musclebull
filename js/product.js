@@ -51,39 +51,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Quick View Modal Functionality
-    const quickViewButtons = document.querySelectorAll('.quick-view-btn');
+    // Quick View Modal Functionality (Delegated or handled in app.js)
     const quickViewModal = document.getElementById('quickViewModal');
     const closeModalBtn = document.querySelector('.close-modal');
     const modalOverlay = document.querySelector('.modal-overlay');
 
-    // Open Modal
-    quickViewButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Get product info from the card
-            const productCard = this.closest('.product-card-shop');
-            const productName = productCard.querySelector('.product-name').textContent;
-            const productPrice = productCard.querySelector('.product-price').textContent;
-            const productImage = productCard.querySelector('.product-image').src;
-            
-            // Populate modal with product info
-            document.getElementById('modalProductImage').src = productImage;
-            document.getElementById('modalProductName').textContent = productName;
-            document.getElementById('modalProductPrice').textContent = productPrice;
-            
-            // Show modal
-            quickViewModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
     // Close Modal
     function closeModal() {
-        quickViewModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        if (quickViewModal) {
+            quickViewModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
     }
 
     if (closeModalBtn) {
@@ -96,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close modal on ESC key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && quickViewModal.classList.contains('active')) {
+        if (e.key === 'Escape' && quickViewModal && quickViewModal.classList.contains('active')) {
             closeModal();
         }
     });
