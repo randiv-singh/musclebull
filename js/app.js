@@ -32,36 +32,32 @@ function addToCart(product, quantity = 1, size = 'M') {
 function updateCartBadge() {
     const cart = getCart();
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const badges = document.querySelectorAll('.cart-badge');
     
-    // If badges don't exist in the DOM, let's try to add them to the cart icon
-    if (badges.length === 0) {
-        const cartIcons = document.querySelectorAll('a[href="cart.html"]');
-        cartIcons.forEach(icon => {
-            if (!icon.querySelector('.cart-badge') && icon.querySelector('.fa-bag-shopping')) {
-                icon.classList.add('position-relative');
-                const badge = document.createElement('span');
-                badge.className = 'cart-badge';
-                badge.style.position = 'absolute';
-                badge.style.top = '-8px';
-                badge.style.right = '-8px';
-                badge.style.backgroundColor = '#000';
-                badge.style.color = '#fff';
-                badge.style.borderRadius = '50%';
-                badge.style.padding = '2px 6px';
-                badge.style.fontSize = '10px';
-                badge.style.fontWeight = 'bold';
-                badge.textContent = totalItems;
-                badge.style.display = totalItems > 0 ? 'inline-block' : 'none';
-                icon.appendChild(badge);
-            }
-        });
-    } else {
-        badges.forEach(badge => {
+    const cartIcons = document.querySelectorAll('a[href="cart.html"]');
+    cartIcons.forEach(icon => {
+        let badge = icon.querySelector('.cart-badge');
+        
+        if (!badge && icon.querySelector('.fa-bag-shopping')) {
+            icon.classList.add('position-relative');
+            badge = document.createElement('span');
+            badge.className = 'cart-badge';
+            badge.style.position = 'absolute';
+            badge.style.top = '-8px';
+            badge.style.right = '-8px';
+            badge.style.backgroundColor = '#000';
+            badge.style.color = '#fff';
+            badge.style.borderRadius = '50%';
+            badge.style.padding = '2px 6px';
+            badge.style.fontSize = '10px';
+            badge.style.fontWeight = 'bold';
+            icon.appendChild(badge);
+        }
+        
+        if (badge) {
             badge.textContent = totalItems;
             badge.style.display = totalItems > 0 ? 'inline-block' : 'none';
-        });
-    }
+        }
+    });
 }
 
 // Fetch products from JSON file
@@ -113,6 +109,30 @@ function renderProducts(products, containerId, colClass) {
     
     // Re-attach quick view event listeners after rendering
     attachQuickViewListeners(products);
+    attachAddToCartListeners(products);
+}
+
+// Attach add to cart listeners for product cards
+function attachAddToCartListeners(products) {
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    
+    addToCartButtons.forEach(button => {
+        // Remove old listeners by cloning
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const productId = parseInt(this.getAttribute('data-id'));
+            const product = products.find(p => p.id === productId);
+            
+            if (product) {
+                addToCart(product, 1, 'M'); // Default size M for quick add
+            }
+        });
+    });
 }
 
 // Attach quick view listeners
@@ -139,6 +159,28 @@ function attachQuickViewListeners(products) {
                     viewDetailsBtn.href = `product.html?id=${product.id}`;
                 }
                 
+                // Attach add to cart logic for modal
+                const modalAddToCartBtn = quickViewModal.querySelector('.btn-primary');
+                if (modalAddToCartBtn) {
+                    // Clone to remove old listeners
+                    const newBtn = modalAddToCartBtn.cloneNode(true);
+                    modalAddToCartBtn.parentNode.replaceChild(newBtn, modalAddToCartBtn);
+                    
+                    newBtn.addEventListener('click', function() {
+                        const qtyInput = quickViewModal.querySelector('.modal-qty-input');
+                        const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
+                        
+                        const activeSizeBtn = quickViewModal.querySelector('.modal-size-btn.active');
+                        const size = activeSizeBtn ? activeSizeBtn.textContent : 'M';
+                        
+                        addToCart(product, quantity, size);
+                        
+                        // Close modal after adding
+                        quickViewModal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    });
+                }
+                
                 quickViewModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
@@ -148,6 +190,9 @@ function attachQuickViewListeners(products) {
 
 // Initialize pages
 document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize cart badge
+    updateCartBadge();
+    
     const products = await fetchProducts();
     
     // Index Page
@@ -230,4 +275,22 @@ function renderProductDetails(product) {
     
     const descEl = document.querySelector('.product-description');
     if (descEl) descEl.textContent = product.description;
+    
+    // Attach add to cart logic for product detail page
+    const detailAddToCartBtn = document.querySelector('.product-actions .btn-primary');
+    if (detailAddToCartBtn) {
+        // Clone to remove old listeners
+        const newBtn = detailAddToCartBtn.cloneNode(true);
+        detailAddToCartBtn.parentNode.replaceChild(newBtn, detailAddToCartBtn);
+        
+        newBtn.addEventListener('click', function() {
+            const qtyInput = document.querySelector('.qty-input-single');
+            const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
+            
+            const activeSizeBtn = document.querySelector('.size-btn-single.active');
+            const size = activeSizeBtn ? activeSizeBtn.textContent : 'M';
+            
+            addToCart(product, quantity, size);
+        });
+    }
 }

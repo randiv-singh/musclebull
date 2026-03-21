@@ -45,19 +45,6 @@
     "isFeatured": false
   },
   {
-    "id": 4,
-    "name": "Green Hoodie",
-    "price": 5500,
-    "category": "Hoodies",
-    "image": "./assets/images/products/green hoodie 4.jpg",
-    "thumbnails": [
-      "./assets/images/products/green hoodie 4.jpg"
-    ],
-    "description": "Stand out with this vibrant green hoodie. Comfortable and built to last.",
-    "isBestSeller": true,
-    "isFeatured": false
-  },
-  {
     "id": 5,
     "name": "Gray Hoodie",
     "price": 5000,
@@ -69,7 +56,7 @@
       "./assets/images/products/gray hoodie 3.jpg"
     ],
     "description": "A classic gray hoodie that fits perfectly into any fitness wardrobe.",
-    "isBestSeller": false,
+    "isBestSeller": true,
     "isFeatured": true
   },
   {
