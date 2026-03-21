@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Muscle Bull - Premium Fitness Apparel</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="./css/style.css" rel="stylesheet" />
+    <link href="./css/header.css" rel="stylesheet" />
+    <link href="./css/footer.css" rel="stylesheet" />
+    <link href="./css/shop.css" rel="stylesheet" />
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg position-absolute w-100 z-3 navbar-glass">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <img src="./assets/images/logo/mb logo.png" alt="Muscle Bull Logo" height="40">
+                <span class="fw-bold text-uppercase text-white brand-text">Muscle Bull</span>
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto nav-center">
+                    <li class="nav-item"><a class="nav-link text-white fw-medium text-uppercase" href="shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link text-white fw-medium text-uppercase" href="#gift-cards">Gift Cards</a></li>
+                    <li class="nav-item"><a class="nav-link text-white fw-medium text-uppercase" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-white fw-medium text-uppercase" href="#contact">Contact</a></li>
+                </ul>
+                <div class="navbar-icons d-flex gap-3">
+                    <a href="#" class="nav-icon"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    <a href="#" class="nav-icon"><i class="fa-solid fa-user"></i></a>
+                    <a href="cart.html" class="nav-icon"><i class="fa-solid fa-bag-shopping"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section d-flex align-items-center">
+            <div class="hero-overlay"></div>
+            <div class="container position-relative z-2">
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-6 text-start">
+                        <div class="hero-badge mb-4">
+                            <span class="badge bg-primary px-3 py-2 text-uppercase fw-bold">✨ New Drop</span>
+                        </div>
+                        <h1 class="hero-title-new text-white mb-4">
+                            UNLEASH<br>
+                            THE <span class="text-primary ">BEAST</span>
+                        </h1>
+                        <p class="hero-text text-white mb-5">
+                            Premium fitness gear for those who refuse to settle.<br>
+                            No excuses. Just results.
+                        </p>
+                        <div class="d-flex gap-3 flex-column flex-sm-row">
+                            <a href="shop.html" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold">
+                                Shop Now <i class="fa-solid fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Sellers Section -->
+        <section id="best-sellers" class="py-5 bg-white">
+            <div class="container py-4">
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h2 class="fw-bold text-uppercase m-0 text-black">Best Sellers</h2>
+                    <a href="shop.html" class="btn btn-outline-dark rounded-0 px-4 fw-bold text-uppercase">View All</a>
+                </div>
+                <div class="row g-4">
+                    <!-- Product Card 1 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="product-card-shop">
+                            <div class="product-image-wrapper">
+                                <img src="./assets/images/products/black oversize 1.jpg" alt="Black Oversize Tee" class="product-image">
+                                <button class="quick-view-btn">Quick View</button>
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-name fw-bold text-uppercase">Black Oversize Tee</h6>
+                                <p class="product-price fw-bold">LKR 3,500</p>
+                                <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="product-card-shop">
+                            <div class="product-image-wrapper">
+                                <img src="./assets/images/products/white hoodie 1.jpg" alt="White Hoodie" class="product-image">
+                                <button class="quick-view-btn">Quick View</button>
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-name fw-bold text-uppercase">White Hoodie</h6>
+                                <p class="product-price fw-bold">LKR 5,200</p>
+                                <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="product-card-shop">
+                            <div class="product-image-wrapper">
+                                <img src="./assets/images/products/blue skinny 2.jpg" alt="Blue Skinny Pants" class="product-image">
+                                <button class="quick-view-btn">Quick View</button>
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-name fw-bold text-uppercase">Blue Skinny Pants</h6>
+                                <p class="product-price fw-bold">LKR 4,800</p>
+                                <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 4 -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="product-card-shop">
+                            <div class="product-image-wrapper">
+                                <img src="./assets/images/products/green hoodie 4.jpg" alt="Green Hoodie" class="product-image">
+                                <button class="quick-view-btn">Quick View</button>
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-name fw-bold text-uppercase">Green Hoodie</h6>
+                                <p class="product-price fw-bold">LKR 5,500</p>
+                                <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section id="featured" class="py-5 bg-white">
+            <div class="container py-4">
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h2 class="fw-bold text-uppercase m-0 text-black">Featured Products</h2>
+                    <a href="shop.html" class="btn btn-outline-dark rounded-0 px-4 fw-bold text-uppercase">View All</a>
+                </div>
+                <div class="row g-4">
+                    <!-- Product Card 1 -->
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="product-card-shop">
+                            <div class="product-image-wrapper">
+                                <img src="./assets/images/products/gray hoodie 1.jpg" alt="Gray Hoodie" class="product-image">
+                                <button class="quick-view-btn">Quick View</button>
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-name fw-bold text-uppercase">Gray Hoodie</h6>
+                                <p class="product-price fw-bold">LKR 5,000</p>
+                                <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="product-card-shop">
+                            <div class="product-image-wrapper">
+                                <img src="./assets/images/products/green skinny 1.jpg" alt="Green Skinny Pants" class="product-image">
+                                <button class="quick-view-btn">Quick View</button>
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-name fw-bold text-uppercase">Green Skinny Pants</h6>
+                                <p class="product-price fw-bold">LKR 4,500</p>
+                                <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="product-card-shop">
+                            <div class="product-image-wrapper">
+                                <img src="./assets/images/products/blue hoodie 1.jpg" alt="Blue Hoodie" class="product-image">
+                                <button class="quick-view-btn">Quick View</button>
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-name fw-bold text-uppercase">Blue Hoodie</h6>
+                                <p class="product-price fw-bold">LKR 5,300</p>
+                                <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Limited Edition Section -->
+        <section id="limited" class="bg-white text-dark">
+            <div class="container-fluid p-0">
+                <div class="row g-0 align-items-center">
+                    <div class="col-12 col-lg-6">
+                        <img src="./assets/images/flayer/limited-edition.jpg" alt="Limited Edition Hoodies" class="img-fluid w-100 h-100 object-fit-cover" style="min-height: 500px;">
+                    </div>
+                    <div class="col-12 col-lg-6 p-5 p-xl-5">
+                        <div class="px-xl-5">
+                            <span class="badge bg-primary mb-3 px-3 py-2 text-uppercase tracking-wide">Exclusive</span>
+                            <h2 class="display-4 fw-bold text-uppercase mb-4 text-dark">Limited Edition Hoodies</h2>
+                            <p class="lead mb-4 text-dark">Premium hoodies designed to bring out the bull in you. Grab yours before they are gone forever. Crafted with high-quality materials for maximum comfort and durability.</p>
+                            <a href="#" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-0 border-0">Shop Limited Edition</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gift Card Section -->
+        <section class="bg-white">
+            <div class="container-fluid p-0">
+                <div class="row g-0 align-items-center flex-column-reverse flex-lg-row">
+                    <div class="col-12 col-lg-6 p-5 p-xl-5">
+                        <div class="px-xl-5">
+                            <h2 class="display-4 fw-bold text-uppercase mb-4 text-black">Musclebull E-Gift Card</h2>
+                            <p class="lead mb-4 text-black">Surprise your beloved ones with the perfect gift. Let them choose their favorite gear to crush their fitness goals.</p>
+                            <a href="#" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold rounded-0">Buy Gift Card</a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <img src="./assets/images/flayer/gift-card.jpg" alt="Musclebull Gift Card" class="img-fluid w-100 h-100 object-fit-cover" style="min-height: 500px;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-5 bg-white">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-8 text-center mb-5">
+                        <h2 class="fw-bold text-uppercase text-black">Get In Touch</h2>
+                        <p class="text-black">Have a question or need help with an order? Drop us a message.</p>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-8">
+                        <form class="bg-white p-4 p-md-5 border border-dark">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label fw-bold text-black">Name</label>
+                                    <input type="text" class="form-control rounded-0 py-2 border-dark text-black" id="name" placeholder="Your Name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label fw-bold text-black">Email</label>
+                                    <input type="email" class="form-control rounded-0 py-2 border-dark text-black" id="email" placeholder="Your Email">
+                                </div>
+                                <div class="col-12">
+                                    <label for="subject" class="form-label fw-bold text-black">Subject</label>
+                                    <input type="text" class="form-control rounded-0 py-2 border-dark text-black" id="subject" placeholder="Subject">
+                                </div>
+                                <div class="col-12">
+                                    <label for="message" class="form-label fw-bold text-black">Message</label>
+                                    <textarea class="form-control rounded-0 py-2 border-dark text-black" id="message" rows="5" placeholder="Your Message"></textarea>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-dark btn-lg w-100 rounded-0 text-uppercase fw-bold">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section bg-white py-5 ">
+            <div class="container">
+                <div class="row g-4 text-center">
+                    <div class="col-6 col-md-3">
+                        <div class="feature-item">
+                            <div class="feature-icon mb-3">
+                                <i class="fa-solid fa-truck-fast fa-3x"></i>
+                            </div>
+                            <h6 class="fw-bold text-uppercase mb-2">Shipping</h6>
+                            <p class="small mb-0 text-black">Standard shipping (Estimated 3-5 days)</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="feature-item">
+                            <div class="feature-icon mb-3">
+                                <i class="fa-solid fa-shield-halved fa-3x"></i>
+                            </div>
+                            <h6 class="fw-bold text-uppercase mb-2">Payments</h6>
+                            <p class="small mb-0 text-black">Payment is 100% secure</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="feature-item">
+                            <div class="feature-icon mb-3">
+                                <i class="fa-solid fa-rotate-left fa-3x"></i>
+                            </div>
+                            <h6 class="fw-bold text-uppercase mb-2">Easy Returns</h6>
+                            <p class="small mb-0 text-black">30 days to change your mind!</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="feature-item">
+                            <div class="feature-icon mb-3">
+                                <i class="fa-solid fa-leaf fa-3x"></i>
+                            </div>
+                            <h6 class="fw-bold text-uppercase mb-2">Made in Sri Lanka</h6>
+                            <p class="small mb-0 text-black">Sustainably Sourced</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white text-black pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-4 mb-4 mb-md-0">
+                    <h4 class="text-uppercase fw-bold mb-4">Muscle Bull</h4>
+                    <p>Premium fitness apparel for those who push their limits. Join the herd and unleash your true potential.</p>
+                    <div class="footer-socials d-flex gap-3 mt-4">
+                        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-4 mb-md-0">
+                    <h5 class="text-uppercase fw-bold mb-4">Shop</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">Men</a></li>
+                        <li class="mb-2"><a href="#">Women</a></li>
+                        <li class="mb-2"><a href="#">Accessories</a></li>
+                        <li class="mb-2"><a href="#">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-2 mb-4 mb-md-0">
+                    <h5 class="text-uppercase fw-bold mb-4">Support</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">FAQ</a></li>
+                        <li class="mb-2"><a href="#">Shipping</a></li>
+                        <li class="mb-2"><a href="#">Returns</a></li>
+                        <li class="mb-2"><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-4">
+                    <h5 class="text-uppercase fw-bold mb-4">Newsletter</h5>
+                    <p class="mb-3">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+                    <div class="footer-newsletter">
+                        <input type="email" class="form-control rounded-0 border-dark" placeholder="Enter your email">
+                        <button class="btn btn-primary rounded-0 px-4 text-uppercase fw-bold" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 border-dark">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 fw-medium">&copy; 2026 Muscle Bull. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="./js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

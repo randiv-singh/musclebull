@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop - Muscle Bull</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="./css/style.css" rel="stylesheet" />
+    <link href="./css/header.css" rel="stylesheet" />
+    <link href="./css/footer.css" rel="stylesheet" />
+    <link href="./css/shop.css" rel="stylesheet" />
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-static bg-white">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <img src="./assets/images/logo/mb logo.png" alt="Muscle Bull Logo" height="40">
+                <span class="fw-bold text-uppercase text-black brand-text">Muscle Bull</span>
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto nav-center">
+                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase active" href="shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="#gift-cards">Gift Cards</a></li>
+                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="index.html#contact">Contact</a></li>
+                </ul>
+                <div class="navbar-icons d-flex gap-3">
+                    <a href="#" class="nav-icon-dark"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    <a href="#" class="nav-icon-dark"><i class="fa-solid fa-user"></i></a>
+                    <a href="cart.html" class="nav-icon-dark"><i class="fa-solid fa-bag-shopping"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Breadcrumb -->
+        <section class="breadcrumb-section py-3 bg-white">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="index.html" class="text-black">Home</a></li>
+                        <li class="breadcrumb-item active text-black fw-bold" aria-current="page">Shop</li>
+                    </ol>
+                </nav>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products-section py-5 bg-white">
+            <div class="container">
+                <div class="row">
+                    <!-- Filters Sidebar -->
+                    <div class="col-lg-3 mb-4 mb-lg-0">
+                        <div class="filters-sidebar">
+                            <h5 class="text-uppercase fw-bold mb-4">Filters</h5>
+                            
+                            <!-- Category Filter -->
+                            <div class="filter-group mb-4">
+                                <h6 class="filter-title text-uppercase fw-bold mb-3">Category</h6>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="cat-all" checked>
+                                    <label class="form-check-label" for="cat-all">All Products</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="cat-tshirts">
+                                    <label class="form-check-label" for="cat-tshirts">T-Shirts</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="cat-hoodies">
+                                    <label class="form-check-label" for="cat-hoodies">Hoodies</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="cat-pants">
+                                    <label class="form-check-label" for="cat-pants">Pants</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="cat-tanks">
+                                    <label class="form-check-label" for="cat-tanks">Tank Tops</label>
+                                </div>
+                            </div>
+
+                            <!-- Size Filter -->
+                            <div class="filter-group mb-4">
+                                <h6 class="filter-title text-uppercase fw-bold mb-3">Size</h6>
+                                <div class="size-options d-flex flex-wrap gap-2">
+                                    <button class="size-btn active">XS</button>
+                                    <button class="size-btn">S</button>
+                                    <button class="size-btn">M</button>
+                                    <button class="size-btn">L</button>
+                                    <button class="size-btn">XL</button>
+                                    <button class="size-btn">XXL</button>
+                                </div>
+                            </div>
+
+                            <!-- Price Filter -->
+                            <div class="filter-group mb-4">
+                                <h6 class="filter-title text-uppercase fw-bold mb-3">Price Range</h6>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="price-1">
+                                    <label class="form-check-label" for="price-1">Under LKR 3,000</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="price-2">
+                                    <label class="form-check-label" for="price-2">LKR 3,000 - 5,000</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="price-3">
+                                    <label class="form-check-label" for="price-3">LKR 5,000 - 7,000</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="price-4">
+                                    <label class="form-check-label" for="price-4">Above LKR 7,000</label>
+                                </div>
+                            </div>
+
+                            <!-- Clear Filters -->
+                            <button class="btn btn-outline-dark w-100 text-uppercase fw-bold mt-3">Clear All</button>
+                        </div>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div class="col-lg-9">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="fw-bold text-uppercase m-0">All Products</h2>
+                            <select class="form-select sort-select">
+                                <option selected>Sort By: Featured</option>
+                                <option value="1">Price: Low to High</option>
+                                <option value="2">Price: High to Low</option>
+                                <option value="3">Newest</option>
+                            </select>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Product 1 -->
+                            <div class="col-6 col-md-4">
+                                <div class="product-card-shop">
+                                    <div class="product-image-wrapper">
+                                        <img src="./assets/images/products/black oversize 1.jpg" alt="Black Oversize Tee" class="product-image">
+                                        <button class="quick-view-btn">Quick View</button>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-name fw-bold text-uppercase">Black Oversize Tee</h6>
+                                        <p class="product-price fw-bold">LKR 3,500</p>
+                                        <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 2 -->
+                            <div class="col-6 col-md-4">
+                                <div class="product-card-shop">
+                                    <div class="product-image-wrapper">
+                                        <img src="./assets/images/products/white hoodie 1.jpg" alt="White Hoodie" class="product-image">
+                                        <button class="quick-view-btn">Quick View</button>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-name fw-bold text-uppercase">White Hoodie</h6>
+                                        <p class="product-price fw-bold">LKR 5,200</p>
+                                        <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 3 -->
+                            <div class="col-6 col-md-4">
+                                <div class="product-card-shop">
+                                    <div class="product-image-wrapper">
+                                        <img src="./assets/images/products/blue skinny 2.jpg" alt="Blue Skinny Pants" class="product-image">
+                                        <button class="quick-view-btn">Quick View</button>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-name fw-bold text-uppercase">Blue Skinny Pants</h6>
+                                        <p class="product-price fw-bold">LKR 4,800</p>
+                                        <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 4 -->
+                            <div class="col-6 col-md-4">
+                                <div class="product-card-shop">
+                                    <div class="product-image-wrapper">
+                                        <img src="./assets/images/products/green hoodie 4.jpg" alt="Green Hoodie" class="product-image">
+                                        <button class="quick-view-btn">Quick View</button>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-name fw-bold text-uppercase">Green Hoodie</h6>
+                                        <p class="product-price fw-bold">LKR 5,500</p>
+                                        <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 5 -->
+                            <div class="col-6 col-md-4">
+                                <div class="product-card-shop">
+                                    <div class="product-image-wrapper">
+                                        <img src="./assets/images/products/gray hoodie 1.jpg" alt="Gray Hoodie" class="product-image">
+                                        <button class="quick-view-btn">Quick View</button>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-name fw-bold text-uppercase">Gray Hoodie</h6>
+                                        <p class="product-price fw-bold">LKR 5,000</p>
+                                        <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 6 -->
+                            <div class="col-6 col-md-4">
+                                <div class="product-card-shop">
+                                    <div class="product-image-wrapper">
+                                        <img src="./assets/images/products/green skinny 1.jpg" alt="Green Skinny Pants" class="product-image">
+                                        <button class="quick-view-btn">Quick View</button>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-name fw-bold text-uppercase">Green Skinny Pants</h6>
+                                        <p class="product-price fw-bold">LKR 4,500</p>
+                                        <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 7 -->
+                            <div class="col-6 col-md-4">
+                                <div class="product-card-shop">
+                                    <div class="product-image-wrapper">
+                                        <img src="./assets/images/products/blue hoodie 1.jpg" alt="Blue Hoodie" class="product-image">
+                                        <button class="quick-view-btn">Quick View</button>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-name fw-bold text-uppercase">Blue Hoodie</h6>
+                                        <p class="product-price fw-bold">LKR 5,300</p>
+                                        <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 8 -->
+                            <div class="col-6 col-md-4">
+                                <div class="product-card-shop">
+                                    <div class="product-image-wrapper">
+                                        <img src="./assets/images/products/white skinny 1.jpg" alt="White Skinny Pants" class="product-image">
+                                        <button class="quick-view-btn">Quick View</button>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-name fw-bold text-uppercase">White Skinny Pants</h6>
+                                        <p class="product-price fw-bold">LKR 4,200</p>
+                                        <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 9 -->
+                            <div class="col-6 col-md-4">
+                                <div class="product-card-shop">
+                                    <div class="product-image-wrapper">
+                                        <img src="./assets/images/products/gray hoodie 2.jpg" alt="Gray Hoodie Pro" class="product-image">
+                                        <button class="quick-view-btn">Quick View</button>
+                                    </div>
+                                    <div class="product-info">
+                                        <h6 class="product-name fw-bold text-uppercase">Gray Hoodie Pro</h6>
+                                        <p class="product-price fw-bold">LKR 5,600</p>
+                                        <button class="btn btn-primary w-100 text-uppercase fw-bold btn-sm">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <nav class="mt-5">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white text-black pt-5 pb-4 border-top border-dark">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-4 mb-4 mb-md-0">
+                    <h4 class="text-uppercase fw-bold mb-4">Muscle Bull</h4>
+                    <p>Premium fitness apparel for those who push their limits. Join the herd and unleash your true potential.</p>
+                    <div class="footer-socials d-flex gap-3 mt-4">
+                        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-4 mb-md-0">
+                    <h5 class="text-uppercase fw-bold mb-4">Shop</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">Men</a></li>
+                        <li class="mb-2"><a href="#">Women</a></li>
+                        <li class="mb-2"><a href="#">Accessories</a></li>
+                        <li class="mb-2"><a href="#">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-2 mb-4 mb-md-0">
+                    <h5 class="text-uppercase fw-bold mb-4">Support</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">FAQ</a></li>
+                        <li class="mb-2"><a href="#">Shipping</a></li>
+                        <li class="mb-2"><a href="#">Returns</a></li>
+                        <li class="mb-2"><a href="index.html#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-4">
+                    <h5 class="text-uppercase fw-bold mb-4">Newsletter</h5>
+                    <p class="mb-3">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+                    <div class="footer-newsletter">
+                        <input type="email" class="form-control rounded-0 border-dark" placeholder="Enter your email">
+                        <button class="btn btn-primary rounded-0 px-4 text-uppercase fw-bold" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 border-dark">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 fw-medium">&copy; 2026 Muscle Bull. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="./js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

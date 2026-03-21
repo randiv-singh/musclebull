@@ -1,0 +1,248 @@
+/* Checkout Page Styles - Clean Gen Z Design */
+
+/* Cart Badge */
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background-color: #D5552E;
+    color: #FFFFFF;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Checkout Steps */
+.checkout-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+    background-color: #D5552E;
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(213, 85, 46, 0.3);
+}
+
+.step-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #000000;
+}
+
+.step-line {
+    flex: 1;
+    height: 2px;
+    background-color: #000000;
+    margin: 0 15px;
+    margin-bottom: 35px;
+}
+
+/* Form Section */
+.checkout-form {
+    background-color: #FFFFFF;
+    padding: 30px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.form-section {
+    padding: 20px 0;
+}
+
+.form-label {
+    color: #000000;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.checkout-input {
+    border: none;
+    padding: 12px 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.checkout-input:focus {
+    outline: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Shipping Options */
+.shipping-options,
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.shipping-option,
+.payment-option {
+    position: relative;
+}
+
+.shipping-option input[type="radio"],
+.payment-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.shipping-option label,
+.payment-option label {
+    display: block;
+    padding: 20px;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.shipping-option:hover label,
+.payment-option:hover label {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.shipping-option.active label,
+.payment-option.active label,
+.shipping-option input[type="radio"]:checked + label,
+.payment-option input[type="radio"]:checked + label {
+    box-shadow: 0 0 0 3px #D5552E;
+}
+
+/* Order Summary Checkout */
+.order-summary-checkout {
+    background-color: #FFFFFF;
+    padding: 30px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 20px;
+}
+
+.order-items {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.order-item-info {
+    flex: 1;
+}
+
+.order-item h6 {
+    font-size: 0.9rem;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+.order-item .small {
+    color: #000000;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #000000;
+}
+
+.summary-total {
+    font-size: 1.25rem;
+    color: #000000;
+}
+
+.security-badge {
+    color: #000000;
+    font-weight: 600;
+}
+
+.security-badge i {
+    color: #D5552E;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .order-summary-checkout {
+        position: relative;
+        top: 0;
+        margin-top: 30px;
+    }
+
+    .checkout-steps {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .checkout-form {
+        padding: 20px;
+    }
+
+    .step-label {
+        font-size: 0.75rem;
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .step-line {
+        margin: 0 10px;
+        margin-bottom: 28px;
+    }
+
+    .shipping-option label,
+    .payment-option label {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+}

@@ -1,0 +1,113 @@
+/* Footer Styles */
+
+footer {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+footer h4,
+footer h5 {
+    color: #000000;
+    font-weight: 700;
+}
+
+footer p {
+    color: #000000;
+    line-height: 1.8;
+}
+
+/* Footer Links */
+.footer-links li a {
+    color: #000000;
+    text-decoration: none;
+    transition: color 0.3s ease, padding-left 0.3s ease;
+    display: inline-block;
+}
+
+.footer-links li a:hover {
+    color: #D5552E;
+    padding-left: 5px;
+}
+
+/* Footer Social Links */
+.footer-socials .social-link {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #000000;
+    color: #000000;
+    text-decoration: none;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.footer-socials .social-link:hover {
+    background-color: #D5552E;
+    border-color: #D5552E;
+    color: #FFFFFF;
+    transform: translateY(-3px);
+}
+
+/* Footer Newsletter */
+.footer-newsletter {
+    display: flex;
+    gap: 0;
+}
+
+.footer-newsletter input {
+    flex: 1;
+    border: 2px solid #000000;
+    padding: 12px;
+    color: #000000;
+}
+
+.footer-newsletter input:focus {
+    outline: none;
+    border-color: #D5552E;
+}
+
+.footer-newsletter button {
+    border: 2px solid #D5552E;
+}
+
+/* Features Section */
+.features-section {
+    background-color: #FFFFFF;
+}
+
+.feature-item {
+    padding: 20px 10px;
+}
+
+.feature-icon {
+    color: #000000;
+}
+
+.feature-item h6 {
+    color: #000000;
+    letter-spacing: 1px;
+}
+
+.feature-item p {
+    color: #000000;
+}
+
+@media (max-width: 767.98px) {
+    .feature-item {
+        padding: 15px 5px;
+    }
+
+    .feature-icon i {
+        font-size: 2rem !important;
+    }
+
+    .feature-item h6 {
+        font-size: 0.75rem;
+    }
+
+    .feature-item p {
+        font-size: 0.7rem;
+    }
+}
