@@ -15,34 +15,8 @@
     color: #D5552E !important;
 }
 
-.navbar-static .nav-link.active {
-    color: #D5552E !important;
-}
-
-.navbar-static .nav-link.active::after {
-    width: 100%;
-    background-color: #D5552E;
-}
-
 .navbar-static .brand-text {
     color: #000000 !important;
-}
-
-.nav-icon-dark {
-    color: #000000 !important;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-}
-
-.nav-icon-dark:hover {
-    color: #D5552E !important;
-    background-color: rgba(213, 85, 46, 0.08);
 }
 
 /* Breadcrumb */

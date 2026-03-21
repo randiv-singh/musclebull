@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - Muscle Bull</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="./css/style.css" rel="stylesheet" />
+    <link href="./css/header.css" rel="stylesheet" />
+    <link href="./css/footer.css" rel="stylesheet" />
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-static bg-white">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <img src="./assets/images/logo/mb logo.png" alt="Muscle Bull Logo" height="40">
+                <span class="fw-bold text-uppercase text-black brand-text">Muscle Bull</span>
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto nav-center">
+                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="gift-cards.html">Gift Cards</a></li>
+                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase active" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="navbar-icons d-flex gap-3">
+                    <a href="#" class="nav-icon-dark"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    <a href="login.html" class="nav-icon-dark"><i class="fa-solid fa-user"></i></a>
+                    <a href="cart.html" class="nav-icon-dark"><i class="fa-solid fa-bag-shopping"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Breadcrumb -->
+        <section class="breadcrumb-section py-3 bg-white">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="index.html" class="text-black">Home</a></li>
+                        <li class="breadcrumb-item active text-black fw-bold" aria-current="page">Contact Us</li>
+                    </ol>
+                </nav>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-page py-5 bg-white">
+            <div class="container py-4">
+                <div class="row g-5">
+                    <!-- Contact Info -->
+                    <div class="col-lg-5">
+                        <h1 class="display-4 fw-bold text-uppercase mb-4 text-black" style="line-height: 0.9; letter-spacing: -0.03em;">
+                            GET IN<br><span class="text-primary">TOUCH</span>
+                        </h1>
+                        <p class="lead mb-5 text-black">
+                            Have a question about our gear, an order, or just want to say what's up? Drop us a line. We're here to help you crush your goals.
+                        </p>
+                        
+                        <div class="d-flex flex-column gap-4">
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="bg-black text-white p-3 rounded-0 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="fa-solid fa-location-dot fa-xl"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold text-uppercase mb-1">HQ Address</h5>
+                                    <p class="mb-0 text-black">123 Fitness Avenue, Colombo 03, Sri Lanka</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="bg-black text-white p-3 rounded-0 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="fa-solid fa-envelope fa-xl"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold text-uppercase mb-1">Email Us</h5>
+                                    <p class="mb-0 text-black">support@musclebull.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="bg-black text-white p-3 rounded-0 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="fa-solid fa-phone fa-xl"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold text-uppercase mb-1">Call Us</h5>
+                                    <p class="mb-0 text-black">+94 11 234 5678</p>
+                                    <p class="small text-muted mb-0">Mon-Fri, 9am - 6pm</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Form -->
+                    <div class="col-lg-7">
+                        <div class="bg-white p-4 p-md-5 border border-dark">
+                            <h3 class="fw-bold text-uppercase mb-4 text-black">Send a Message</h3>
+                            <form>
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label for="firstName" class="form-label fw-bold text-uppercase small text-black">First Name</label>
+                                        <input type="text" class="form-control rounded-0 py-3 border-dark text-black" id="firstName" placeholder="John">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lastName" class="form-label fw-bold text-uppercase small text-black">Last Name</label>
+                                        <input type="text" class="form-control rounded-0 py-3 border-dark text-black" id="lastName" placeholder="Doe">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="email" class="form-label fw-bold text-uppercase small text-black">Email Address</label>
+                                        <input type="email" class="form-control rounded-0 py-3 border-dark text-black" id="email" placeholder="john@example.com">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="orderNumber" class="form-label fw-bold text-uppercase small text-black">Order Number (Optional)</label>
+                                        <input type="text" class="form-control rounded-0 py-3 border-dark text-black" id="orderNumber" placeholder="#MB12345">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="message" class="form-label fw-bold text-uppercase small text-black">Message</label>
+                                        <textarea class="form-control rounded-0 py-3 border-dark text-black" id="message" rows="5" placeholder="How can we help you?"></textarea>
+                                    </div>
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-dark btn-lg w-100 rounded-0 text-uppercase fw-bold py-3">Send Message</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white text-black pt-5 pb-4 border-top border-dark">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-4 mb-4 mb-md-0">
+                    <h4 class="text-uppercase fw-bold mb-4">Muscle Bull</h4>
+                    <p>Premium fitness apparel for those who push their limits. Join the herd and unleash your true potential.</p>
+                    <div class="footer-socials d-flex gap-3 mt-4">
+                        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2 mb-4 mb-md-0">
+                    <h5 class="text-uppercase fw-bold mb-4">Shop</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="shop.html">Men</a></li>
+                        <li class="mb-2"><a href="shop.html">Women</a></li>
+                        <li class="mb-2"><a href="shop.html">Accessories</a></li>
+                        <li class="mb-2"><a href="shop.html">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-2 mb-4 mb-md-0">
+                    <h5 class="text-uppercase fw-bold mb-4">Support</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">FAQ</a></li>
+                        <li class="mb-2"><a href="#">Shipping</a></li>
+                        <li class="mb-2"><a href="#">Returns</a></li>
+                        <li class="mb-2"><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-4">
+                    <h5 class="text-uppercase fw-bold mb-4">Newsletter</h5>
+                    <p class="mb-3">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+                    <div class="footer-newsletter">
+                        <input type="email" class="form-control rounded-0 border-dark" placeholder="Enter your email">
+                        <button class="btn btn-primary rounded-0 px-4 text-uppercase fw-bold" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 border-dark">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 fw-medium">&copy; 2026 Muscle Bull. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="./js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

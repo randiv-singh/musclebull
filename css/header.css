@@ -60,26 +60,38 @@
     width: 100%;
 }
 
+.nav-link.active {
+    color: #D5552E !important;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
 /* Navbar Icons */
 .navbar-icons {
     align-items: center;
+    gap: 1.5rem !important;
+}
+
+.nav-icon, .nav-icon-dark {
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    background: transparent !important;
+    padding: 0;
+    display: inline-block;
 }
 
 .nav-icon {
     color: #FFFFFF;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
 }
 
-.nav-icon:hover {
-    color: #D5552E;
-    background-color: rgba(213, 85, 46, 0.1);
+.nav-icon-dark {
+    color: #000000 !important;
+}
+
+.nav-icon:hover, .nav-icon-dark:hover {
+    color: #D5552E !important;
     transform: translateY(-2px);
 }
 
