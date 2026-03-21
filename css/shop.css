@@ -156,6 +156,12 @@
 }
 
 /* Product Card Shop */
+.product-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
 .product-card-shop {
     background-color: #FFFFFF;
     overflow: hidden;
