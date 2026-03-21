@@ -74,11 +74,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close modal on ESC key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && quickViewModal && quickViewModal.classList.contains('active')) {
-            closeModal();
+        if (e.key === 'Escape') {
+            const quickViewModal = document.getElementById('quickViewModal');
+            if (quickViewModal && quickViewModal.classList.contains('active')) {
+                quickViewModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            const sizeGuideModal = document.getElementById('sizeGuideModal');
+            if (sizeGuideModal && sizeGuideModal.classList.contains('active')) {
+                sizeGuideModal.style.display = 'none';
+                sizeGuideModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
         }
     });
 
+    // Size Guide Modal logic removed from here as it is handled dynamically in app.js
+    
     // Modal Size Selector
     const modalSizeButtons = document.querySelectorAll('.modal-size-btn');
     

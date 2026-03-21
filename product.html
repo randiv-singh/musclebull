@@ -128,7 +128,7 @@
                                     <button class="size-btn-single">XL</button>
                                     <button class="size-btn-single">XXL</button>
                                 </div>
-                                <a href="#" class="size-guide-link mt-2 d-inline-block">Size Guide</a>
+                                <span role="button" class="size-guide-link mt-2 d-inline-block" id="sizeGuideBtn">Size Guide</span>
                             </div>
 
                             <!-- Quantity Selector -->
@@ -265,6 +265,18 @@
             </div>
         </section>
     </main>
+
+    <!-- Size Guide Modal -->
+    <div class="quick-view-modal" id="sizeGuideModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;">
+        <div class="modal-overlay" style="background-color: rgba(0,0,0,0.8); position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+        <div class="modal-content" style="max-width: 600px; width: 90%; background: #fff; padding: 30px; z-index: 10000; max-height: 90vh; overflow-y: auto; position: relative; border-radius: 8px;">
+            <button class="close-modal" id="closeSizeGuideBtn" style="color: black; position: absolute; top: 15px; right: 20px; font-size: 28px; background: none; border: none; cursor: pointer; z-index: 10001; line-height: 1;">&times;</button>
+            <div class="text-center mt-2">
+                <h3 class="fw-bold text-uppercase mb-4">Size Guide</h3>
+                <img src="./assets/images/products/size chart.jpg" alt="Size Chart" class="img-fluid" style="width: 100%; height: auto; display: block;">
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="bg-white text-black pt-5 pb-4 border-top border-dark">

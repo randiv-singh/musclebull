@@ -233,6 +233,43 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('product-detail-container').innerHTML = '<div class="col-12 text-center py-5"><h2>Product not found</h2><a href="shop.html" class="btn btn-primary mt-3">Back to Shop</a></div>';
         }
     }
+
+    // Gift Card Page
+    const addGiftCardBtn = document.getElementById('addGiftCardBtn');
+    if (addGiftCardBtn) {
+        addGiftCardBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get selected amount
+            const selectedAmountInput = document.querySelector('input[name="amount"]:checked');
+            let amount = 2500; // default
+            
+            if (selectedAmountInput) {
+                const label = document.querySelector(`label[for="${selectedAmountInput.id}"]`);
+                if (label) {
+                    // Extract number from "LKR 2,500"
+                    const amountText = label.textContent.replace('LKR', '').replace(/,/g, '').trim();
+                    amount = parseInt(amountText);
+                }
+            }
+            
+            // Get delivery method
+            const selectedDeliveryInput = document.querySelector('input[name="delivery"]:checked');
+            let deliveryMethod = 'Email';
+            if (selectedDeliveryInput && selectedDeliveryInput.id === 'delFriend') {
+                deliveryMethod = 'Friend';
+            }
+            
+            const giftCardProduct = {
+                id: `gift-card-${amount}`,
+                name: `Muscle Bull E-Gift Card`,
+                price: amount,
+                image: './assets/images/flayer/gift-card.jpg'
+            };
+            
+            addToCart(giftCardProduct, 1, `Digital (${deliveryMethod})`);
+        });
+    }
 });
 
 function renderProductDetails(product) {
@@ -292,5 +329,50 @@ function renderProductDetails(product) {
             
             addToCart(product, quantity, size);
         });
+    }
+
+    /* Size Guide Modal */
+    const sizeGuideBtn = document.getElementById('sizeGuideBtn');
+    const sizeGuideModal = document.getElementById('sizeGuideModal');
+    const closeSizeGuideBtn = document.getElementById('closeSizeGuideBtn');
+
+    if (sizeGuideBtn && sizeGuideModal) {
+        // Remove old listeners by cloning
+        const newSizeGuideBtn = sizeGuideBtn.cloneNode(true);
+        sizeGuideBtn.parentNode.replaceChild(newSizeGuideBtn, sizeGuideBtn);
+
+        newSizeGuideBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            sizeGuideModal.style.display = 'flex';
+            sizeGuideModal.style.alignItems = 'center';
+            sizeGuideModal.style.justifyContent = 'center';
+            sizeGuideModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        function closeSizeGuide() {
+            sizeGuideModal.style.display = 'none';
+            sizeGuideModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Initialize as hidden
+        sizeGuideModal.style.display = 'none';
+
+        if (closeSizeGuideBtn) {
+            // Clone to prevent multiple listeners
+            const newCloseBtn = closeSizeGuideBtn.cloneNode(true);
+            closeSizeGuideBtn.parentNode.replaceChild(newCloseBtn, closeSizeGuideBtn);
+            newCloseBtn.addEventListener('click', closeSizeGuide);
+        }
+
+        const sizeGuideOverlay = sizeGuideModal.querySelector('.modal-overlay');
+        if (sizeGuideOverlay) {
+            // Clone to prevent multiple listeners
+            const newOverlay = sizeGuideOverlay.cloneNode(true);
+            sizeGuideOverlay.parentNode.replaceChild(newOverlay, sizeGuideOverlay);
+            newOverlay.addEventListener('click', closeSizeGuide);
+        }
     }
 }
