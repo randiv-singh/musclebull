@@ -9,7 +9,12 @@ class Order {
     private $orders;
 
     public function __construct() {
-        $this->jsonFile = '../config/orders.json';
+        // Support being called from both root and subdirectories
+        if (file_exists(__DIR__ . '/../config/orders.json')) {
+            $this->jsonFile = __DIR__ . '/../config/orders.json';
+        } else {
+            $this->jsonFile = 'config/orders.json';
+        }
         $this->loadOrders();
     }
 
@@ -69,7 +74,10 @@ class Order {
         ];
 
         $this->orders[] = $newOrder;
-        return $this->saveOrders();
+        if ($this->saveOrders()) {
+            return $newOrder['id'];
+        }
+        return false;
     }
 
     // Update order status

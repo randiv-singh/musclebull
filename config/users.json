@@ -7,5 +7,14 @@
         "role": "admin",
         "created_at": "2026-05-02 17:59:45",
         "status": "active"
+    },
+    {
+        "id": 2,
+        "name": "Test Test",
+        "email": "test@gmail.com",
+        "password": "$2y$12$B2a8UGdvHN9Fl0S5\/rIEh.vYiAAuws0OvtZel3w1uzhSlx7TOpSyG",
+        "role": "customer",
+        "created_at": "2026-05-02 19:03:00",
+        "status": "active"
     }
 ]

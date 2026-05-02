@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const API_URL = 'api/cart.php';
+
+    // Load cart from server on page load
+    loadCartFromServer();
+
     // Handle Cart Page
     if (document.querySelector('.cart-section')) {
         const itemsContainer = document.getElementById('cart-items-container');
@@ -12,16 +17,142 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCheckout();
     }
 
+    // Load cart from server
+    async function loadCartFromServer() {
+        try {
+            const response = await fetch(API_URL);
+            const data = await response.json();
+            
+            if (data.success) {
+                // Merge server cart with local cart (server takes priority)
+                const localCart = getCart();
+                const serverCart = data.items || [];
+                
+                // If server has items, use them; otherwise sync local to server
+                if (serverCart.length > 0) {
+                    saveCart(serverCart);
+                } else if (localCart.length > 0) {
+                    // Sync local cart to server
+                    await syncCartToServer(localCart);
+                }
+                
+                updateCartBadge();
+                
+                // Re-render if on cart/checkout page
+                if (document.querySelector('.cart-section')) {
+                    renderCart();
+                }
+                if (document.querySelector('.checkout-section')) {
+                    renderCheckout();
+                }
+            }
+        } catch (error) {
+            console.error('Error loading cart from server:', error);
+        }
+    }
+
+    // Sync cart to server
+    async function syncCartToServer(cart) {
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'sync', items: cart })
+            });
+        } catch (error) {
+            console.error('Error syncing cart to server:', error);
+        }
+    }
+
+    // Add item to server cart
+    async function addItemToServer(item) {
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'add',
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image: item.image,
+                    size: item.size,
+                    quantity: item.quantity
+                })
+            });
+            const data = await response.json();
+            if (data.success) {
+                saveCart(data.items);
+                updateCartBadge();
+            }
+            return data;
+        } catch (error) {
+            console.error('Error adding item to server cart:', error);
+            return null;
+        }
+    }
+
+    // Update item quantity on server
+    async function updateItemOnServer(id, size, quantity) {
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'update',
+                    id: id,
+                    size: size,
+                    quantity: quantity
+                })
+            });
+            const data = await response.json();
+            if (data.success) {
+                saveCart(data.items);
+                updateCartBadge();
+            }
+            return data;
+        } catch (error) {
+            console.error('Error updating item on server:', error);
+            return null;
+        }
+    }
+
+    // Remove item from server cart
+    async function removeItemFromServer(id, size) {
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'remove',
+                    id: id,
+                    size: size
+                })
+            });
+            const data = await response.json();
+            if (data.success) {
+                saveCart(data.items);
+                updateCartBadge();
+            }
+            return data;
+        } catch (error) {
+            console.error('Error removing item from server cart:', error);
+            return null;
+        }
+    }
+
     function renderCart() {
         const cart = getCart();
         const itemsContainer = document.getElementById('cart-items-container');
+        
+        if (!itemsContainer) return;
         
         if (cart.length === 0) {
             itemsContainer.innerHTML = `
                 <div class="text-center py-5">
                     <h3>Your cart is empty</h3>
                     <p class="text-muted mb-4">Looks like you haven't added any items to your cart yet.</p>
-                    <a href="shop.html" class="btn btn-primary px-4 py-2 text-uppercase fw-bold">Shop Now</a>
+                    <a href="shop.php" class="btn btn-primary px-4 py-2 text-uppercase fw-bold">Shop Now</a>
                 </div>
             `;
             updateSummary(0, '.order-summary');
@@ -123,11 +254,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const item = cart.find(i => i.id === id && i.size === size);
         
         if (item) {
-            item.quantity += change;
-            if (item.quantity <= 0) {
+            const newQuantity = item.quantity + change;
+            if (newQuantity <= 0) {
                 removeFromCart(id, size);
             } else {
+                item.quantity = newQuantity;
                 saveCart(cart);
+                updateItemOnServer(id, size, newQuantity);
                 renderCart();
             }
         }
@@ -137,6 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let cart = getCart();
         cart = cart.filter(i => !(i.id === id && i.size === size));
         saveCart(cart);
+        removeItemFromServer(id, size);
         renderCart();
     }
 
@@ -160,6 +294,34 @@ document.addEventListener('DOMContentLoaded', function() {
             totalEl.textContent = formatPrice(total);
         }
     }
+
+    // Override global addToCart to sync with server
+    const originalAddToCart = window.addToCart;
+    window.addToCart = async function(product, quantity = 1, size = 'M') {
+        const cart = getCart();
+        const existingItem = cart.find(item => item.id === product.id && item.size === size);
+        
+        if (existingItem) {
+            existingItem.quantity += quantity;
+            saveCart(cart);
+            await updateItemOnServer(product.id, size, existingItem.quantity);
+        } else {
+            const newItem = {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                size: size,
+                quantity: quantity
+            };
+            cart.push(newItem);
+            saveCart(cart);
+            await addItemToServer(newItem);
+        }
+        
+        updateCartBadge();
+        alert(`${product.name} added to cart!`);
+    };
 
     // Initial render is handled by the if blocks at the top
 });

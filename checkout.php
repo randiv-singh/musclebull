@@ -1,4 +1,94 @@
+<?php
+session_start();
+require_once 'classes/Cart.php';
+require_once 'classes/Order.php';
 
+$userId = $_SESSION['user_id'] ?? null;
+$sessionId = session_id();
+$cart = new Cart($userId, $sessionId);
+$order = new Order();
+
+$error = '';
+$success = '';
+
+// Redirect if cart is empty
+if ($cart->getItemCount() === 0) {
+    header('Location: cart.php');
+    exit;
+}
+
+// Process order submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
+    $firstName = $_POST['firstName'] ?? '';
+    $lastName = $_POST['lastName'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $city = $_POST['city'] ?? '';
+    $postalCode = $_POST['postalCode'] ?? '';
+    $shippingMethod = $_POST['shipping'] ?? 'standard';
+    $paymentMethod = $_POST['payment'] ?? 'cod';
+    
+    // Validation
+    if (empty($firstName) || empty($lastName) || empty($email) || empty($phone) || 
+        empty($address) || empty($city) || empty($postalCode)) {
+        $error = 'Please fill in all required fields';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address';
+    } else {
+        // Get cart items
+        $cartItems = $cart->getItemsArray();
+        
+        // Calculate totals
+        $subtotal = $cart->getTotal();
+        $shippingCost = $shippingMethod === 'express' ? 1000 : 500;
+        $totalAmount = $subtotal + $shippingCost;
+        
+        // Prepare shipping address
+        $shippingAddress = [
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'email' => $email,
+            'phone' => $phone,
+            'address' => $address,
+            'city' => $city,
+            'postal_code' => $postalCode,
+            'shipping_method' => $shippingMethod,
+            'shipping_cost' => $shippingCost
+        ];
+        
+        // Create order
+        $orderId = $order->add(
+            $userId,  // null if guest
+            $cartItems,
+            $totalAmount,
+            $shippingAddress,
+            $paymentMethod
+        );
+        
+        if ($orderId) {
+            // Clear cart
+            $cart->clearCart();
+            
+            // Store order info in session for confirmation page
+            $_SESSION['last_order_id'] = $orderId;
+            
+            $success = 'Order placed successfully! Your order number is #' . $orderId;
+            
+            // Redirect to order confirmation after 2 seconds
+            header('Refresh: 2; URL=order-confirmation.php?order_id=' . $orderId);
+        } else {
+            $error = 'Failed to place order. Please try again.';
+        }
+    }
+}
+
+// Get cart data for display
+$cartItems = $cart->getItemsArray();
+$subtotal = $cart->getTotal();
+$shippingCost = 500;
+$totalAmount = $subtotal + $shippingCost;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +117,16 @@
         <!-- Checkout Section -->
         <section class="checkout-section py-5 bg-white">
             <div class="container">
+                <?php if ($error): ?>
+                    <div class="alert alert-danger rounded-0 mb-4" role="alert">
+                        <?php echo htmlspecialchars($error); ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ($success): ?>
+                    <div class="alert alert-success rounded-0 mb-4" role="alert">
+                        <?php echo htmlspecialchars($success); ?>
+                    </div>
+                <?php endif; ?>
                 <!-- Progress Steps -->
                 <div class="checkout-steps mb-5">
                     <div class="step active">
@@ -48,6 +148,7 @@
                 <div class="row g-4">
                     <!-- Checkout Form -->
                     <div class="col-lg-8">
+                        <form method="POST" action="">
                         <div class="checkout-form">
                             <!-- Shipping Information -->
                             <div class="form-section">
@@ -55,31 +156,34 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold">First Name</label>
-                                        <input type="text" class="form-control checkout-input" placeholder="John">
+                                        <input type="text" name="firstName" class="form-control checkout-input" placeholder="John" required
+                                            value="<?php echo htmlspecialchars($_SESSION['user_name'] ? explode(' ', $_SESSION['user_name'])[0] : ''); ?>">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold">Last Name</label>
-                                        <input type="text" class="form-control checkout-input" placeholder="Doe">
+                                        <input type="text" name="lastName" class="form-control checkout-input" placeholder="Doe" required
+                                            value="<?php echo htmlspecialchars($_SESSION['user_name'] ? explode(' ', $_SESSION['user_name'])[1] ?? '' : ''); ?>">
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label fw-bold">Email Address</label>
-                                        <input type="email" class="form-control checkout-input" placeholder="john.doe@example.com">
+                                        <input type="email" name="email" class="form-control checkout-input" placeholder="john.doe@example.com" required
+                                            value="<?php echo htmlspecialchars($_SESSION['user_email'] ?? ''); ?>">
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label fw-bold">Phone Number</label>
-                                        <input type="tel" class="form-control checkout-input" placeholder="+94 77 123 4567">
+                                        <input type="tel" name="phone" class="form-control checkout-input" placeholder="+94 77 123 4567" required>
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label fw-bold">Street Address</label>
-                                        <input type="text" class="form-control checkout-input" placeholder="123 Main Street">
+                                        <input type="text" name="address" class="form-control checkout-input" placeholder="123 Main Street" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold">City</label>
-                                        <input type="text" class="form-control checkout-input" placeholder="Colombo">
+                                        <input type="text" name="city" class="form-control checkout-input" placeholder="Colombo" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold">Postal Code</label>
-                                        <input type="text" class="form-control checkout-input" placeholder="10100">
+                                        <input type="text" name="postalCode" class="form-control checkout-input" placeholder="10100" required>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +193,7 @@
                                 <h4 class="fw-bold text-uppercase mb-4">Shipping Method</h4>
                                 <div class="shipping-options">
                                     <div class="shipping-option active">
-                                        <input type="radio" name="shipping" id="standard" checked>
+                                        <input type="radio" name="shipping" id="standard" value="standard" checked>
                                         <label for="standard">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
@@ -101,7 +205,7 @@
                                         </label>
                                     </div>
                                     <div class="shipping-option">
-                                        <input type="radio" name="shipping" id="express">
+                                        <input type="radio" name="shipping" id="express" value="express">
                                         <label for="express">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
@@ -119,15 +223,15 @@
                             <div class="form-section mt-4">
                                 <h4 class="fw-bold text-uppercase mb-4">Payment Method</h4>
                                 <div class="payment-options">
-                                    <div class="payment-option active">
-                                        <input type="radio" name="payment" id="card" checked>
+                                    <div class="payment-option">
+                                        <input type="radio" name="payment" id="card" value="card">
                                         <label for="card">
                                             <i class="fa-solid fa-credit-card me-2"></i>
                                             Credit / Debit Card
                                         </label>
                                     </div>
-                                    <div class="payment-option">
-                                        <input type="radio" name="payment" id="cod">
+                                    <div class="payment-option active">
+                                        <input type="radio" name="payment" id="cod" value="cod" checked>
                                         <label for="cod">
                                             <i class="fa-solid fa-money-bill me-2"></i>
                                             Cash on Delivery
@@ -135,20 +239,20 @@
                                     </div>
                                 </div>
 
-                                <!-- Card Details -->
-                                <div class="card-details mt-4">
+                                <!-- Card Details (hidden by default, shown when card payment selected) -->
+                                <div class="card-details mt-4" id="cardDetails" style="display: none;">
                                     <div class="row g-3">
                                         <div class="col-12">
                                             <label class="form-label fw-bold">Card Number</label>
-                                            <input type="text" class="form-control checkout-input" placeholder="1234 5678 9012 3456">
+                                            <input type="text" name="cardNumber" class="form-control checkout-input" placeholder="1234 5678 9012 3456">
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-bold">Expiry Date</label>
-                                            <input type="text" class="form-control checkout-input" placeholder="MM/YY">
+                                            <input type="text" name="cardExpiry" class="form-control checkout-input" placeholder="MM/YY">
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-bold">CVV</label>
-                                            <input type="text" class="form-control checkout-input" placeholder="123">
+                                            <input type="text" name="cardCvv" class="form-control checkout-input" placeholder="123">
                                         </div>
                                     </div>
                                 </div>
@@ -163,39 +267,25 @@
                             
                             <!-- Order Items -->
                             <div class="order-items mb-4">
+                                <?php foreach ($cartItems as $item): ?>
                                 <div class="order-item">
-                                    <img src="./assets/images/products/black oversize 1.jpg" alt="Product">
+                                    <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
                                     <div class="order-item-info">
-                                        <h6 class="fw-bold mb-1">Black Oversize Tee</h6>
-                                        <p class="small mb-0">Size: L × 1</p>
+                                        <h6 class="fw-bold mb-1"><?php echo htmlspecialchars($item['name']); ?></h6>
+                                        <p class="small mb-0">Size: <?php echo htmlspecialchars($item['size']); ?> × <?php echo $item['quantity']; ?></p>
                                     </div>
-                                    <span class="fw-bold">LKR 3,500</span>
+                                    <span class="fw-bold">LKR <?php echo number_format($item['price'] * $item['quantity']); ?></span>
                                 </div>
-                                <div class="order-item">
-                                    <img src="./assets/images/products/white hoodie 1.jpg" alt="Product">
-                                    <div class="order-item-info">
-                                        <h6 class="fw-bold mb-1">White Hoodie</h6>
-                                        <p class="small mb-0">Size: M × 1</p>
-                                    </div>
-                                    <span class="fw-bold">LKR 5,200</span>
-                                </div>
-                                <div class="order-item">
-                                    <img src="./assets/images/products/blue skinny 2.jpg" alt="Product">
-                                    <div class="order-item-info">
-                                        <h6 class="fw-bold mb-1">Blue Skinny Pants</h6>
-                                        <p class="small mb-0">Size: 32 × 1</p>
-                                    </div>
-                                    <span class="fw-bold">LKR 4,800</span>
-                                </div>
+                                <?php endforeach; ?>
                             </div>
                             
                             <div class="summary-row">
                                 <span>Subtotal</span>
-                                <span class="fw-bold">LKR 13,500</span>
+                                <span class="fw-bold">LKR <?php echo number_format($subtotal); ?></span>
                             </div>
                             <div class="summary-row">
                                 <span>Shipping</span>
-                                <span class="fw-bold">LKR 500</span>
+                                <span class="fw-bold" id="shippingCost">LKR <?php echo number_format($shippingCost); ?></span>
                             </div>
                             <div class="summary-row">
                                 <span>Tax</span>
@@ -206,11 +296,11 @@
                             
                             <div class="summary-row summary-total">
                                 <span class="fw-bold">Total</span>
-                                <span class="fw-bold fs-4">LKR 14,000</span>
+                                <span class="fw-bold fs-4" id="totalAmount">LKR <?php echo number_format($totalAmount); ?></span>
                             </div>
 
                             <!-- Place Order Button -->
-                            <button class="btn btn-primary w-100 py-3 text-uppercase fw-bold mt-4">
+                            <button type="submit" name="place_order" class="btn btn-primary w-100 py-3 text-uppercase fw-bold mt-4">
                                 Place Order <i class="fa-solid fa-check ms-2"></i>
                             </button>
 
@@ -221,6 +311,7 @@
                             </div>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </section>
@@ -235,5 +326,31 @@
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/app.js"></script>
     <script src="./assets/js/cart.js"></script>
+    <script>
+        // Handle shipping method change
+        document.querySelectorAll('input[name="shipping"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const isExpress = this.value === 'express';
+                const shippingCost = isExpress ? 1000 : 500;
+                const subtotal = <?php echo $subtotal; ?>;
+                const total = subtotal + shippingCost;
+                
+                document.getElementById('shippingCost').textContent = 'LKR ' + shippingCost.toLocaleString();
+                document.getElementById('totalAmount').textContent = 'LKR ' + total.toLocaleString();
+            });
+        });
+        
+        // Handle payment method change
+        document.querySelectorAll('input[name="payment"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const cardDetails = document.getElementById('cardDetails');
+                if (this.value === 'card') {
+                    cardDetails.style.display = 'block';
+                } else {
+                    cardDetails.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

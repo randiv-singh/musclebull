@@ -33,7 +33,7 @@ function updateCartBadge() {
     const cart = getCart();
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     
-    const cartIcons = document.querySelectorAll('a[href="cart.html"]');
+    const cartIcons = document.querySelectorAll('a[href="cart.php"]');
     cartIcons.forEach(icon => {
         let badge = icon.querySelector('.cart-badge');
         
@@ -83,7 +83,7 @@ function formatPrice(price) {
 function generateProductCard(product, colClass = 'col-12 col-md-6 col-lg-3') {
     return `
         <div class="${colClass}">
-            <a href="product.html?id=${product.id}" class="product-link">
+            <a href="product.php?id=${product.id}" class="product-link">
                 <div class="product-card-shop">
                     <div class="product-image-wrapper">
                         <img src="${product.image}" alt="${product.name}" class="product-image">
@@ -156,7 +156,7 @@ function attachQuickViewListeners(products) {
                 // Update "View Full Details" link
                 const viewDetailsBtn = quickViewModal.querySelector('a.btn-outline-dark');
                 if (viewDetailsBtn) {
-                    viewDetailsBtn.href = `product.html?id=${product.id}`;
+                    viewDetailsBtn.href = `product.php?id=${product.id}`;
                 }
                 
                 // Attach add to cart logic for modal
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 renderProducts(related, 'related-products-container', 'col-6 col-md-3');
             }
         } else {
-            document.getElementById('product-detail-container').innerHTML = '<div class="col-12 text-center py-5"><h2>Product not found</h2><a href="shop.html" class="btn btn-primary mt-3">Back to Shop</a></div>';
+            document.getElementById('product-detail-container').innerHTML = '<div class="col-12 text-center py-5"><h2>Product not found</h2><a href="shop.php" class="btn btn-primary mt-3">Back to Shop</a></div>';
         }
     }
 

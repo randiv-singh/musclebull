@@ -4,8 +4,14 @@
 // - $type: 'transparent' for homepage, 'white' for other pages
 // - $active_page: current active page for highlighting nav items
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $type = $type ?? 'white';
 $active_page = $active_page ?? '';
+$isLoggedIn = isset($_SESSION['user_id']);
+$isAdmin = $isLoggedIn && $_SESSION['user_role'] === 'admin';
 ?>
 
 <!-- Navigation -->
@@ -41,13 +47,47 @@ $active_page = $active_page ?? '';
                         href="contact.php">Contact</a>
                 </li>
             </ul>
-            <div class="navbar-icons d-flex gap-3">
+            <div class="navbar-icons d-flex gap-3 align-items-center">
                 <a href="#" class="<?php echo $type === 'transparent' ? 'nav-icon' : 'nav-icon-dark'; ?>">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </a>
-                <a href="login.php" class="<?php echo $type === 'transparent' ? 'nav-icon' : 'nav-icon-dark'; ?>">
-                    <i class="fa-solid fa-user"></i>
-                </a>
+                
+                <?php if ($isLoggedIn): ?>
+                    <!-- User dropdown menu -->
+                    <div class="dropdown">
+                        <a href="#" class="<?php echo $type === 'transparent' ? 'nav-icon' : 'nav-icon-dark'; ?> dropdown-toggle" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-header">
+                                <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <?php if ($isAdmin): ?>
+                                <li><a class="dropdown-item" href="admin/dashboard.php">
+                                    <i class="fa-solid fa-dashboard me-2"></i> Admin Dashboard
+                                </a></li>
+                            <?php else: ?>
+                                <li><a class="dropdown-item" href="profile.php">
+                                    <i class="fa-solid fa-user me-2"></i> My Profile
+                                </a></li>
+                                <li><a class="dropdown-item" href="profile.php#orders">
+                                    <i class="fa-solid fa-box me-2"></i> My Orders
+                                </a></li>
+                            <?php endif; ?>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="logout.php">
+                                <i class="fa-solid fa-sign-out-alt me-2"></i> Logout
+                            </a></li>
+                        </ul>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="<?php echo $type === 'transparent' ? 'nav-icon' : 'nav-icon-dark'; ?>">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                <?php endif; ?>
+                
                 <a href="cart.php" class="<?php echo $type === 'transparent' ? 'nav-icon' : 'nav-icon-dark'; ?>">
                     <i class="fa-solid fa-bag-shopping"></i>
                 </a>

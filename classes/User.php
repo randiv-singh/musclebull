@@ -9,7 +9,12 @@ class User {
     private $users;
 
     public function __construct() {
-        $this->jsonFile = '../config/users.json';
+        // Support being called from both root and subdirectories
+        if (file_exists(__DIR__ . '/../config/users.json')) {
+            $this->jsonFile = __DIR__ . '/../config/users.json';
+        } else {
+            $this->jsonFile = 'config/users.json';
+        }
         $this->loadUsers();
     }
 
