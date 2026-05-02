@@ -10,11 +10,11 @@ require_once 'components/footer.php';
     <title>Gift Cards - Muscle Bull</title>
     
     <!-- Bootstrap CSS -->
-    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Custom CSS -->
-    <link href="./css/style.css" rel="stylesheet" />
-    <link href="./css/header.css" rel="stylesheet" />
-    <link href="./css/footer.css" rel="stylesheet" />
+    <link href="./assets/css/style.css" rel="stylesheet" />
+    <link href="./assets/css/header.css" rel="stylesheet" />
+    <link href="./assets/css/footer.css" rel="stylesheet" />
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -119,7 +119,7 @@ require_once 'components/footer.php';
     ?>
 
     <!-- Bootstrap JS -->
-    <script src="./js/bootstrap.bundle.min.js"></script>
-    <script src="./js/app.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>

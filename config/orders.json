@@ -1,0 +1,100 @@
+[
+  {
+    "id": 1,
+    "user_id": 2,
+    "items": [
+      {
+        "product_id": 1,
+        "name": "Black Oversize Tee",
+        "price": 3500,
+        "quantity": 2,
+        "subtotal": 7000
+      },
+      {
+        "product_id": 3,
+        "name": "Blue Skinny Pants",
+        "price": 4800,
+        "quantity": 1,
+        "subtotal": 4800
+      }
+    ],
+    "total_amount": 11800,
+    "status": "delivered",
+    "payment_method": "cash",
+    "payment_status": "paid",
+    "shipping_address": {
+      "street": "123 Main Street",
+      "city": "Colombo",
+      "postal_code": "00100",
+      "country": "Sri Lanka"
+    },
+    "order_date": "2024-01-15 10:30:00",
+    "shipped_date": "2024-01-16 14:20:00",
+    "delivered_date": "2024-01-18 11:15:00",
+    "tracking_number": "LK123456789",
+    "notes": "Customer requested fast delivery"
+  },
+  {
+    "id": 2,
+    "user_id": 3,
+    "items": [
+      {
+        "product_id": 2,
+        "name": "White Hoodie",
+        "price": 5200,
+        "quantity": 1,
+        "subtotal": 5200
+      }
+    ],
+    "total_amount": 5200,
+    "status": "shipped",
+    "payment_method": "card",
+    "payment_status": "paid",
+    "shipping_address": {
+      "street": "456 Park Avenue",
+      "city": "Kandy",
+      "postal_code": "20000",
+      "country": "Sri Lanka"
+    },
+    "order_date": "2024-01-20 14:15:00",
+    "shipped_date": "2024-01-21 09:30:00",
+    "delivered_date": null,
+    "tracking_number": "LK987654321",
+    "notes": ""
+  },
+  {
+    "id": 3,
+    "user_id": 2,
+    "items": [
+      {
+        "product_id": 5,
+        "name": "Gray Hoodie",
+        "price": 5000,
+        "quantity": 1,
+        "subtotal": 5000
+      },
+      {
+        "product_id": 6,
+        "name": "Green Skinny Pants",
+        "price": 4500,
+        "quantity": 1,
+        "subtotal": 4500
+      }
+    ],
+    "total_amount": 9500,
+    "status": "pending",
+    "payment_method": "gift_card",
+    "payment_status": "pending",
+    "shipping_address": {
+      "street": "123 Main Street",
+      "city": "Colombo",
+      "postal_code": "00100",
+      "country": "Sri Lanka"
+    },
+    "order_date": "2024-01-25 16:45:00",
+    "shipped_date": null,
+    "delivered_date": null,
+    "tracking_number": null,
+    "notes": "Awaiting payment confirmation"
+  }
+]

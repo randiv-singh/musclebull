@@ -63,7 +63,7 @@ function updateCartBadge() {
 // Fetch products from JSON file
 async function fetchProducts() {
     try {
-        const response = await fetch('./products.json');
+        const response = await fetch('./config/products.json');
         if (!response.ok) {
             throw new Error('Failed to fetch products');
         }
