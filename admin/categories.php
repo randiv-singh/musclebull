@@ -71,12 +71,13 @@ $categories = $category->getWithProductCounts($product);
     <title>Categories Management - Muscle Bull</title>
     
     <!-- Bootstrap CSS -->
-    <!-- FontAwesome for icons -->
-    <!-- Admin CSS -->
-    <link href="../assets/css/admin.css" rel="stylesheet" />
-    <!-- FontAwesome for icons -->
-    <!-- Admin CSS -->
-    <link href="../assets/css/admin.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Custom Admin CSS -->
+    <link href="../assets/css/admin-bootstrap.css" rel="stylesheet" />
+    <!-- Custom Admin CSS -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
 </head>
@@ -177,7 +178,7 @@ $categories = $category->getWithProductCounts($product);
         </div>
 
         <!-- Categories Table -->
-        <div class="table-responsive mb-5">
+        <div class="table-responsive mb-5 mt-5">
             <h3 class="h4 text-uppercase fw-bold mb-4">Manage Categories (<?php echo count($categories); ?> categories)</h3>
             <table class="table category-table">
                 <thead>

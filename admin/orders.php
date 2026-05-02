@@ -19,42 +19,42 @@ $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-    
+
     switch ($action) {
         case 'update_status':
             $id = intval($_POST['id'] ?? 0);
             $status = $_POST['status'] ?? '';
             $notes = $_POST['notes'] ?? '';
-            
+
             if ($order->updateStatus($id, $status, $notes)) {
                 $message = 'Order status updated successfully!';
             } else {
                 $error = 'Failed to update order status.';
             }
             break;
-            
+
         case 'update_payment':
             $id = intval($_POST['id'] ?? 0);
             $paymentStatus = $_POST['payment_status'] ?? '';
-            
+
             if ($order->updatePaymentStatus($id, $paymentStatus)) {
                 $message = 'Payment status updated successfully!';
             } else {
                 $error = 'Failed to update payment status.';
             }
             break;
-            
+
         case 'update_tracking':
             $id = intval($_POST['id'] ?? 0);
             $trackingNumber = $_POST['tracking_number'] ?? '';
-            
+
             if ($order->updateTracking($id, $trackingNumber)) {
                 $message = 'Tracking number updated successfully!';
             } else {
                 $error = 'Failed to update tracking number.';
             }
             break;
-            
+
         case 'delete':
             $id = intval($_POST['id'] ?? 0);
             if ($order->delete($id)) {
@@ -72,21 +72,20 @@ $stats = $order->getStatistics();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Orders Management - Muscle Bull</title>
-    
+
     <!-- Bootstrap CSS -->
-    <!-- FontAwesome for icons -->
-    <!-- Admin CSS -->
-    <link href="../assets/css/admin.css" rel="stylesheet" />
-    <!-- FontAwesome for icons -->
-    <!-- Admin CSS -->
-    <link href="../assets/css/admin.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
+    <!-- Custom Admin CSS -->
+    <link href="../assets/css/admin-bootstrap.css" rel="stylesheet" />
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -94,7 +93,7 @@ $stats = $order->getStatistics();
             <h3><i class="fa-solid fa-cog me-2"></i>Muscle Bull</h3>
             <small>Admin Panel</small>
         </div>
-        
+
         <nav class="sidebar-menu">
             <a href="dashboard.php" class="nav-link">
                 <i class="fa-solid fa-dashboard"></i> Dashboard
@@ -115,7 +114,7 @@ $stats = $order->getStatistics();
                 <i class="fa-solid fa-gift"></i> Gift Cards
             </a>
         </nav>
-        
+
         <div class="user-info">
             <div class="text-white">
                 <i class="fa-solid fa-user me-2"></i>
@@ -123,14 +122,14 @@ $stats = $order->getStatistics();
             </div>
             <small class="text-muted">Administrator</small>
         </div>
-        
+
         <div class="logout-btn">
             <a href="logout.php" class="btn btn-outline-light btn-sm w-100">
                 <i class="fa-solid fa-sign-out-alt me-2"></i>Logout
             </a>
         </div>
     </div>
-    
+
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
@@ -155,31 +154,50 @@ $stats = $order->getStatistics();
         <?php endif; ?>
 
         <!-- Statistics Cards -->
-        <div class="stats-cards">
-            <div class="stat-card">
-                <div class="stat-number"><?php echo $stats['total_orders']; ?></div>
-                <div class="stat-label">Total Orders</div>
+        <div class="d-flex row justify-content-between">
+            <div class="col-md-2 col-sm-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-number"><?php echo $stats['total_orders']; ?></div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number text-warning"><?php echo $stats['pending']; ?></div>
-                <div class="stat-label">Pending</div>
+
+            <div class="col-md-2 col-sm-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-number text-warning"><?php echo $stats['pending']; ?></div>
+                    <div class="stat-label">Pending</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number text-info"><?php echo $stats['shipped']; ?></div>
-                <div class="stat-label">Shipped</div>
+
+            <div class="col-md-2 col-sm-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-number text-info"><?php echo $stats['shipped']; ?></div>
+                    <div class="stat-label">Shipped</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number text-success"><?php echo $stats['delivered']; ?></div>
-                <div class="stat-label">Delivered</div>
+
+            <div class="col-md-2 col-sm-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-number text-success"><?php echo $stats['delivered']; ?></div>
+                    <div class="stat-label">Delivered</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number text-danger"><?php echo $stats['cancelled']; ?></div>
-                <div class="stat-label">Cancelled</div>
+
+            <div class="col-md-2 col-sm-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-number text-danger"><?php echo $stats['cancelled']; ?></div>
+                    <div class="stat-label">Cancelled</div>
+                </div>
+
             </div>
-            <div class="stat-card">
-                <div class="stat-number">LKR <?php echo number_format($stats['total_revenue']); ?></div>
-                <div class="stat-label">Revenue</div>
+
+            <div class="col-md-2 col-sm-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-number">LKR <?php echo number_format($stats['total_revenue']); ?></div>
+                    <div class="stat-label">Revenue</div>
+                </div>
             </div>
+
         </div>
 
         <!-- Orders Table -->
@@ -203,10 +221,11 @@ $stats = $order->getStatistics();
                         <tr>
                             <td>
                                 <div class="fw-bold">#<?php echo $order_item['id']; ?></div>
-                                <small class="text-muted"><?php echo date('M j, Y', strtotime($order_item['order_date'])); ?></small>
+                                <small
+                                    class="text-muted"><?php echo date('M j, Y', strtotime($order_item['order_date'])); ?></small>
                             </td>
                             <td>
-                                <?php 
+                                <?php
                                 $orderUser = $user->getById($order_item['user_id']);
                                 echo htmlspecialchars($orderUser ? $orderUser['name'] : 'Unknown User');
                                 ?>
@@ -215,7 +234,8 @@ $stats = $order->getStatistics();
                                 <div class="order-items">
                                     <?php foreach (array_slice($order_item['items'], 0, 2) as $item): ?>
                                         <div class="order-item">
-                                            <?php echo htmlspecialchars($item['name']); ?> × <?php echo $item['quantity']; ?>
+                                            <?php echo htmlspecialchars($item['name']); ?> ×
+                                            <?php echo $item['quantity']; ?>
                                         </div>
                                     <?php endforeach; ?>
                                     <?php if (count($order_item['items']) > 2): ?>
@@ -229,9 +249,9 @@ $stats = $order->getStatistics();
                             </td>
                             <td>
                                 <?php
-                                $statusClass = $order_item['status'] === 'delivered' ? 'success' : 
-                                             ($order_item['status'] === 'shipped' ? 'info' : 
-                                             ($order_item['status'] === 'pending' ? 'warning' : 'danger'));
+                                $statusClass = $order_item['status'] === 'delivered' ? 'success' :
+                                    ($order_item['status'] === 'shipped' ? 'info' :
+                                        ($order_item['status'] === 'pending' ? 'warning' : 'danger'));
                                 ?>
                                 <span class="badge bg-<?php echo $statusClass; ?> badge-status">
                                     <?php echo ucfirst($order_item['status']); ?>
@@ -248,22 +268,20 @@ $stats = $order->getStatistics();
                             <td><?php echo date('M j, Y', strtotime($order_item['order_date'])); ?></td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-outline-primary btn-action" 
-                                            onclick="viewOrder(<?php echo $order_item['id']; ?>)"
-                                            title="View Details">
+                                    <button type="button" class="btn btn-outline-primary btn-action"
+                                        onclick="viewOrder(<?php echo $order_item['id']; ?>)" title="View Details">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
-                                    <button type="button" class="btn btn-outline-warning btn-action" 
-                                            onclick="editOrder(<?php echo $order_item['id']; ?>)"
-                                            title="Edit">
+                                    <button type="button" class="btn btn-outline-warning btn-action"
+                                        onclick="editOrder(<?php echo $order_item['id']; ?>)" title="Edit">
                                         <i class="fa-solid fa-edit"></i>
                                     </button>
                                     <form method="POST" action="orders.php" style="display: inline;">
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="id" value="<?php echo $order_item['id']; ?>">
-                                        <button type="submit" class="btn btn-outline-danger btn-action" 
-                                                onclick="return confirm('Are you sure you want to delete this order?')"
-                                                title="Delete">
+                                        <button type="submit" class="btn btn-outline-danger btn-action"
+                                            onclick="return confirm('Are you sure you want to delete this order?')"
+                                            title="Delete">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </form>
@@ -326,16 +344,16 @@ $stats = $order->getStatistics();
                         <button type="submit" class="btn btn-dark text-uppercase fw-bold">
                             <i class="fa-solid fa-save me-2"></i>Update Order
                         </button>
-                        <button type="button" class="btn btn-outline-warning text-uppercase fw-bold ms-2" 
-                                onclick="updatePaymentOnly()">
+                        <button type="button" class="btn btn-outline-warning text-uppercase fw-bold ms-2"
+                            onclick="updatePaymentOnly()">
                             <i class="fa-solid fa-credit-card me-2"></i>Update Payment Only
                         </button>
-                        <button type="button" class="btn btn-outline-info text-uppercase fw-bold ms-2" 
-                                onclick="updateTrackingOnly()">
+                        <button type="button" class="btn btn-outline-info text-uppercase fw-bold ms-2"
+                            onclick="updateTrackingOnly()">
                             <i class="fa-solid fa-truck me-2"></i>Update Tracking Only
                         </button>
-                        <button type="button" class="btn btn-outline-dark text-uppercase fw-bold ms-2" 
-                                onclick="cancelEdit()">
+                        <button type="button" class="btn btn-outline-dark text-uppercase fw-bold ms-2"
+                            onclick="cancelEdit()">
                             Cancel
                         </button>
                     </div>
@@ -344,16 +362,16 @@ $stats = $order->getStatistics();
         </div>
     </div>
 
-    
+
     <script>
         // Store orders data for JavaScript
         const orders = <?php echo json_encode($orders); ?>;
         const users = <?php echo json_encode($user->getAll()); ?>;
-        
+
         function viewOrder(id) {
             const order = orders.find(o => o.id === id);
             const orderUser = users.find(u => u.id === order.user_id);
-            
+
             if (order) {
                 let itemsHtml = '';
                 order.items.forEach(item => {
@@ -366,7 +384,7 @@ $stats = $order->getStatistics();
                         </tr>
                     `;
                 });
-                
+
                 const detailsHtml = `
                     <div class="row">
                         <div class="col-md-6">
@@ -412,12 +430,12 @@ $stats = $order->getStatistics();
                     </div>
                     ${order.notes ? `<h6 class="mt-3">Notes</h6><p>${order.notes}</p>` : ''}
                 `;
-                
+
                 document.getElementById('orderDetails').innerHTML = detailsHtml;
                 new bootstrap.Modal(document.getElementById('orderModal')).show();
             }
         }
-        
+
         function editOrder(id) {
             const order = orders.find(o => o.id === id);
             if (order) {
@@ -426,51 +444,51 @@ $stats = $order->getStatistics();
                 document.getElementById('editPaymentStatus').value = order.payment_status;
                 document.getElementById('editTrackingNumber').value = order.tracking_number || '';
                 document.getElementById('editNotes').value = order.notes || '';
-                
+
                 document.getElementById('editForm').style.display = 'block';
                 document.getElementById('editForm').scrollIntoView({ behavior: 'smooth' });
             }
         }
-        
+
         function cancelEdit() {
             document.getElementById('editOrderForm').reset();
             document.getElementById('editForm').style.display = 'none';
         }
-        
+
         function updatePaymentOnly() {
             const form = document.getElementById('editOrderForm');
             const id = document.getElementById('editId').value;
             const paymentStatus = document.getElementById('editPaymentStatus').value;
-            
+
             const tempForm = document.createElement('form');
             tempForm.method = 'POST';
             tempForm.action = 'admin-orders.php';
-            
+
             tempForm.innerHTML = `
                 <input type="hidden" name="action" value="update_payment">
                 <input type="hidden" name="id" value="${id}">
                 <input type="hidden" name="payment_status" value="${paymentStatus}">
             `;
-            
+
             document.body.appendChild(tempForm);
             tempForm.submit();
         }
-        
+
         function updateTrackingOnly() {
             const form = document.getElementById('editOrderForm');
             const id = document.getElementById('editId').value;
             const trackingNumber = document.getElementById('editTrackingNumber').value;
-            
+
             const tempForm = document.createElement('form');
             tempForm.method = 'POST';
             tempForm.action = 'admin-orders.php';
-            
+
             tempForm.innerHTML = `
                 <input type="hidden" name="action" value="update_tracking">
                 <input type="hidden" name="id" value="${id}">
                 <input type="hidden" name="tracking_number" value="${trackingNumber}">
             `;
-            
+
             document.body.appendChild(tempForm);
             tempForm.submit();
         }
@@ -479,18 +497,19 @@ $stats = $order->getStatistics();
     <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
         <i class="fa-solid fa-bars"></i>
     </button>
-    
+
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
-    
+
     <script>
         function toggleMobileMenu() {
             const sidebar = document.querySelector('.sidebar');
             const overlay = document.querySelector('.mobile-menu-overlay');
-            
+
             sidebar.classList.toggle('show');
             overlay.classList.toggle('show');
         }
     </script>
 </body>
+
 </html>

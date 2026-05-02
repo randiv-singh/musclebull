@@ -47,12 +47,13 @@ $lowStockProducts = []; // Could be implemented later
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Muscle Bull</title>
     
-    <!-- FontAwesome for icons -->
-    <!-- Admin CSS -->
-    <link href="../assets/css/admin.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- Admin CSS -->
-    <link href="../assets/css/admin.css" rel="stylesheet" />
+    <!-- Custom Admin CSS -->
+    <link href="../assets/css/admin-bootstrap.css" rel="stylesheet" />
 </head>
 <body>
     <!-- Sidebar -->
@@ -211,40 +212,6 @@ $lowStockProducts = []; // Could be implemented later
             </div>
         </div>
         
-        <!-- Quick Stats -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="recent-section">
-                    <h3><i class="fa-solid fa-chart-line me-2"></i>Quick Stats</h3>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="text-center">
-                                <div class="h4 text-warning"><?php echo $stats['pending_orders']; ?></div>
-                                <div class="text-muted">Pending Orders</div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="text-center">
-                                <div class="h4 text-info"><?php echo $stats['total_gift_cards']; ?></div>
-                                <div class="text-muted">Total Gift Cards</div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="text-center">
-                                <div class="h4 text-success"><?php echo count($category->getActive()); ?></div>
-                                <div class="text-muted">Active Categories</div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="text-center">
-                                <div class="h4 text-danger"><?php echo count($order->getCancelled()); ?></div>
-                                <div class="text-muted">Cancelled Orders</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     
     <!-- Mobile Menu Toggle -->

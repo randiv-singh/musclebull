@@ -308,7 +308,7 @@ body {
 /* Statistics Cards */
 .stats-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-bottom: 2rem;
 }
@@ -326,6 +326,7 @@ body {
 .stat-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
+    background-color: #721c24;
 }
 
 .stat-icon {
