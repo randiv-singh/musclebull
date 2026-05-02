@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 id: `gift-card-${amount}`,
                 name: `Muscle Bull E-Gift Card`,
                 price: amount,
-                image: './assets/images/flayer/gift-card.jpg'
+                image: '../images/flayer/gift-card.jpg'
             };
             
             addToCart(giftCardProduct, 1, `Digital (${deliveryMethod})`);

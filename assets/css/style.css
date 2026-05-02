@@ -78,7 +78,7 @@ body {
 
 /* Hero Section - Gen Z Minimal & Clean */
 .hero-section {
-    background: url('../assets/images/backgrounds/non\ black.png') center/cover no-repeat;
+    background: url('../images/backgrounds/non\ black.png') center/cover no-repeat;
     height: 100vh;
     min-height: 650px;
     position: relative;
