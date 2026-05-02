@@ -1,9 +1,34 @@
+<?php
+require_once 'components/header.php';
+require_once 'components/footer.php';
+require_once 'components/product-card.php';
+require_once 'classes/Product.php';
+
+// Initialize Product
+$product = new Product();
+
+// Get current product (default to first product for demo)
+$current_product_id = $_GET['id'] ?? 1;
+$current_product = $product->getById($current_product_id);
+
+// Fallback to first product if not found
+if (!$current_product) {
+    $products = $product->getAll();
+    $current_product = $products[0] ?? null;
+}
+
+// Get related products (exclude current product)
+$all_products = $product->getAll();
+$related_products = array_filter($all_products, function($product_item) use ($current_product) {
+    return $current_product && $product_item['id'] != $current_product['id'];
+});
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Black Oversize Tee - Muscle Bull</title>
+    <title><?php echo htmlspecialchars($current_product['name']); ?> - Muscle Bull</title>
     
     <!-- Bootstrap CSS -->
     <link href="./css/bootstrap.min.css" rel="stylesheet" />
@@ -17,31 +42,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-static bg-white">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-                <img src="./assets/images/logo/mb logo.png" alt="Muscle Bull Logo" height="40">
-                <span class="fw-bold text-uppercase text-black brand-text">Muscle Bull</span>
-            </a>
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto nav-center">
-                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="shop.html">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="gift-cards.html">Gift Cards</a></li>
-                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="contact.html">Contact</a></li>
-                </ul>
-                <div class="navbar-icons d-flex gap-3">
-                    <a href="#" class="nav-icon-dark"><i class="fa-solid fa-magnifying-glass"></i></a>
-                    <a href="login.html" class="nav-icon-dark"><i class="fa-solid fa-user"></i></a>
-                    <a href="cart.html" class="nav-icon-dark"><i class="fa-solid fa-bag-shopping"></i></a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php 
+    $type = 'white';
+    $active_page = '';
+    include 'components/header.php'; 
+    ?>
 
     <main>
         <!-- Breadcrumb -->
@@ -49,9 +54,9 @@
             <div class="container">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="index.html" class="text-black">Home</a></li>
-                        <li class="breadcrumb-item"><a href="shop.html" class="text-black">Shop</a></li>
-                        <li class="breadcrumb-item active text-black fw-bold" aria-current="page">Black Oversize Tee</li>
+                        <li class="breadcrumb-item"><a href="index.php" class="text-black">Home</a></li>
+                        <li class="breadcrumb-item"><a href="shop.php" class="text-black">Shop</a></li>
+                        <li class="breadcrumb-item active text-black fw-bold" aria-current="page"><?php echo htmlspecialchars($current_product['name']); ?></li>
                     </ol>
                 </nav>
             </div>
@@ -66,22 +71,15 @@
                         <div class="product-images">
                             <!-- Main Image -->
                             <div class="main-image mb-3">
-                                <img src="./assets/images/products/black oversize 1.jpg" alt="Black Oversize Tee" id="mainProductImage" class="img-fluid">
+                                <img src="<?php echo htmlspecialchars($current_product['image']); ?>" alt="<?php echo htmlspecialchars($current_product['name']); ?>" id="mainProductImage" class="img-fluid">
                             </div>
                             <!-- Thumbnail Images -->
                             <div class="thumbnail-images d-flex gap-3">
-                                <div class="thumbnail active">
-                                    <img src="./assets/images/products/black oversize 1.jpg" alt="View 1" class="img-fluid">
-                                </div>
-                                <div class="thumbnail">
-                                    <img src="./assets/images/products/black oversize 1.jpg" alt="View 2" class="img-fluid">
-                                </div>
-                                <div class="thumbnail">
-                                    <img src="./assets/images/products/black oversize 1.jpg" alt="View 3" class="img-fluid">
-                                </div>
-                                <div class="thumbnail">
-                                    <img src="./assets/images/products/black oversize 1.jpg" alt="View 4" class="img-fluid">
-                                </div>
+                                <?php foreach ($current_product['thumbnails'] as $index => $thumbnail): ?>
+                                    <div class="thumbnail <?php echo $index === 0 ? 'active' : ''; ?>">
+                                        <img src="<?php echo htmlspecialchars($thumbnail); ?>" alt="View <?php echo $index + 1; ?>" class="img-fluid">
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
@@ -90,10 +88,12 @@
                     <div class="col-lg-6">
                         <div class="product-detail-info">
                             <!-- Badge -->
-                            <span class="badge bg-primary mb-3 px-3 py-2 text-uppercase fw-bold">Best Seller</span>
+                            <?php if ($current_product['isBestSeller']): ?>
+                                <span class="badge bg-primary mb-3 px-3 py-2 text-uppercase fw-bold">Best Seller</span>
+                            <?php endif; ?>
                             
                             <!-- Product Name -->
-                            <h1 class="product-title fw-bold text-uppercase mb-3">Black Oversize Tee</h1>
+                            <h1 class="product-title fw-bold text-uppercase mb-3"><?php echo htmlspecialchars($current_product['name']); ?></h1>
                             
                             <!-- Rating -->
                             <div class="product-rating mb-3">
@@ -107,14 +107,12 @@
                             
                             <!-- Price -->
                             <div class="product-price mb-4">
-                                <span class="current-price fw-bold">LKR 3,500</span>
+                                <span class="current-price fw-bold">LKR <?php echo number_format($current_product['price']); ?></span>
                             </div>
                             
                             <!-- Description -->
                             <p class="product-description mb-4">
-                                Premium oversized t-shirt crafted from 100% cotton for maximum comfort during your workouts. 
-                                Features the iconic Muscle Bull logo and a relaxed fit perfect for training or casual wear.
-                                Breathable fabric keeps you cool while you push your limits.
+                                <?php echo htmlspecialchars($current_product['description']); ?>
                             </p>
 
                             <!-- Size Selector -->
@@ -195,9 +193,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="description" role="tabpanel">
-                                    <p>The Black Oversize Tee from Muscle Bull is the ultimate training companion. Made from premium 100% cotton, 
-                                    this tee offers unmatched comfort and durability. The oversized fit provides freedom of movement, making it perfect 
-                                    for intense workouts or casual everyday wear.</p>
+                                    <p><?php echo htmlspecialchars($current_product['description']); ?></p>
                                     <p>Features include reinforced stitching, moisture-wicking properties, and our signature Muscle Bull logo. 
                                     Available in multiple sizes to fit your unique style.</p>
                                 </div>
@@ -258,7 +254,14 @@
                     <div class="col-12">
                         <h3 class="fw-bold text-uppercase mb-4">You May Also Like</h3>
                         <div class="row g-4" id="related-products-container">
-                            <!-- Related products will be loaded here -->
+                            <?php 
+                            $count = 0;
+                            foreach ($related_products as $product) {
+                                if ($count >= 4) break;
+                                include 'components/product-card.php';
+                                $count++;
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -278,55 +281,10 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-white text-black pt-5 pb-4 border-top border-dark">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-12 col-md-4 mb-4 mb-md-0">
-                    <h4 class="text-uppercase fw-bold mb-4">Muscle Bull</h4>
-                    <p>Premium fitness apparel for those who push their limits. Join the herd and unleash your true potential.</p>
-                    <div class="footer-socials d-flex gap-3 mt-4">
-                        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fa-brands fa-tiktok"></i></a>
-                    </div>
-                </div>
-                <div class="col-6 col-md-2 mb-4 mb-md-0">
-                    <h5 class="text-uppercase fw-bold mb-4">Shop</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="shop.html">Men</a></li>
-                        <li class="mb-2"><a href="shop.html">Women</a></li>
-                        <li class="mb-2"><a href="shop.html">Accessories</a></li>
-                        <li class="mb-2"><a href="shop.html">New Arrivals</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-md-2 mb-4 mb-md-0">
-                    <h5 class="text-uppercase fw-bold mb-4">Support</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="#">FAQ</a></li>
-                        <li class="mb-2"><a href="#">Shipping</a></li>
-                        <li class="mb-2"><a href="#">Returns</a></li>
-                        <li class="mb-2"><a href="contact.html">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-4">
-                    <h5 class="text-uppercase fw-bold mb-4">Newsletter</h5>
-                    <p class="mb-3">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
-                    <div class="footer-newsletter">
-                        <input type="email" class="form-control rounded-0 border-dark" placeholder="Enter your email">
-                        <button class="btn btn-primary rounded-0 px-4 text-uppercase fw-bold" type="button">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4 border-dark">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p class="mb-0 fw-medium">&copy; 2026 Muscle Bull. All Rights Reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <?php 
+    $border_top = true;
+    include 'components/footer.php'; 
+    ?>
 
     <!-- Bootstrap JS -->
     <script src="./js/bootstrap.bundle.min.js"></script>

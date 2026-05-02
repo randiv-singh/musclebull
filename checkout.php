@@ -1,3 +1,7 @@
+<?php
+require_once 'components/header.php';
+require_once 'components/footer.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,34 +20,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-static bg-white">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-                <img src="./assets/images/logo/mb logo.png" alt="Muscle Bull Logo" height="40">
-                <span class="fw-bold text-uppercase text-black brand-text">Muscle Bull</span>
-            </a>
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto nav-center">
-                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="shop.html">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="gift-cards.html">Gift Cards</a></li>
-                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link text-black fw-medium text-uppercase" href="contact.html">Contact</a></li>
-                </ul>
-                <div class="navbar-icons d-flex gap-3">
-                    <a href="#" class="nav-icon-dark"><i class="fa-solid fa-magnifying-glass"></i></a>
-                    <a href="login.html" class="nav-icon-dark"><i class="fa-solid fa-user"></i></a>
-                    <a href="cart.html" class="nav-icon-dark position-relative">
-                        <i class="fa-solid fa-bag-shopping"></i>
-                        <span class="cart-badge">3</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php 
+    $type = 'white';
+    $active_page = '';
+    include 'components/header.php'; 
+    ?>
 
     <main>
         <!-- Checkout Section -->
@@ -248,55 +229,10 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white text-black pt-5 pb-4 border-top border-dark">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-12 col-md-4 mb-4 mb-md-0">
-                    <h4 class="text-uppercase fw-bold mb-4">Muscle Bull</h4>
-                    <p>Premium fitness apparel for those who push their limits. Join the herd and unleash your true potential.</p>
-                    <div class="footer-socials d-flex gap-3 mt-4">
-                        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fa-brands fa-tiktok"></i></a>
-                    </div>
-                </div>
-                <div class="col-6 col-md-2 mb-4 mb-md-0">
-                    <h5 class="text-uppercase fw-bold mb-4">Shop</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="shop.html">Men</a></li>
-                        <li class="mb-2"><a href="shop.html">Women</a></li>
-                        <li class="mb-2"><a href="shop.html">Accessories</a></li>
-                        <li class="mb-2"><a href="shop.html">New Arrivals</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-md-2 mb-4 mb-md-0">
-                    <h5 class="text-uppercase fw-bold mb-4">Support</h5>
-                    <ul class="list-unstyled footer-links">
-                        <li class="mb-2"><a href="#">FAQ</a></li>
-                        <li class="mb-2"><a href="#">Shipping</a></li>
-                        <li class="mb-2"><a href="#">Returns</a></li>
-                        <li class="mb-2"><a href="contact.html">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-4">
-                    <h5 class="text-uppercase fw-bold mb-4">Newsletter</h5>
-                    <p class="mb-3">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
-                    <div class="footer-newsletter">
-                        <input type="email" class="form-control rounded-0 border-dark" placeholder="Enter your email">
-                        <button class="btn btn-primary rounded-0 px-4 text-uppercase fw-bold" type="button">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4 border-dark">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p class="mb-0 fw-medium">&copy; 2026 Muscle Bull. All Rights Reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <?php 
+    $border_top = true;
+    include 'components/footer.php'; 
+    ?>
 
     <!-- Bootstrap JS -->
     <script src="./js/bootstrap.bundle.min.js"></script>
