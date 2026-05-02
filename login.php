@@ -1,7 +1,4 @@
-<?php
-require_once 'components/header.php';
-require_once 'components/footer.php';
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
