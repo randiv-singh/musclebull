@@ -9,7 +9,7 @@ class Product {
     private $products;
 
     public function __construct() {
-        $this->jsonFile = 'config/products.json';
+        $this->jsonFile = '../config/products.json';
         $this->loadProducts();
     }
 

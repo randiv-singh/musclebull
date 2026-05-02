@@ -9,7 +9,7 @@ class User {
     private $users;
 
     public function __construct() {
-        $this->jsonFile = 'config/users.json';
+        $this->jsonFile = '../config/users.json';
         $this->loadUsers();
     }
 

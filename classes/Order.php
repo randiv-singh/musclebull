@@ -9,7 +9,7 @@ class Order {
     private $orders;
 
     public function __construct() {
-        $this->jsonFile = 'config/orders.json';
+        $this->jsonFile = '../config/orders.json';
         $this->loadOrders();
     }
 

@@ -9,7 +9,7 @@ class GiftCard {
     private $giftCards;
 
     public function __construct() {
-        $this->jsonFile = 'config/gift_cards.json';
+        $this->jsonFile = '../config/gift_cards.json';
         $this->loadGiftCards();
     }
 

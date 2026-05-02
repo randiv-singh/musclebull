@@ -9,7 +9,7 @@ class Category {
     private $categories;
 
     public function __construct() {
-        $this->jsonFile = 'config/categories.json';
+        $this->jsonFile = '../config/categories.json';
         $this->loadCategories();
     }
 
