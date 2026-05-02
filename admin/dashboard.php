@@ -47,189 +47,12 @@ $lowStockProducts = []; // Could be implemented later
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Muscle Bull</title>
     
-    <!-- Bootstrap CSS -->
-    <link href=".../assets/css/bootstrap.min.css" rel="stylesheet" />
     <!-- FontAwesome for icons -->
+    <!-- Admin CSS -->
+    <link href="../assets/css/admin.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
-    <style>
-        body {
-            background: #f8f9fa;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        .sidebar {
-            background: #000;
-            color: #fff;
-            min-height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 250px;
-            z-index: 1000;
-        }
-        
-        .sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #333;
-            text-align: center;
-        }
-        
-        .sidebar-header h3 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 0;
-        }
-        
-        .sidebar-menu {
-            padding: 1rem 0;
-        }
-        
-        .sidebar-menu .nav-link {
-            color: #fff;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
-        .sidebar-menu .nav-link:hover,
-        .sidebar-menu .nav-link.active {
-            background: #333;
-            color: #fff;
-        }
-        
-        .sidebar-menu .nav-link i {
-            width: 20px;
-            margin-right: 10px;
-        }
-        
-        .main-content {
-            margin-left: 250px;
-            padding: 2rem;
-        }
-        
-        .content-header {
-            background: #fff;
-            border: 2px solid #000;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .content-header h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 0;
-        }
-        
-        .stat-card {
-            background: #fff;
-            border: 2px solid #000;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            height: 100%;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        
-        .stat-card .stat-icon {
-            font-size: 2rem;
-            color: #000;
-            margin-bottom: 1rem;
-        }
-        
-        .stat-card .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-card .stat-label {
-            color: #666;
-            text-transform: uppercase;
-            font-weight: bold;
-            font-size: 0.875rem;
-        }
-        
-        .recent-section {
-            background: #fff;
-            border: 2px solid #000;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .recent-section h3 {
-            font-size: 1.25rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            color: #000;
-        }
-        
-        .recent-item {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .recent-item:last-child {
-            border-bottom: none;
-        }
-        
-        .recent-item .item-title {
-            font-weight: bold;
-            color: #000;
-        }
-        
-        .recent-item .item-meta {
-            color: #666;
-            font-size: 0.875rem;
-        }
-        
-        .badge-status {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-        }
-        
-        .logout-btn {
-            position: absolute;
-            bottom: 1rem;
-            left: 1.5rem;
-            right: 1.5rem;
-        }
-        
-        .user-info {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #333;
-            font-size: 0.875rem;
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-            
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
-            
-            .logout-btn {
-                position: relative;
-                margin-top: 1rem;
-            }
-        }
-    </style>
+    <!-- Admin CSS -->
+    <link href="../assets/css/admin.css" rel="stylesheet" />
 </head>
 <body>
     <!-- Sidebar -->
@@ -424,7 +247,22 @@ $lowStockProducts = []; // Could be implemented later
         </div>
     </div>
     
-    <!-- Bootstrap JS -->
-    <script src=".../assets/js/bootstrap.bundle.min.js"></script>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+    
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
+    </script>
 </body>
 </html>

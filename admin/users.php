@@ -79,163 +79,14 @@ $users = $user->getAll();
     <title>Users Management - Muscle Bull</title>
     
     <!-- Bootstrap CSS -->
-    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
     <!-- FontAwesome for icons -->
+    <!-- Admin CSS -->
+    <link href="../assets/css/admin.css" rel="stylesheet" />
+    <!-- FontAwesome for icons -->
+    <!-- Admin CSS -->
+    <link href="../assets/css/admin.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
-    <style>
-        body {
-            background: #f8f9fa;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        .sidebar {
-            background: #000;
-            color: #fff;
-            min-height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 250px;
-            z-index: 1000;
-        }
-        
-        .sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #333;
-            text-align: center;
-        }
-        
-        .sidebar-header h3 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 0;
-        }
-        
-        .sidebar-menu {
-            padding: 1rem 0;
-        }
-        
-        .sidebar-menu .nav-link {
-            color: #fff;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
-        .sidebar-menu .nav-link:hover,
-        .sidebar-menu .nav-link.active {
-            background: #333;
-            color: #fff;
-        }
-        
-        .sidebar-menu .nav-link i {
-            width: 20px;
-            margin-right: 10px;
-        }
-        
-        .main-content {
-            margin-left: 250px;
-            padding: 2rem;
-        }
-        
-        .content-header {
-            background: #fff;
-            border: 2px solid #000;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .content-header h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 0;
-        }
-        
-        .form-section {
-            background: #fff;
-            padding: 2rem;
-            border: 2px solid #000;
-            margin-bottom: 2rem;
-        }
-        
-        .user-table {
-            background: #fff;
-            border: 2px solid #000;
-        }
-        
-        .user-table th {
-            background: #000;
-            color: #fff;
-            border: none;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        .user-table td {
-            vertical-align: middle;
-        }
-        
-        .btn-action {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            margin: 0 0.25rem;
-        }
-        
-        .badge-status {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-        }
-        
-        .user-info {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #333;
-            font-size: 0.875rem;
-        }
-        
-        .logout-btn {
-            position: absolute;
-            bottom: 1rem;
-            left: 1.5rem;
-            right: 1.5rem;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #000;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-            
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
-            
-            .logout-btn {
-                position: relative;
-                margin-top: 1rem;
-            }
-        }
-    </style>
 </head>
 <body>
     <!-- Sidebar -->
@@ -491,8 +342,6 @@ $users = $user->getAll();
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
     
     <script>
         // Store users data for JavaScript
@@ -541,6 +390,23 @@ $users = $user->getAll();
                 alert('Passwords do not match!');
             }
         });
+    </script>
+<!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+    
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
     </script>
 </body>
 </html>

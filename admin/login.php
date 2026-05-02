@@ -37,95 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Bootstrap CSS -->
     <link href=".../assets/css/bootstrap.min.css" rel="stylesheet" />
     <!-- FontAwesome for icons -->
+    <!-- Admin CSS -->
+    <link href="../assets/css/admin.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
-    <style>
-        body {
-            background: linear-gradient(135deg, #000 0%, #333 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .login-container {
-            background: #fff;
-            border: 3px solid #000;
-            border-radius: 0;
-            padding: 3rem;
-            max-width: 400px;
-            width: 100%;
-            margin: 2rem;
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .login-header h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-        }
-        
-        .login-header p {
-            color: #666;
-            margin: 0;
-        }
-        
-        .form-control {
-            border: 2px solid #000;
-            border-radius: 0;
-            padding: 0.75rem;
-            font-weight: 500;
-        }
-        
-        .form-control:focus {
-            border-color: #000;
-            box-shadow: none;
-        }
-        
-        .btn-login {
-            background: #000;
-            color: #fff;
-            border: 2px solid #000;
-            border-radius: 0;
-            padding: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-login:hover {
-            background: #fff;
-            color: #000;
-        }
-        
-        .alert {
-            border: 2px solid #000;
-            border-radius: 0;
-            font-weight: 500;
-        }
-        
-        .back-link {
-            text-align: center;
-            margin-top: 2rem;
-        }
-        
-        .back-link a {
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
     <div class="login-container">
@@ -170,7 +85,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
     
-    <!-- Bootstrap JS -->
-    <script src=".../assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

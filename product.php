@@ -1,6 +1,5 @@
 <?php
-require_once 'components/header.php';
-require_once 'components/footer.php';
+
 require_once 'components/product-card.php';
 require_once 'classes/Product.php';
 
