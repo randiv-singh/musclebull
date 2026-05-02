@@ -1,4 +1,16 @@
+<?php
+session_start();
+require_once 'classes/Cart.php';
 
+$userId = $_SESSION['user_id'] ?? null;
+$sessionId = session_id();
+$cart = new Cart($userId, $sessionId);
+
+$cartItems = $cart->getItemsArray();
+$subtotal = $cart->getTotal();
+$shipping = $subtotal > 0 ? ($subtotal > 5000 ? 0 : 500) : 0;
+$total = $subtotal + $shipping;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,11 +75,11 @@
                             
                             <div class="summary-row">
                                 <span>Subtotal</span>
-                                <span class="fw-bold">LKR 13,500</span>
+                                <span class="fw-bold" id="cart-subtotal">LKR <?php echo number_format($subtotal); ?></span>
                             </div>
                             <div class="summary-row">
                                 <span>Shipping</span>
-                                <span class="fw-bold">LKR 500</span>
+                                <span class="fw-bold" id="cart-shipping"><?php echo $shipping === 0 && $subtotal > 0 ? 'Free' : 'LKR ' . number_format($shipping); ?></span>
                             </div>
                             <div class="summary-row">
                                 <span>Tax</span>
@@ -78,19 +90,19 @@
                             
                             <div class="summary-row summary-total">
                                 <span class="fw-bold">Total</span>
-                                <span class="fw-bold fs-4">LKR 14,000</span>
-                            </div>
-
-                            <!-- Promo Code -->
-                            <div class="promo-code mt-4">
-                                <input type="text" class="form-control promo-input" placeholder="Enter promo code">
-                                <button class="btn btn-dark promo-btn text-uppercase fw-bold">Apply</button>
+                                <span class="fw-bold fs-4" id="cart-total">LKR <?php echo number_format($total); ?></span>
                             </div>
 
                             <!-- Checkout Button -->
-                            <a href="checkout.php" class="btn btn-primary w-100 py-3 text-uppercase fw-bold mt-4">
+                            <a href="checkout.php" class="btn btn-primary w-100 py-3 text-uppercase fw-bold mt-4 d-none" id="checkout-btn">
                                 Proceed to Checkout <i class="fa-solid fa-arrow-right ms-2"></i>
                             </a>
+                            <button class="btn btn-secondary w-100 py-3 text-uppercase fw-bold mt-4" id="empty-cart-btn" disabled>
+                                Your Cart is Empty
+                            </button>
+                            <div class="text-center mt-3 d-none" id="continue-shopping-container">
+                                <a href="shop.php" class="btn btn-outline-dark px-4 py-2 text-uppercase fw-bold">Continue Shopping</a>
+                            </div>
 
                             <!-- Payment Methods -->
                             <div class="payment-methods mt-4 text-center">

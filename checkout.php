@@ -11,6 +11,10 @@ $order = new Order();
 $error = '';
 $success = '';
 
+// Get cart data first (needed for both display and order processing)
+$cartItems = $cart->getItemsArray();
+$subtotal = $cart->getTotal();
+
 // Redirect if cart is empty
 if ($cart->getItemCount() === 0) {
     header('Location: cart.php');
@@ -36,12 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address';
     } else {
-        // Get cart items
-        $cartItems = $cart->getItemsArray();
-        
-        // Calculate totals
-        $subtotal = $cart->getTotal();
-        $shippingCost = $shippingMethod === 'express' ? 1000 : 500;
+        // Calculate totals with selected shipping
+        $shippingCost = $shippingMethod === 'express' ? 1000 : ($subtotal > 5000 ? 0 : 500);
         $totalAmount = $subtotal + $shippingCost;
         
         // Prepare shipping address
@@ -83,10 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     }
 }
 
-// Get cart data for display
-$cartItems = $cart->getItemsArray();
-$subtotal = $cart->getTotal();
-$shippingCost = 500;
+// Calculate shipping and total for display
+$shippingCost = $subtotal > 5000 ? 0 : 500;
 $totalAmount = $subtotal + $shippingCost;
 ?>
 <!DOCTYPE html>
@@ -331,11 +329,24 @@ $totalAmount = $subtotal + $shippingCost;
         document.querySelectorAll('input[name="shipping"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 const isExpress = this.value === 'express';
-                const shippingCost = isExpress ? 1000 : 500;
                 const subtotal = <?php echo $subtotal; ?>;
+                let shippingCost;
+                let shippingText;
+                
+                if (isExpress) {
+                    shippingCost = 1000;
+                    shippingText = 'LKR 1,000';
+                } else if (subtotal > 5000) {
+                    shippingCost = 0;
+                    shippingText = 'Free';
+                } else {
+                    shippingCost = 500;
+                    shippingText = 'LKR 500';
+                }
+                
                 const total = subtotal + shippingCost;
                 
-                document.getElementById('shippingCost').textContent = 'LKR ' + shippingCost.toLocaleString();
+                document.getElementById('shippingCost').textContent = shippingText;
                 document.getElementById('totalAmount').textContent = 'LKR ' + total.toLocaleString();
             });
         });

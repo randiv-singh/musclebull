@@ -1,21 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
     const API_URL = 'api/cart.php';
 
-    // Load cart from server on page load
-    loadCartFromServer();
-
-    // Handle Cart Page
+    // Handle Cart Page - render immediately from localStorage
     if (document.querySelector('.cart-section')) {
-        const itemsContainer = document.getElementById('cart-items-container');
-        if (itemsContainer) {
-            renderCart();
-        }
+        renderCart();
     }
 
     // Handle Checkout Page
     if (document.querySelector('.checkout-section')) {
         renderCheckout();
     }
+
+    // Load cart from server on page load (after initial render)
+    loadCartFromServer();
 
     // Load cart from server
     async function loadCartFromServer() {
@@ -24,13 +21,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             
             if (data.success) {
-                // Merge server cart with local cart (server takes priority)
+                // Merge server cart with local cart
                 const localCart = getCart();
                 const serverCart = data.items || [];
                 
-                // If server has items, use them; otherwise sync local to server
+                // If server has items, merge with local (server + local items)
                 if (serverCart.length > 0) {
-                    saveCart(serverCart);
+                    // Merge server items with local items, preferring local quantities
+                    const mergedCart = [...serverCart];
+                    localCart.forEach(localItem => {
+                        const existingIndex = mergedCart.findIndex(
+                            item => item.id === localItem.id && item.size === localItem.size
+                        );
+                        if (existingIndex === -1) {
+                            mergedCart.push(localItem);
+                        }
+                    });
+                    saveCart(mergedCart);
+                    await syncCartToServer(mergedCart);
                 } else if (localCart.length > 0) {
                     // Sync local cart to server
                     await syncCartToServer(localCart);
@@ -143,9 +151,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderCart() {
         const cart = getCart();
+        console.log('Cart:', cart);
         const itemsContainer = document.getElementById('cart-items-container');
         
         if (!itemsContainer) return;
+        
+        // Control checkout button visibility
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const emptyBtn = document.getElementById('empty-cart-btn');
+        const continueShopping = document.getElementById('continue-shopping-container');
         
         if (cart.length === 0) {
             itemsContainer.innerHTML = `
@@ -156,8 +170,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             updateSummary(0, '.order-summary');
+            
+            if (checkoutBtn) checkoutBtn.classList.add('d-none');
+            if (emptyBtn) emptyBtn.classList.remove('d-none');
+            if (continueShopping) continueShopping.classList.remove('d-none');
             return;
         }
+        
+        // Show checkout button when cart has items
+        if (checkoutBtn) checkoutBtn.classList.remove('d-none');
+        if (emptyBtn) emptyBtn.classList.add('d-none');
+        if (continueShopping) continueShopping.classList.add('d-none');
 
         itemsContainer.innerHTML = cart.map((item, index) => `
             <div class="cart-item" data-index="${index}">
