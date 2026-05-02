@@ -1,3 +1,5 @@
+@import url('variables.css');
+
 /* Muscle Bull Custom Styles - Strict Palette: #D5552E, #FFFFFF, #000000 */
 
 :root {
@@ -34,14 +36,14 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: var(--black-color);
+    background-color: var(--bg-black);
     border-color: var(--black-color);
     color: var(--white-color);
     transform: translateY(-2px);
 }
 
 .btn-dark {
-    background-color: var(--black-color);
+    background-color: var(--bg-black);
     border-color: var(--black-color);
     color: var(--white-color);
 }
@@ -59,7 +61,7 @@ body {
 }
 
 .btn-outline-dark:hover {
-    background-color: var(--black-color);
+    background-color: var(--bg-black);
     color: var(--white-color);
 }
 
@@ -90,7 +92,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.65);
+    background: var(--overlay-dark);
     z-index: 1;
 }
 
@@ -133,7 +135,7 @@ body {
 /* Section Adjustments */
 #limited {
     overflow: hidden;
-    background-color: var(--black-color);
+    background-color: var(--bg-black);
 }
 
 /* Responsive Adjustments */
@@ -144,7 +146,7 @@ body {
     }
     
     .navbar {
-        background-color: var(--black-color) !important;
+        background-color: var(--bg-black) !important;
         padding-top: 10px !important;
         padding-bottom: 10px !important;
     }

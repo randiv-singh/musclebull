@@ -1,0 +1,90 @@
+/* CSS Variables - Muscle Bull Theme */
+:root {
+    /* Primary Brand Colors */
+    --primary-color: #D5552E;
+    --primary-hover: #000000;
+    
+    /* Neutral Colors */
+    --white-color: #FFFFFF;
+    --black-color: #000000;
+    --light-gray: #F5F5F5;
+    
+    /* Header Glass Effect */
+    --header-glass-bg: rgba(0, 0, 0, 0.3);
+    --header-glass-scrolled: rgba(0, 0, 0, 0.9);
+    
+    /* Shadow Colors */
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.12);
+    --shadow-dark: rgba(0, 0, 0, 0.15);
+    --shadow-hover: rgba(0, 0, 0, 0.2);
+    --shadow-heavy: rgba(0, 0, 0, 0.3);
+    
+    /* Border Colors */
+    --border-light: rgba(0, 0, 0, 0.08);
+    --border-white: rgba(255, 255, 255, 0.1);
+    
+    /* Overlay Colors */
+    --overlay-dark: rgba(0, 0, 0, 0.65);
+    --overlay-medium: rgba(0, 0, 0, 0.8);
+    
+    /* Primary Brand Shadow */
+    --primary-shadow: rgba(213, 85, 46, 0.3);
+    
+    /* Cart Badge */
+    --cart-badge-bg: #D5552E;
+    --cart-badge-text: #FFFFFF;
+    
+    /* Background Colors */
+    --bg-white: #FFFFFF;
+    --bg-black: #000000;
+    --bg-primary: #D5552E;
+    --bg-light-gray: #F5F5F5;
+    
+    /* Text Colors */
+    --text-white: #FFFFFF;
+    --text-black: #000000;
+    --text-primary: #D5552E;
+    
+    /* Border Colors */
+    --border-black: #000000;
+    --border-white: #FFFFFF;
+    --border-primary: #D5552E;
+    
+    /* Common Backgrounds */
+    --bg-card: #FFFFFF;
+    --bg-modal: #FFFFFF;
+    --bg-footer: #FFFFFF;
+    --bg-header-static: #FFFFFF;
+    
+    /* Common Text */
+    --text-heading: #000000;
+    --text-body: #000000;
+    --text-muted: #000000;
+    --text-link: #000000;
+    --text-link-hover: #D5552E;
+    
+    /* Common Borders */
+    --border-input: #000000;
+    --border-card: #000000;
+    --border-divider: rgba(0, 0, 0, 0.08);
+    
+    /* Interactive States */
+    --hover-bg: #000000;
+    --hover-text: #FFFFFF;
+    --active-bg: #D5552E;
+    --active-text: #FFFFFF;
+    
+    /* Form Elements */
+    --input-bg: #FFFFFF;
+    --input-text: #000000;
+    --input-border: #000000;
+    --input-focus-border: #D5552E;
+    
+    /* Navigation */
+    --nav-link-text: #FFFFFF;
+    --nav-link-hover: #D5552E;
+    --nav-link-active: #D5552E;
+    --nav-icon-text: #FFFFFF;
+    --nav-icon-dark: #000000;
+}

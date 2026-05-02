@@ -1,10 +1,12 @@
+@import url('variables.css');
+
 /* Cart Page Styles - Clean Gen Z Design */
 
 /* Navbar Static */
 .navbar-static {
     position: relative !important;
-    background-color: #FFFFFF !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: var(--bg-header-static) !important;
+    box-shadow: 0 1px 3px var(--shadow-light);
 }
 
 /* Cart Badge */
@@ -12,8 +14,8 @@
     position: absolute;
     top: -5px;
     right: -8px;
-    background-color: #D5552E;
-    color: #FFFFFF;
+    background-color: var(--cart-badge-bg);
+    color: var(--cart-badge-text);
     font-size: 0.7rem;
     font-weight: 700;
     width: 18px;
@@ -26,15 +28,15 @@
 
 /* Cart Item */
 .cart-item {
-    background-color: #FFFFFF;
+    background-color: var(--bg-card);
     padding: 25px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px var(--shadow-light);
     transition: all 0.3s ease;
 }
 
 .cart-item:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 16px var(--shadow-medium);
 }
 
 .cart-item-image {
@@ -45,18 +47,18 @@
 
 .cart-item-name {
     font-size: 1.1rem;
-    color: #000000;
+    color: var(--text-body);
     letter-spacing: 0.5px;
 }
 
 .cart-item-details {
     font-size: 0.9rem;
-    color: #000000;
+    color: var(--text-body);
 }
 
 .cart-item-price {
     font-size: 1.25rem;
-    color: #000000;
+    color: var(--text-body);
 }
 
 /* Quantity Selector */
@@ -64,15 +66,15 @@
     display: flex;
     align-items: center;
     gap: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px var(--shadow-light);
 }
 
 .qty-btn {
     width: 35px;
     height: 40px;
     border: none;
-    background-color: #FFFFFF;
-    color: #000000;
+    background-color: var(--bg-white);
+    color: var(--text-body);
     font-size: 1.2rem;
     font-weight: 700;
     cursor: pointer;
@@ -80,8 +82,8 @@
 }
 
 .qty-btn:hover {
-    background-color: #000000;
-    color: #FFFFFF;
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
 }
 
 .qty-input {
@@ -108,22 +110,22 @@
 .btn-remove {
     background: none;
     border: none;
-    color: #000000;
+    color: var(--text-body);
     font-size: 1.2rem;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .btn-remove:hover {
-    color: #D5552E;
+    color: var(--primary-color);
     transform: scale(1.1);
 }
 
 /* Order Summary */
 .order-summary {
-    background-color: #FFFFFF;
+    background-color: var(--bg-card);
     padding: 30px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px var(--shadow-light);
     position: sticky;
     top: 20px;
 }
@@ -133,12 +135,12 @@
     justify-content: space-between;
     margin-bottom: 15px;
     font-size: 1rem;
-    color: #000000;
+    color: var(--text-body);
 }
 
 .summary-total {
     font-size: 1.25rem;
-    color: #000000;
+    color: var(--text-body);
 }
 
 /* Promo Code */
@@ -151,12 +153,12 @@
     flex: 1;
     border: none;
     padding: 12px 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px var(--shadow-light);
 }
 
 .promo-input:focus {
     outline: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 12px var(--shadow-medium);
 }
 
 .promo-btn {
@@ -166,7 +168,7 @@
 
 /* Payment Methods */
 .payment-methods i {
-    color: #000000;
+    color: var(--text-body);
 }
 
 /* Responsive */

@@ -1,31 +1,33 @@
+@import url('variables.css');
+
 /* Footer Styles */
 
 footer {
-    background-color: #FFFFFF;
-    color: #000000;
+    background-color: var(--bg-footer);
+    color: var(--text-body);
 }
 
 footer h4,
 footer h5 {
-    color: #000000;
+    color: var(--text-body);
     font-weight: 700;
 }
 
 footer p {
-    color: #000000;
+    color: var(--text-body);
     line-height: 1.8;
 }
 
 /* Footer Links */
 .footer-links li a {
-    color: #000000;
+    color: var(--text-body);
     text-decoration: none;
     transition: color 0.3s ease, padding-left 0.3s ease;
     display: inline-block;
 }
 
 .footer-links li a:hover {
-    color: #D5552E;
+    color: var(--text-link-hover);
     padding-left: 5px;
 }
 
@@ -36,17 +38,17 @@ footer p {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #000000;
-    color: #000000;
+    border: 2px solid var(--border-black);
+    color: var(--text-body);
     text-decoration: none;
     font-size: 1.25rem;
     transition: all 0.3s ease;
 }
 
 .footer-socials .social-link:hover {
-    background-color: #D5552E;
-    border-color: #D5552E;
-    color: #FFFFFF;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-white);
     transform: translateY(-3px);
 }
 
@@ -58,23 +60,23 @@ footer p {
 
 .footer-newsletter input {
     flex: 1;
-    border: 2px solid #000000;
+    border: 2px solid var(--border-black);
     padding: 12px;
-    color: #000000;
+    color: var(--text-body);
 }
 
 .footer-newsletter input:focus {
     outline: none;
-    border-color: #D5552E;
+    border-color: var(--primary-color);
 }
 
 .footer-newsletter button {
-    border: 2px solid #D5552E;
+    border: 2px solid var(--primary-color);
 }
 
 /* Features Section */
 .features-section {
-    background-color: #FFFFFF;
+    background-color: var(--bg-white);
 }
 
 .feature-item {
@@ -82,16 +84,16 @@ footer p {
 }
 
 .feature-icon {
-    color: #000000;
+    color: var(--text-body);
 }
 
 .feature-item h6 {
-    color: #000000;
+    color: var(--text-body);
     letter-spacing: 1px;
 }
 
 .feature-item p {
-    color: #000000;
+    color: var(--text-body);
 }
 
 @media (max-width: 767.98px) {
