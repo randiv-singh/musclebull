@@ -21,7 +21,7 @@
             }
         ],
         "total_amount": 15800,
-        "status": "pending",
+        "status": "shipped",
         "payment_method": "cod",
         "payment_status": "pending",
         "shipping_address": {
@@ -36,7 +36,7 @@
             "shipping_cost": 0
         },
         "order_date": "2026-05-03 08:24:26",
-        "shipped_date": null,
+        "shipped_date": "2026-05-03 08:28:37",
         "delivered_date": null,
         "tracking_number": null,
         "notes": ""

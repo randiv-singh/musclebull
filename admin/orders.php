@@ -462,7 +462,7 @@ $stats = $order->getStatistics();
 
             const tempForm = document.createElement('form');
             tempForm.method = 'POST';
-            tempForm.action = 'admin-orders.php';
+            tempForm.action = 'admin/orders.php';
 
             tempForm.innerHTML = `
                 <input type="hidden" name="action" value="update_payment">
@@ -481,7 +481,7 @@ $stats = $order->getStatistics();
 
             const tempForm = document.createElement('form');
             tempForm.method = 'POST';
-            tempForm.action = 'admin-orders.php';
+            tempForm.action = 'admin/orders.php';
 
             tempForm.innerHTML = `
                 <input type="hidden" name="action" value="update_tracking">
