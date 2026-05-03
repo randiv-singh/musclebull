@@ -1,7 +1,6 @@
+// Cart.js - LocalStorage only, no server sync
 document.addEventListener('DOMContentLoaded', function() {
-    const API_URL = 'api/cart.php';
-
-    // Handle Cart Page - render immediately from localStorage
+    // Handle Cart Page
     if (document.querySelector('.cart-section')) {
         renderCart();
     }
@@ -11,152 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCheckout();
     }
 
-    // Load cart from server on page load (after initial render)
-    loadCartFromServer();
-
-    // Load cart from server
-    async function loadCartFromServer() {
-        try {
-            const response = await fetch(API_URL);
-            const data = await response.json();
-            
-            if (data.success) {
-                // Merge server cart with local cart
-                const localCart = getCart();
-                const serverCart = data.items || [];
-                
-                // If server has items, merge with local (server + local items)
-                if (serverCart.length > 0) {
-                    // Merge server items with local items, preferring local quantities
-                    const mergedCart = [...serverCart];
-                    localCart.forEach(localItem => {
-                        const existingIndex = mergedCart.findIndex(
-                            item => item.id === localItem.id && item.size === localItem.size
-                        );
-                        if (existingIndex === -1) {
-                            mergedCart.push(localItem);
-                        }
-                    });
-                    saveCart(mergedCart);
-                    await syncCartToServer(mergedCart);
-                } else if (localCart.length > 0) {
-                    // Sync local cart to server
-                    await syncCartToServer(localCart);
-                }
-                
-                updateCartBadge();
-                
-                // Re-render if on cart/checkout page
-                if (document.querySelector('.cart-section')) {
-                    renderCart();
-                }
-                if (document.querySelector('.checkout-section')) {
-                    renderCheckout();
-                }
-            }
-        } catch (error) {
-            console.error('Error loading cart from server:', error);
-        }
-    }
-
-    // Sync cart to server
-    async function syncCartToServer(cart) {
-        try {
-            await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'sync', items: cart })
-            });
-        } catch (error) {
-            console.error('Error syncing cart to server:', error);
-        }
-    }
-
-    // Add item to server cart
-    async function addItemToServer(item) {
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'add',
-                    id: item.id,
-                    name: item.name,
-                    price: item.price,
-                    image: item.image,
-                    size: item.size,
-                    quantity: item.quantity
-                })
-            });
-            const data = await response.json();
-            if (data.success) {
-                saveCart(data.items);
-                updateCartBadge();
-            }
-            return data;
-        } catch (error) {
-            console.error('Error adding item to server cart:', error);
-            return null;
-        }
-    }
-
-    // Update item quantity on server
-    async function updateItemOnServer(id, size, quantity) {
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'update',
-                    id: id,
-                    size: size,
-                    quantity: quantity
-                })
-            });
-            const data = await response.json();
-            if (data.success) {
-                saveCart(data.items);
-                updateCartBadge();
-            }
-            return data;
-        } catch (error) {
-            console.error('Error updating item on server:', error);
-            return null;
-        }
-    }
-
-    // Remove item from server cart
-    async function removeItemFromServer(id, size) {
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'remove',
-                    id: id,
-                    size: size
-                })
-            });
-            const data = await response.json();
-            if (data.success) {
-                saveCart(data.items);
-                updateCartBadge();
-            }
-            return data;
-        } catch (error) {
-            console.error('Error removing item from server cart:', error);
-            return null;
-        }
-    }
-
     function renderCart() {
         const cart = getCart();
-        console.log('Cart:', cart);
         const itemsContainer = document.getElementById('cart-items-container');
         
         if (!itemsContainer) return;
         
-        // Control checkout button visibility
         const checkoutBtn = document.getElementById('checkout-btn');
         const emptyBtn = document.getElementById('empty-cart-btn');
         const continueShopping = document.getElementById('continue-shopping-container');
@@ -177,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Show checkout button when cart has items
         if (checkoutBtn) checkoutBtn.classList.remove('d-none');
         if (emptyBtn) emptyBtn.classList.add('d-none');
         if (continueShopping) continueShopping.classList.add('d-none');
@@ -211,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         attachCartListeners();
         
-        // Calculate total
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         updateSummary(subtotal, '.order-summary');
     }
@@ -244,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function attachCartListeners() {
-        // Minus buttons
         document.querySelectorAll('.qty-btn.minus').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = parseInt(this.getAttribute('data-id'));
@@ -253,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Plus buttons
         document.querySelectorAll('.qty-btn.plus').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = parseInt(this.getAttribute('data-id'));
@@ -262,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Remove buttons
         document.querySelectorAll('.btn-remove').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = parseInt(this.getAttribute('data-id'));
@@ -283,8 +137,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 item.quantity = newQuantity;
                 saveCart(cart);
-                updateItemOnServer(id, size, newQuantity);
                 renderCart();
+                updateCartBadge();
             }
         }
     }
@@ -293,8 +147,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let cart = getCart();
         cart = cart.filter(i => !(i.id === id && i.size === size));
         saveCart(cart);
-        removeItemFromServer(id, size);
         renderCart();
+        updateCartBadge();
     }
 
     function updateSummary(subtotal, containerSelector) {
@@ -308,7 +162,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (summaryRows.length >= 3) {
             summaryRows[0].textContent = formatPrice(subtotal);
             summaryRows[1].textContent = shipping === 0 ? 'Free' : formatPrice(shipping);
-            // Tax is 0
             summaryRows[2].textContent = formatPrice(0);
         }
 
@@ -317,34 +170,4 @@ document.addEventListener('DOMContentLoaded', function() {
             totalEl.textContent = formatPrice(total);
         }
     }
-
-    // Override global addToCart to sync with server
-    const originalAddToCart = window.addToCart;
-    window.addToCart = async function(product, quantity = 1, size = 'M') {
-        const cart = getCart();
-        const existingItem = cart.find(item => item.id === product.id && item.size === size);
-        
-        if (existingItem) {
-            existingItem.quantity += quantity;
-            saveCart(cart);
-            await updateItemOnServer(product.id, size, existingItem.quantity);
-        } else {
-            const newItem = {
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                size: size,
-                quantity: quantity
-            };
-            cart.push(newItem);
-            saveCart(cart);
-            await addItemToServer(newItem);
-        }
-        
-        updateCartBadge();
-        alert(`${product.name} added to cart!`);
-    };
-
-    // Initial render is handled by the if blocks at the top
 });

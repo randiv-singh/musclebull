@@ -1,16 +1,3 @@
-<?php
-session_start();
-require_once 'classes/Cart.php';
-
-$userId = $_SESSION['user_id'] ?? null;
-$sessionId = session_id();
-$cart = new Cart($userId, $sessionId);
-
-$cartItems = $cart->getItemsArray();
-$subtotal = $cart->getTotal();
-$shipping = $subtotal > 0 ? ($subtotal > 5000 ? 0 : 500) : 0;
-$total = $subtotal + $shipping;
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,11 +62,11 @@ $total = $subtotal + $shipping;
                             
                             <div class="summary-row">
                                 <span>Subtotal</span>
-                                <span class="fw-bold" id="cart-subtotal">LKR <?php echo number_format($subtotal); ?></span>
+                                <span class="fw-bold" id="cart-subtotal">LKR 0</span>
                             </div>
                             <div class="summary-row">
                                 <span>Shipping</span>
-                                <span class="fw-bold" id="cart-shipping"><?php echo $shipping === 0 && $subtotal > 0 ? 'Free' : 'LKR ' . number_format($shipping); ?></span>
+                                <span class="fw-bold" id="cart-shipping">LKR 0</span>
                             </div>
                             <div class="summary-row">
                                 <span>Tax</span>
@@ -90,7 +77,7 @@ $total = $subtotal + $shipping;
                             
                             <div class="summary-row summary-total">
                                 <span class="fw-bold">Total</span>
-                                <span class="fw-bold fs-4" id="cart-total">LKR <?php echo number_format($total); ?></span>
+                                <span class="fw-bold fs-4" id="cart-total">LKR 0</span>
                             </div>
 
                             <!-- Checkout Button -->

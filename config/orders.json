@@ -1,1 +1,44 @@
-[]
+[
+    {
+        "id": 1,
+        "user_id": null,
+        "items": [
+            {
+                "id": 2,
+                "name": "White Hoodie",
+                "price": 5200,
+                "image": "\/assets\/images\/products\/white hoodie 1.jpg",
+                "size": "XXL",
+                "quantity": 1
+            },
+            {
+                "id": 7,
+                "name": "Blue Hoodie",
+                "price": 5300,
+                "image": "\/assets\/images\/products\/blue hoodie 1.jpg",
+                "size": "XXL",
+                "quantity": 2
+            }
+        ],
+        "total_amount": 15800,
+        "status": "pending",
+        "payment_method": "cod",
+        "payment_status": "pending",
+        "shipping_address": {
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "test@gmail.com",
+            "phone": "0704567345",
+            "address": "123 Main",
+            "city": "Colombo",
+            "postal_code": "10200",
+            "shipping_method": "standard",
+            "shipping_cost": 0
+        },
+        "order_date": "2026-05-03 08:24:26",
+        "shipped_date": null,
+        "delivered_date": null,
+        "tracking_number": null,
+        "notes": ""
+    }
+]
