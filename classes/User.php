@@ -1,145 +1,120 @@
 <?php
 
+require_once __DIR__ . '/Database.php';
+
 /**
- * User Class
- * Simple user management for school project
+ * User management — MySQL backend
  */
 class User {
-    private $jsonFile;
-    private $users;
+    private $pdo;
 
     public function __construct() {
-        // Support being called from both root and subdirectories
-        if (file_exists(__DIR__ . '/../config/users.json')) {
-            $this->jsonFile = __DIR__ . '/../config/users.json';
-        } else {
-            $this->jsonFile = 'config/users.json';
-        }
-        $this->loadUsers();
+        $this->pdo = Database::getInstance()->pdo();
     }
 
-    private function loadUsers() {
-        if (file_exists($this->jsonFile)) {
-            $jsonContent = file_get_contents($this->jsonFile);
-            $this->users = json_decode($jsonContent, true) ?: [];
-        } else {
-            $this->users = [];
-        }
-    }
-
-    private function saveUsers() {
-        $jsonContent = json_encode($this->users, JSON_PRETTY_PRINT);
-        return file_put_contents($this->jsonFile, $jsonContent) !== false;
-    }
-
-    // Get all users
     public function getAll() {
-        return $this->users;
+        $stmt = $this->pdo->query(
+            'SELECT id, name, email, password, role, created_at, status FROM users ORDER BY id'
+        );
+        return $stmt->fetchAll();
     }
 
-    // Get one user by ID
     public function getById($id) {
-        foreach ($this->users as $user) {
-            if ($user['id'] == $id) {
-                return $user;
-            }
+        if ($id === null || $id === '') {
+            return null;
         }
-        return null;
+        $stmt = $this->pdo->prepare(
+            'SELECT id, name, email, password, role, created_at, status FROM users WHERE id = ?'
+        );
+        $stmt->execute([(int) $id]);
+        $row = $stmt->fetch();
+        return $row ?: null;
     }
 
-    // Authenticate user
     public function authenticate($email, $password) {
-        foreach ($this->users as $user) {
-            if ($user['email'] === $email && password_verify($password, $user['password'])) {
-                return $user;
-            }
+        $stmt = $this->pdo->prepare(
+            'SELECT id, name, email, password, role, created_at, status FROM users WHERE email = ?'
+        );
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
         }
         return false;
     }
 
-    // Add new user
     public function add($name, $email, $password, $role = 'customer') {
-        // Check if email already exists
-        foreach ($this->users as $user) {
-            if ($user['email'] === $email) {
-                return false;
-            }
+        $stmt = $this->pdo->prepare('SELECT id FROM users WHERE email = ?');
+        $stmt->execute([$email]);
+        if ($stmt->fetch()) {
+            return false;
         }
 
-        // Get next ID
-        $maxId = 0;
-        foreach ($this->users as $user) {
-            if ($user['id'] > $maxId) {
-                $maxId = $user['id'];
-            }
-        }
-        
-        $newUser = [
-            'id' => $maxId + 1,
-            'name' => $name,
-            'email' => $email,
-            'password' => password_hash($password, PASSWORD_DEFAULT),
-            'role' => $role,
-            'created_at' => date('Y-m-d H:i:s'),
-            'status' => 'active'
-        ];
-
-        $this->users[] = $newUser;
-        return $this->saveUsers();
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO users (name, email, password, role, created_at, status)
+             VALUES (?, ?, ?, ?, NOW(), ?)'
+        );
+        return $stmt->execute([
+            $name,
+            $email,
+            password_hash($password, PASSWORD_DEFAULT),
+            $role,
+            'active',
+        ]);
     }
 
-    // Update user
     public function update($id, $name, $email, $role = null, $status = null) {
-        for ($i = 0; $i < count($this->users); $i++) {
-            if ($this->users[$i]['id'] == $id) {
-                $this->users[$i]['name'] = $name;
-                $this->users[$i]['email'] = $email;
-                
-                if ($role !== null) {
-                    $this->users[$i]['role'] = $role;
-                }
-                
-                if ($status !== null) {
-                    $this->users[$i]['status'] = $status;
-                }
-                
-                return $this->saveUsers();
-            }
+        $stmt = $this->pdo->prepare('SELECT id FROM users WHERE email = ? AND id != ?');
+        $stmt->execute([$email, (int) $id]);
+        if ($stmt->fetch()) {
+            return false;
         }
-        return false;
+
+        if ($role !== null && $status !== null) {
+            $stmt = $this->pdo->prepare(
+                'UPDATE users SET name = ?, email = ?, role = ?, status = ? WHERE id = ?'
+            );
+            return $stmt->execute([$name, $email, $role, $status, (int) $id]);
+        }
+        if ($role !== null) {
+            $stmt = $this->pdo->prepare(
+                'UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?'
+            );
+            return $stmt->execute([$name, $email, $role, (int) $id]);
+        }
+        if ($status !== null) {
+            $stmt = $this->pdo->prepare(
+                'UPDATE users SET name = ?, email = ?, status = ? WHERE id = ?'
+            );
+            return $stmt->execute([$name, $email, $status, (int) $id]);
+        }
+
+        $stmt = $this->pdo->prepare('UPDATE users SET name = ?, email = ? WHERE id = ?');
+        return $stmt->execute([$name, $email, (int) $id]);
     }
 
-    // Delete user
     public function delete($id) {
-        for ($i = 0; $i < count($this->users); $i++) {
-            if ($this->users[$i]['id'] == $id) {
-                array_splice($this->users, $i, 1);
-                return $this->saveUsers();
-            }
-        }
-        return false;
+        $stmt = $this->pdo->prepare('DELETE FROM users WHERE id = ?');
+        $stmt->execute([(int) $id]);
+        return $stmt->rowCount() > 0;
     }
 
-    // Update password
     public function updatePassword($id, $newPassword) {
-        for ($i = 0; $i < count($this->users); $i++) {
-            if ($this->users[$i]['id'] == $id) {
-                $this->users[$i]['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
-                return $this->saveUsers();
-            }
-        }
-        return false;
+        $stmt = $this->pdo->prepare(
+            'UPDATE users SET password = ? WHERE id = ?'
+        );
+        $stmt->execute([
+            password_hash($newPassword, PASSWORD_DEFAULT),
+            (int) $id,
+        ]);
+        return $stmt->rowCount() > 0;
     }
 
-    // Get users by role
     public function getByRole($role) {
-        $result = [];
-        foreach ($this->users as $user) {
-            if ($user['role'] === $role) {
-                $result[] = $user;
-            }
-        }
-        return $result;
+        $stmt = $this->pdo->prepare(
+            'SELECT id, name, email, password, role, created_at, status FROM users WHERE role = ? ORDER BY id'
+        );
+        $stmt->execute([$role]);
+        return $stmt->fetchAll();
     }
 }
-?>

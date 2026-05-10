@@ -1,160 +1,117 @@
 <?php
 
+require_once __DIR__ . '/Database.php';
+
 /**
- * Category Class
- * Simple category management for school project
+ * Category management — MySQL backend
  */
 class Category {
-    private $jsonFile;
-    private $categories;
+    private $pdo;
 
     public function __construct() {
-        $this->jsonFile = '../config/categories.json';
-        $this->loadCategories();
+        $this->pdo = Database::getInstance()->pdo();
     }
 
-    private function loadCategories() {
-        if (file_exists($this->jsonFile)) {
-            $jsonContent = file_get_contents($this->jsonFile);
-            $this->categories = json_decode($jsonContent, true) ?: [];
-        } else {
-            $this->categories = [];
-        }
-    }
-
-    private function saveCategories() {
-        $jsonContent = json_encode($this->categories, JSON_PRETTY_PRINT);
-        return file_put_contents($this->jsonFile, $jsonContent) !== false;
-    }
-
-    // Get all categories
     public function getAll() {
-        return $this->categories;
+        $stmt = $this->pdo->query(
+            'SELECT id, name, description, image, status, created_at FROM categories ORDER BY id'
+        );
+        return $stmt->fetchAll();
     }
 
-    // Get one category by ID
     public function getById($id) {
-        foreach ($this->categories as $category) {
-            if ($category['id'] == $id) {
-                return $category;
-            }
-        }
-        return null;
+        $stmt = $this->pdo->prepare(
+            'SELECT id, name, description, image, status, created_at FROM categories WHERE id = ?'
+        );
+        $stmt->execute([(int) $id]);
+        $row = $stmt->fetch();
+        return $row ?: null;
     }
 
-    // Get category by name
     public function getByName($name) {
-        foreach ($this->categories as $category) {
-            if ($category['name'] === $name) {
-                return $category;
-            }
-        }
-        return null;
+        $stmt = $this->pdo->prepare(
+            'SELECT id, name, description, image, status, created_at FROM categories WHERE name = ?'
+        );
+        $stmt->execute([$name]);
+        $row = $stmt->fetch();
+        return $row ?: null;
     }
 
-    // Add new category
     public function add($name, $description = '', $image = '') {
-        // Check if name already exists
-        foreach ($this->categories as $category) {
-            if ($category['name'] === $name) {
-                return false;
-            }
+        $stmt = $this->pdo->prepare('SELECT id FROM categories WHERE name = ?');
+        $stmt->execute([$name]);
+        if ($stmt->fetch()) {
+            return false;
         }
 
-        // Get next ID
-        $maxId = 0;
-        foreach ($this->categories as $category) {
-            if ($category['id'] > $maxId) {
-                $maxId = $category['id'];
-            }
-        }
-        
-        $newCategory = [
-            'id' => $maxId + 1,
-            'name' => $name,
-            'description' => $description,
-            'image' => $image,
-            'status' => 'active',
-            'created_at' => date('Y-m-d H:i:s'),
-            'product_count' => 0
-        ];
-
-        $this->categories[] = $newCategory;
-        return $this->saveCategories();
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO categories (name, description, image, status, created_at)
+             VALUES (?, ?, ?, ?, NOW())'
+        );
+        return $stmt->execute([$name, $description, $image, 'active']);
     }
 
-    // Update category
     public function update($id, $name, $description = '', $image = '', $status = null) {
-        for ($i = 0; $i < count($this->categories); $i++) {
-            if ($this->categories[$i]['id'] == $id) {
-                $this->categories[$i]['name'] = $name;
-                $this->categories[$i]['description'] = $description;
-                $this->categories[$i]['image'] = $image;
-                
-                if ($status !== null) {
-                    $this->categories[$i]['status'] = $status;
-                }
-                
-                return $this->saveCategories();
-            }
+        $stmt = $this->pdo->prepare('SELECT id FROM categories WHERE name = ? AND id != ?');
+        $stmt->execute([$name, (int) $id]);
+        if ($stmt->fetch()) {
+            return false;
         }
-        return false;
+
+        if ($status !== null) {
+            $stmt = $this->pdo->prepare(
+                'UPDATE categories SET name = ?, description = ?, image = ?, status = ? WHERE id = ?'
+            );
+            return $stmt->execute([$name, $description, $image, $status, (int) $id]);
+        }
+
+        $stmt = $this->pdo->prepare(
+            'UPDATE categories SET name = ?, description = ?, image = ? WHERE id = ?'
+        );
+        return $stmt->execute([$name, $description, $image, (int) $id]);
     }
 
-    // Delete category
     public function delete($id) {
-        for ($i = 0; $i < count($this->categories); $i++) {
-            if ($this->categories[$i]['id'] == $id) {
-                array_splice($this->categories, $i, 1);
-                return $this->saveCategories();
-            }
+        $stmt = $this->pdo->prepare(
+            'SELECT COUNT(*) FROM products WHERE category_id = ?'
+        );
+        $stmt->execute([(int) $id]);
+        if ((int) $stmt->fetchColumn() > 0) {
+            return false;
         }
-        return false;
+        $stmt = $this->pdo->prepare('DELETE FROM categories WHERE id = ?');
+        $stmt->execute([(int) $id]);
+        return $stmt->rowCount() > 0;
     }
 
-    // Get active categories
     public function getActive() {
-        $result = [];
-        foreach ($this->categories as $category) {
-            if ($category['status'] === 'active') {
-                $result[] = $category;
-            }
-        }
-        return $result;
+        $stmt = $this->pdo->query(
+            "SELECT id, name, description, image, status, created_at FROM categories WHERE status = 'active' ORDER BY name"
+        );
+        return $stmt->fetchAll();
     }
 
-    // Update product count for a category
     public function updateProductCount($categoryId, $count) {
-        for ($i = 0; $i < count($this->categories); $i++) {
-            if ($this->categories[$i]['id'] == $categoryId) {
-                $this->categories[$i]['product_count'] = $count;
-                return $this->saveCategories();
-            }
-        }
-        return false;
+        return true;
     }
 
-    // Get categories with product counts
-    public function getWithProductCounts($productClass) {
-        $categories = $this->getAll();
-        $products = $productClass->getAll();
-        
-        // Count products per category
-        $productCounts = [];
-        foreach ($products as $product) {
-            $categoryName = $product['category'];
-            if (!isset($productCounts[$categoryName])) {
-                $productCounts[$categoryName] = 0;
-            }
-            $productCounts[$categoryName]++;
+    /**
+     * Categories with live product counts (legacy parameter ignored).
+     *
+     * @param mixed $productClass Unused; kept for admin/categories.php compatibility
+     */
+    public function getWithProductCounts($productClass = null) {
+        $sql = 'SELECT c.id, c.name, c.description, c.image, c.status, c.created_at,
+                COUNT(p.id) AS product_count
+                FROM categories c
+                LEFT JOIN products p ON p.category_id = c.id
+                GROUP BY c.id, c.name, c.description, c.image, c.status, c.created_at
+                ORDER BY c.id';
+        $stmt = $this->pdo->query($sql);
+        $rows = $stmt->fetchAll();
+        foreach ($rows as &$r) {
+            $r['product_count'] = (int) $r['product_count'];
         }
-        
-        // Update categories with product counts
-        foreach ($categories as &$category) {
-            $category['product_count'] = $productCounts[$category['name']] ?? 0;
-        }
-        
-        return $categories;
+        return $rows;
     }
 }
-?>

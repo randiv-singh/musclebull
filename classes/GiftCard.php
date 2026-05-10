@@ -1,180 +1,167 @@
 <?php
 
+require_once __DIR__ . '/Database.php';
+
 /**
- * GiftCard Class
- * Simple gift card management for school project
+ * Gift card management — MySQL backend
  */
 class GiftCard {
-    private $jsonFile;
-    private $giftCards;
+    private $pdo;
 
     public function __construct() {
-        $this->jsonFile = '../config/gift_cards.json';
-        $this->loadGiftCards();
+        $this->pdo = Database::getInstance()->pdo();
     }
 
-    private function loadGiftCards() {
-        if (file_exists($this->jsonFile)) {
-            $jsonContent = file_get_contents($this->jsonFile);
-            $this->giftCards = json_decode($jsonContent, true) ?: [];
-        } else {
-            $this->giftCards = [];
-        }
-    }
-
-    private function saveGiftCards() {
-        $jsonContent = json_encode($this->giftCards, JSON_PRETTY_PRINT);
-        return file_put_contents($this->jsonFile, $jsonContent) !== false;
-    }
-
-    // Get all gift cards
     public function getAll() {
-        return $this->giftCards;
+        $stmt = $this->pdo->query(
+            'SELECT id, code, amount, balance, recipient_email, message, status,
+                    created_at, expiry_date, used_at
+             FROM gift_cards ORDER BY id'
+        );
+        return $stmt->fetchAll();
     }
 
-    // Get one gift card by ID
     public function getById($id) {
-        foreach ($this->giftCards as $giftCard) {
-            if ($giftCard['id'] == $id) {
-                return $giftCard;
-            }
-        }
-        return null;
+        $stmt = $this->pdo->prepare(
+            'SELECT id, code, amount, balance, recipient_email, message, status,
+                    created_at, expiry_date, used_at
+             FROM gift_cards WHERE id = ?'
+        );
+        $stmt->execute([(int) $id]);
+        $row = $stmt->fetch();
+        return $row ?: null;
     }
 
-    // Get gift card by code
     public function getByCode($code) {
-        foreach ($this->giftCards as $giftCard) {
-            if ($giftCard['code'] === $code) {
-                return $giftCard;
-            }
-        }
-        return null;
+        $stmt = $this->pdo->prepare(
+            'SELECT id, code, amount, balance, recipient_email, message, status,
+                    created_at, expiry_date, used_at
+             FROM gift_cards WHERE code = ?'
+        );
+        $stmt->execute([$code]);
+        $row = $stmt->fetch();
+        return $row ?: null;
     }
 
-    // Add new gift card
     public function add($code, $amount, $recipientEmail, $message = '', $expiryDate = null) {
-        // Check if code already exists
-        foreach ($this->giftCards as $giftCard) {
-            if ($giftCard['code'] === $code) {
-                return false;
-            }
+        $stmt = $this->pdo->prepare('SELECT id FROM gift_cards WHERE code = ?');
+        $stmt->execute([$code]);
+        if ($stmt->fetch()) {
+            return false;
         }
 
-        // Get next ID
-        $maxId = 0;
-        foreach ($this->giftCards as $giftCard) {
-            if ($giftCard['id'] > $maxId) {
-                $maxId = $giftCard['id'];
-            }
-        }
-        
-        // Set expiry date to 1 year from now if not provided
         if ($expiryDate === null) {
             $expiryDate = date('Y-m-d', strtotime('+1 year'));
         }
-        
-        $newGiftCard = [
-            'id' => $maxId + 1,
-            'code' => $code,
-            'amount' => $amount,
-            'balance' => $amount,
-            'recipient_email' => $recipientEmail,
-            'message' => $message,
-            'status' => 'active',
-            'created_at' => date('Y-m-d H:i:s'),
-            'expiry_date' => $expiryDate,
-            'used_at' => null
-        ];
 
-        $this->giftCards[] = $newGiftCard;
-        return $this->saveGiftCards();
+        $amountInt = (int) round((float) $amount);
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO gift_cards (code, amount, balance, recipient_email, message, status, created_at, expiry_date, used_at)
+             VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, NULL)'
+        );
+        return $stmt->execute([
+            $code,
+            $amountInt,
+            $amountInt,
+            $recipientEmail,
+            $message,
+            'active',
+            $expiryDate,
+        ]);
     }
 
-    // Update gift card
     public function update($id, $code, $amount, $recipientEmail, $message = '', $expiryDate = null, $status = null) {
-        for ($i = 0; $i < count($this->giftCards); $i++) {
-            if ($this->giftCards[$i]['id'] == $id) {
-                $this->giftCards[$i]['code'] = $code;
-                $this->giftCards[$i]['amount'] = $amount;
-                $this->giftCards[$i]['recipient_email'] = $recipientEmail;
-                $this->giftCards[$i]['message'] = $message;
-                
-                if ($expiryDate !== null) {
-                    $this->giftCards[$i]['expiry_date'] = $expiryDate;
-                }
-                
-                if ($status !== null) {
-                    $this->giftCards[$i]['status'] = $status;
-                }
-                
-                return $this->saveGiftCards();
-            }
+        $stmt = $this->pdo->prepare('SELECT id FROM gift_cards WHERE code = ? AND id != ?');
+        $stmt->execute([$code, (int) $id]);
+        if ($stmt->fetch()) {
+            return false;
         }
-        return false;
+
+        $amountInt = (int) round((float) $amount);
+        $sql = 'UPDATE gift_cards SET code = ?, amount = ?, recipient_email = ?, message = ?';
+        $params = [$code, $amountInt, $recipientEmail, $message];
+
+        if ($expiryDate !== null && $expiryDate !== '') {
+            $sql .= ', expiry_date = ?';
+            $params[] = $expiryDate;
+        }
+        if ($status !== null && $status !== '') {
+            $sql .= ', status = ?';
+            $params[] = $status;
+        }
+
+        $sql .= ' WHERE id = ?';
+        $params[] = (int) $id;
+
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
     }
 
-    // Delete gift card
     public function delete($id) {
-        for ($i = 0; $i < count($this->giftCards); $i++) {
-            if ($this->giftCards[$i]['id'] == $id) {
-                array_splice($this->giftCards, $i, 1);
-                return $this->saveGiftCards();
-            }
-        }
-        return false;
+        $stmt = $this->pdo->prepare('DELETE FROM gift_cards WHERE id = ?');
+        $stmt->execute([(int) $id]);
+        return $stmt->rowCount() > 0;
     }
 
-    // Use gift card (reduce balance)
     public function use($code, $amount) {
-        for ($i = 0; $i < count($this->giftCards); $i++) {
-            if ($this->giftCards[$i]['code'] === $code) {
-                if ($this->giftCards[$i]['status'] === 'active' && $this->giftCards[$i]['balance'] >= $amount) {
-                    $this->giftCards[$i]['balance'] -= $amount;
-                    
-                    if ($this->giftCards[$i]['balance'] <= 0) {
-                        $this->giftCards[$i]['status'] = 'used';
-                        $this->giftCards[$i]['used_at'] = date('Y-m-d H:i:s');
-                    }
-                    
-                    return $this->saveGiftCards();
-                }
+        $this->pdo->beginTransaction();
+        try {
+            $stmt = $this->pdo->prepare(
+                'SELECT id, balance, status FROM gift_cards WHERE code = ? FOR UPDATE'
+            );
+            $stmt->execute([$code]);
+            $row = $stmt->fetch();
+            if (!$row || $row['status'] !== 'active' || (int) $row['balance'] < (int) $amount) {
+                $this->pdo->rollBack();
                 return false;
             }
+
+            $newBalance = (int) $row['balance'] - (int) $amount;
+            if ($newBalance <= 0) {
+                $stmt = $this->pdo->prepare(
+                    'UPDATE gift_cards SET balance = 0, status = \'used\', used_at = NOW() WHERE id = ?'
+                );
+                $stmt->execute([(int) $row['id']]);
+            } else {
+                $stmt = $this->pdo->prepare('UPDATE gift_cards SET balance = ? WHERE id = ?');
+                $stmt->execute([$newBalance, (int) $row['id']]);
+            }
+
+            $this->pdo->commit();
+            return true;
+        } catch (Throwable $e) {
+            $this->pdo->rollBack();
+            return false;
         }
-        return false;
     }
 
-    // Get active gift cards
     public function getActive() {
-        $result = [];
-        foreach ($this->giftCards as $giftCard) {
-            if ($giftCard['status'] === 'active') {
-                $result[] = $giftCard;
-            }
-        }
-        return $result;
+        $stmt = $this->pdo->query(
+            "SELECT id, code, amount, balance, recipient_email, message, status,
+                    created_at, expiry_date, used_at
+             FROM gift_cards WHERE status = 'active' ORDER BY id"
+        );
+        return $stmt->fetchAll();
     }
 
-    // Get expired gift cards
     public function getExpired() {
-        $result = [];
         $today = date('Y-m-d');
-        foreach ($this->giftCards as $giftCard) {
-            if ($giftCard['expiry_date'] < $today && $giftCard['status'] === 'active') {
-                $result[] = $giftCard;
-            }
-        }
-        return $result;
+        $stmt = $this->pdo->prepare(
+            "SELECT id, code, amount, balance, recipient_email, message, status,
+                    created_at, expiry_date, used_at
+             FROM gift_cards WHERE expiry_date < ? AND status = 'active' ORDER BY id"
+        );
+        $stmt->execute([$today]);
+        return $stmt->fetchAll();
     }
 
-    // Generate unique gift card code
     public function generateCode() {
         do {
-            $code = 'GC' . strtoupper(substr(md5(uniqid()), 0, 8));
-        } while ($this->getByCode($code) !== null);
-        
+            $code = 'GC' . strtoupper(substr(md5(uniqid('', true)), 0, 8));
+            $stmt = $this->pdo->prepare('SELECT id FROM gift_cards WHERE code = ?');
+            $stmt->execute([$code]);
+        } while ($stmt->fetch());
+
         return $code;
     }
 }
-?>
