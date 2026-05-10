@@ -160,7 +160,7 @@ $categories = $category->getWithProductCounts($product);
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Image URL</label>
-                        <input type="url" class="form-control" name="image" 
+                        <input type="text" class="form-control" name="image" 
                                placeholder="https://example.com/image.jpg">
                     </div>
                     <div class="col-12">
@@ -273,7 +273,7 @@ $categories = $category->getWithProductCounts($product);
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Image URL</label>
-                        <input type="url" class="form-control" name="image" id="editImage">
+                        <input type="text" class="form-control" name="image" id="editImage">
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold">Description</label>

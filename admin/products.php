@@ -182,7 +182,7 @@ $categories = $category->getActive();
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Image URL</label>
-                        <input type="url" class="form-control" name="image" required>
+                        <input type="text" class="form-control" name="image" required>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold">Description</label>
@@ -301,7 +301,7 @@ $categories = $category->getActive();
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Image URL</label>
-                        <input type="url" class="form-control" name="image" id="editImage" required>
+                        <input type="text" class="form-control" name="image" id="editImage" required>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold">Description</label>

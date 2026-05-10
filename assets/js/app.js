@@ -192,25 +192,19 @@ function attachQuickViewListeners(products) {
 document.addEventListener('DOMContentLoaded', async () => {
     // Initialize cart badge
     updateCartBadge();
-    
-    const products = await fetchProducts();
-    
-    // Index Page
-    if (document.getElementById('best-sellers-container')) {
-        const bestSellers = products.filter(p => p.isBestSeller).slice(0, 4);
-        renderProducts(bestSellers, 'best-sellers-container', 'col-12 col-md-6 col-lg-3');
+
+    // Home and shop pages now render products server-side via PHP/MySQL.
+    // Keep this script from replacing those server-rendered cards with JSON data.
+
+    const needsJsonProducts =
+        !!document.getElementById('product-detail-container') ||
+        !!document.getElementById('related-products-container');
+
+    let products = [];
+    if (needsJsonProducts) {
+        products = await fetchProducts();
     }
-    
-    if (document.getElementById('featured-container')) {
-        const featured = products.filter(p => p.isFeatured).slice(0, 3);
-        renderProducts(featured, 'featured-container', 'col-12 col-md-6 col-lg-4');
-    }
-    
-    // Shop Page
-    if (document.getElementById('all-products-container')) {
-        renderProducts(products, 'all-products-container', 'col-6 col-md-4');
-    }
-    
+
     // Product Detail Page
     const urlParams = new URLSearchParams(window.location.search);
     let productId = urlParams.get('id');
