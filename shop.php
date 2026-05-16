@@ -23,7 +23,11 @@ $products = $product->getAll();
     <link href="./assets/css/header.css" rel="stylesheet" />
     <link href="./assets/css/footer.css" rel="stylesheet" />
     <link href="./assets/css/shop.css" rel="stylesheet" />
+    <link href="./assets/css/product-card.css" rel="stylesheet" />
     <link href="./assets/css/checkout.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -122,8 +126,8 @@ $products = $product->getAll();
 
                     <!-- Products Grid -->
                     <div class="col-lg-9">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h2 class="fw-bold text-uppercase m-0">All Products</h2>
+                        <div class="shop-products-header">
+                            <h2 class="shop-products-header__title">All Products</h2>
                             <select class="form-select sort-select">
                                 <option selected>Sort By: Featured</option>
                                 <option value="1">Price: Low to High</option>
@@ -132,7 +136,7 @@ $products = $product->getAll();
                             </select>
                         </div>
 
-                        <div class="row g-4" id="all-products-container">
+                        <div class="row g-4 products-showcase" id="all-products-container">
                             <?php 
                             foreach ($products as $product) {
                                 include 'components/product-card.php';

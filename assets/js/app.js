@@ -188,45 +188,95 @@ function attachQuickViewListeners(products) {
     });
 }
 
+function getProductPageData() {
+    const dataEl = document.getElementById('product-page-data');
+    if (!dataEl) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(dataEl.textContent);
+    } catch (error) {
+        console.error('Invalid product page data:', error);
+        return null;
+    }
+}
+
+function initSizeGuideModal() {
+    const sizeGuideBtn = document.getElementById('sizeGuideBtn');
+    const sizeGuideModal = document.getElementById('sizeGuideModal');
+    const closeSizeGuideBtn = document.getElementById('closeSizeGuideBtn');
+
+    if (!sizeGuideBtn || !sizeGuideModal) {
+        return;
+    }
+
+    const newSizeGuideBtn = sizeGuideBtn.cloneNode(true);
+    sizeGuideBtn.parentNode.replaceChild(newSizeGuideBtn, sizeGuideBtn);
+
+    newSizeGuideBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        sizeGuideModal.style.display = 'flex';
+        sizeGuideModal.style.alignItems = 'center';
+        sizeGuideModal.style.justifyContent = 'center';
+        sizeGuideModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+
+    function closeSizeGuide() {
+        sizeGuideModal.style.display = 'none';
+        sizeGuideModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    sizeGuideModal.style.display = 'none';
+
+    if (closeSizeGuideBtn) {
+        const newCloseBtn = closeSizeGuideBtn.cloneNode(true);
+        closeSizeGuideBtn.parentNode.replaceChild(newCloseBtn, closeSizeGuideBtn);
+        newCloseBtn.addEventListener('click', closeSizeGuide);
+    }
+
+    const sizeGuideOverlay = sizeGuideModal.querySelector('.modal-overlay');
+    if (sizeGuideOverlay) {
+        const newOverlay = sizeGuideOverlay.cloneNode(true);
+        sizeGuideOverlay.parentNode.replaceChild(newOverlay, sizeGuideOverlay);
+        newOverlay.addEventListener('click', closeSizeGuide);
+    }
+}
+
+function initServerRenderedProductPage() {
+    const product = getProductPageData();
+    if (!product) {
+        return;
+    }
+
+    const detailAddToCartBtn = document.querySelector('.product-actions .btn-primary');
+    if (detailAddToCartBtn) {
+        const newBtn = detailAddToCartBtn.cloneNode(true);
+        detailAddToCartBtn.parentNode.replaceChild(newBtn, detailAddToCartBtn);
+
+        newBtn.addEventListener('click', function() {
+            const qtyInput = document.querySelector('.qty-input-single');
+            const quantity = qtyInput ? parseInt(qtyInput.value, 10) : 1;
+
+            const activeSizeBtn = document.querySelector('.size-btn-single.active');
+            const size = activeSizeBtn ? activeSizeBtn.textContent.trim() : 'M';
+
+            addToCart(product, quantity, size);
+        });
+    }
+
+    initSizeGuideModal();
+}
+
 // Initialize pages
-document.addEventListener('DOMContentLoaded', async () => {
-    // Initialize cart badge
+document.addEventListener('DOMContentLoaded', () => {
     updateCartBadge();
 
-    // Home and shop pages now render products server-side via PHP/MySQL.
-    // Keep this script from replacing those server-rendered cards with JSON data.
-
-    const needsJsonProducts =
-        !!document.getElementById('product-detail-container') ||
-        !!document.getElementById('related-products-container');
-
-    let products = [];
-    if (needsJsonProducts) {
-        products = await fetchProducts();
-    }
-
-    // Product Detail Page
-    const urlParams = new URLSearchParams(window.location.search);
-    let productId = urlParams.get('id');
-    
-    if (document.getElementById('product-detail-container')) {
-        if (!productId) {
-            productId = 1; // Default to first product if no ID is provided
-        }
-        
-        const product = products.find(p => p.id === parseInt(productId));
-        if (product) {
-            renderProductDetails(product);
-            
-            // Render related products
-            if (document.getElementById('related-products-container')) {
-                const related = products.filter(p => p.id !== product.id).slice(0, 4);
-                renderProducts(related, 'related-products-container', 'col-6 col-md-3');
-            }
-        } else {
-            document.getElementById('product-detail-container').innerHTML = '<div class="col-12 text-center py-5"><h2>Product not found</h2><a href="shop.php" class="btn btn-primary mt-3">Back to Shop</a></div>';
-        }
-    }
+    // Product detail is rendered server-side (PHP/MySQL). Only wire cart + modals.
+    initServerRenderedProductPage();
 
     // Gift Card Page
     const addGiftCardBtn = document.getElementById('addGiftCardBtn');
@@ -258,7 +308,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 id: `gift-card-${amount}`,
                 name: `Muscle Bull E-Gift Card`,
                 price: amount,
-                image: '../images/flayer/gift-card.jpg'
+                image: '/assets/images/flayer/gift-card.jpg'
             };
             
             addToCart(giftCardProduct, 1, `Digital (${deliveryMethod})`);
@@ -266,18 +316,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+// Legacy helper kept for any JSON-driven product rendering elsewhere.
 function renderProductDetails(product) {
-    // Update Breadcrumb
     const breadcrumbActive = document.querySelector('.breadcrumb-item.active');
     if (breadcrumbActive) breadcrumbActive.textContent = product.name;
-    
-    // Update Page Title
+
     document.title = `${product.name} - Muscle Bull`;
-    
-    // Render Images
+
     const mainImage = document.getElementById('mainProductImage');
     if (mainImage) mainImage.src = product.image;
-    
+
     const thumbnailsContainer = document.querySelector('.thumbnail-images');
     if (thumbnailsContainer && product.thumbnails) {
         thumbnailsContainer.innerHTML = product.thumbnails.map((thumb, index) => `
@@ -285,8 +333,7 @@ function renderProductDetails(product) {
                 <img src="${thumb}" alt="${product.name} View ${index + 1}" class="img-fluid">
             </div>
         `).join('');
-        
-        // Re-attach thumbnail listeners
+
         const thumbnails = document.querySelectorAll('.thumbnail');
         thumbnails.forEach(thumbnail => {
             thumbnail.addEventListener('click', function() {
@@ -296,77 +343,31 @@ function renderProductDetails(product) {
             });
         });
     }
-    
-    // Render Info
+
     const titleEl = document.querySelector('.product-title');
     if (titleEl) titleEl.textContent = product.name;
-    
+
     const priceEl = document.querySelector('.current-price');
     if (priceEl) priceEl.textContent = formatPrice(product.price);
-    
+
     const descEl = document.querySelector('.product-description');
     if (descEl) descEl.textContent = product.description;
-    
-    // Attach add to cart logic for product detail page
+
     const detailAddToCartBtn = document.querySelector('.product-actions .btn-primary');
     if (detailAddToCartBtn) {
-        // Clone to remove old listeners
         const newBtn = detailAddToCartBtn.cloneNode(true);
         detailAddToCartBtn.parentNode.replaceChild(newBtn, detailAddToCartBtn);
-        
+
         newBtn.addEventListener('click', function() {
             const qtyInput = document.querySelector('.qty-input-single');
-            const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
-            
+            const quantity = qtyInput ? parseInt(qtyInput.value, 10) : 1;
+
             const activeSizeBtn = document.querySelector('.size-btn-single.active');
-            const size = activeSizeBtn ? activeSizeBtn.textContent : 'M';
-            
+            const size = activeSizeBtn ? activeSizeBtn.textContent.trim() : 'M';
+
             addToCart(product, quantity, size);
         });
     }
 
-    /* Size Guide Modal */
-    const sizeGuideBtn = document.getElementById('sizeGuideBtn');
-    const sizeGuideModal = document.getElementById('sizeGuideModal');
-    const closeSizeGuideBtn = document.getElementById('closeSizeGuideBtn');
-
-    if (sizeGuideBtn && sizeGuideModal) {
-        // Remove old listeners by cloning
-        const newSizeGuideBtn = sizeGuideBtn.cloneNode(true);
-        sizeGuideBtn.parentNode.replaceChild(newSizeGuideBtn, sizeGuideBtn);
-
-        newSizeGuideBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            sizeGuideModal.style.display = 'flex';
-            sizeGuideModal.style.alignItems = 'center';
-            sizeGuideModal.style.justifyContent = 'center';
-            sizeGuideModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-
-        function closeSizeGuide() {
-            sizeGuideModal.style.display = 'none';
-            sizeGuideModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Initialize as hidden
-        sizeGuideModal.style.display = 'none';
-
-        if (closeSizeGuideBtn) {
-            // Clone to prevent multiple listeners
-            const newCloseBtn = closeSizeGuideBtn.cloneNode(true);
-            closeSizeGuideBtn.parentNode.replaceChild(newCloseBtn, closeSizeGuideBtn);
-            newCloseBtn.addEventListener('click', closeSizeGuide);
-        }
-
-        const sizeGuideOverlay = sizeGuideModal.querySelector('.modal-overlay');
-        if (sizeGuideOverlay) {
-            // Clone to prevent multiple listeners
-            const newOverlay = sizeGuideOverlay.cloneNode(true);
-            sizeGuideOverlay.parentNode.replaceChild(newOverlay, sizeGuideOverlay);
-            newOverlay.addEventListener('click', closeSizeGuide);
-        }
-    }
+    initSizeGuideModal();
 }

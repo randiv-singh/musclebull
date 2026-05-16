@@ -36,7 +36,7 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
     <link href="./assets/css/header.css" rel="stylesheet" />
     <link href="./assets/css/footer.css" rel="stylesheet" />
     <link href="./assets/css/shop.css" rel="stylesheet" />
-    <link href="./assets/css/product.css" rel="stylesheet" />
+    <link href="./assets/css/product.css?v=2" rel="stylesheet" />
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -62,7 +62,7 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
         </section>
 
         <!-- Product Detail Section -->
-        <section class="product-detail-section py-5 bg-white" id="product-detail-container">
+        <section class="product-detail-section py-5 bg-white">
             <div class="container">
                 <div class="row g-5">
                     <!-- Product Images -->
@@ -173,19 +173,19 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
                 <div class="row mt-5">
                     <div class="col-12">
                         <div class="product-tabs">
-                            <ul class="nav nav-tabs mb-4" role="tablist">
+                            <ul class="nav nav-tabs product-tabs__nav mb-4" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button">
+                                    <button class="nav-link product-tab-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-selected="true">
                                         Description
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button">
+                                    <button class="nav-link product-tab-link" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-selected="false">
                                         Details
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button">
+                                    <button class="nav-link product-tab-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-selected="false">
                                         Reviews (127)
                                     </button>
                                 </li>
@@ -248,22 +248,7 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
                     </div>
                 </div>
 
-                <!-- Related Products -->
-                <div class="row mt-5">
-                    <div class="col-12">
-                        <h3 class="fw-bold text-uppercase mb-4">You May Also Like</h3>
-                        <div class="row g-4" id="related-products-container">
-                            <?php 
-                            $count = 0;
-                            foreach ($related_products as $product) {
-                                if ($count >= 4) break;
-                                include 'components/product-card.php';
-                                $count++;
-                            }
-                            ?>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </section>
     </main>
@@ -287,6 +272,17 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
 
     <!-- Bootstrap JS -->
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <?php if ($current_product): ?>
+    <script id="product-page-data" type="application/json"><?php
+        echo json_encode([
+            'id' => $current_product['id'],
+            'name' => $current_product['name'],
+            'price' => $current_product['price'],
+            'image' => $current_product['image'],
+            'description' => $current_product['description'],
+        ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+    ?></script>
+    <?php endif; ?>
     <script src="./assets/js/app.js"></script>
     <script src="./assets/js/product.js"></script>
 </body>

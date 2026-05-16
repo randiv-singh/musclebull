@@ -23,7 +23,11 @@ $featured_products = $product->getFeatured();
     <link href="./assets/css/header.css" rel="stylesheet" />
     <link href="./assets/css/footer.css" rel="stylesheet" />
     <link href="./assets/css/shop.css" rel="stylesheet" />
+    <link href="./assets/css/product-card.css" rel="stylesheet" />
     <link href="./assets/css/checkout.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -64,11 +68,13 @@ $featured_products = $product->getFeatured();
         <!-- Best Sellers Section -->
         <section id="best-sellers" class="py-5 bg-white">
             <div class="container py-4">
-                <div class="d-flex justify-content-between align-items-center mb-5">
-                    <h2 class="fw-bold text-uppercase m-0 text-black">Best Sellers</h2>
-                    <a href="shop.php" class="btn btn-outline-dark rounded-0 px-4 fw-bold text-uppercase">View All</a>
+                <div class="products-section-header">
+                    <h2 class="products-section-header__title">Best <span>Sellers</span></h2>
+                    <a href="shop.php" class="products-section-header__link">
+                        View All <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </a>
                 </div>
-                <div class="row g-4" id="best-sellers-container">
+                <div class="row g-4 products-showcase" id="best-sellers-container">
                     <?php 
                     $count = 0;
                     foreach ($best_sellers as $product) {
@@ -84,11 +90,13 @@ $featured_products = $product->getFeatured();
         <!-- Featured Products Section -->
         <section id="featured" class="py-5 bg-white">
             <div class="container py-4">
-                <div class="d-flex justify-content-between align-items-center mb-5">
-                    <h2 class="fw-bold text-uppercase m-0 text-black">Featured Products</h2>
-                    <a href="shop.php" class="btn btn-outline-dark rounded-0 px-4 fw-bold text-uppercase">View All</a>
+                <div class="products-section-header">
+                    <h2 class="products-section-header__title">Featured <span>Drops</span></h2>
+                    <a href="shop.php" class="products-section-header__link">
+                        View All <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </a>
                 </div>
-                <div class="row g-4" id="featured-container">
+                <div class="row g-4 products-showcase" id="featured-container">
                     <?php 
                     $count = 0;
                     foreach ($featured_products as $product) {

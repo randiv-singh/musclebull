@@ -220,43 +220,64 @@
     box-shadow: 0 2px 12px var(--shadow-light);
 }
 
-.nav-tabs {
+.product-tabs .product-tabs__nav {
     border: none;
-    gap: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    gap: 28px;
+    flex-wrap: nowrap;
 }
 
-.nav-tabs .nav-link {
-    border: none;
-    background: none;
-    color: var(--text-body);
+.product-tabs .product-tabs__nav .nav-item {
+    flex: 0 0 auto;
+}
+
+/* Kill navbar + pseudo underlines; use border-bottom on the label only */
+.product-tabs .product-tab-link,
+.product-tabs .product-tabs__nav .nav-link {
+    display: inline-block;
+    width: auto;
+    max-width: none;
+    margin: 0 0 -1px !important;
+    padding: 14px 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 3px solid transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--text-body) !important;
     font-weight: 600;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    padding: 15px 0;
+    letter-spacing: 0.08em;
     position: relative;
-    letter-spacing: 0.5px;
+    transform: none !important;
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.nav-tabs .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 3px;
-    background-color: #D5552E;
-    transition: width 0.3s ease;
+.product-tabs .product-tab-link::before,
+.product-tabs .product-tab-link::after,
+.product-tabs .product-tabs__nav .nav-link::before,
+.product-tabs .product-tabs__nav .nav-link::after {
+    display: none !important;
+    content: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 
-.nav-tabs .nav-link.active::after,
-.nav-tabs .nav-link:hover::after {
-    width: 100%;
+.product-tabs .product-tab-link:hover,
+.product-tabs .product-tabs__nav .nav-link:hover {
+    color: var(--primary-color) !important;
+    border-bottom-color: rgba(213, 85, 46, 0.35) !important;
 }
 
-.nav-tabs .nav-link.active {
-    color: var(--primary-color);
+.product-tabs .product-tab-link.active,
+.product-tabs .product-tabs__nav .nav-link.active {
+    color: var(--primary-color) !important;
+    border-bottom-color: var(--primary-color) !important;
+    background: transparent !important;
 }
 
-.tab-content {
+.product-tabs .tab-content {
     padding: 30px 0;
     color: var(--text-body);
     line-height: 1.8;
@@ -321,15 +342,16 @@
         padding: 20px 15px;
     }
 
-    .nav-tabs {
-        gap: 10px;
-        flex-wrap: nowrap;
+    .product-tabs .product-tabs__nav {
+        gap: 16px;
         overflow-x: auto;
+        padding-bottom: 2px;
     }
 
-    .nav-tabs .nav-link {
-        padding: 10px 5px;
-        font-size: 0.85rem;
+    .product-tabs .product-tab-link,
+    .product-tabs .product-tabs__nav .nav-link {
+        padding: 10px 0 !important;
+        font-size: 0.75rem;
         white-space: nowrap;
     }
 }
