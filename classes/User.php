@@ -31,6 +31,34 @@ class User {
         return $row ?: null;
     }
 
+    public function getByEmail($email) {
+        $stmt = $this->pdo->prepare(
+            'SELECT id, name, email, password, role, created_at, status FROM users WHERE email = ?'
+        );
+        $stmt->execute([$email]);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    }
+
+    /**
+     * Find existing user by email or create a customer account with a random password.
+     * Returns user id on success, null on failure.
+     */
+    public function findOrCreateFromCheckout($name, $email) {
+        $existing = $this->getByEmail($email);
+        if ($existing) {
+            return (int) $existing['id'];
+        }
+
+        $password = bin2hex(random_bytes(8));
+        if ($this->add($name, $email, $password, 'customer')) {
+            $created = $this->getByEmail($email);
+            return $created ? (int) $created['id'] : null;
+        }
+
+        return null;
+    }
+
     public function authenticate($email, $password) {
         $stmt = $this->pdo->prepare(
             'SELECT id, name, email, password, role, created_at, status FROM users WHERE email = ?'

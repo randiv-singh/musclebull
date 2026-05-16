@@ -1,8 +1,10 @@
 <?php
 session_start();
 require_once 'classes/Order.php';
+require_once 'classes/User.php';
 
 $order = new Order();
+$userModel = new User();
 $userId = $_SESSION['user_id'] ?? null;
 
 $error = '';
@@ -37,6 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address';
     } else {
+        if (!$userId) {
+            $fullName = trim($firstName . ' ' . $lastName);
+            $userId = $userModel->findOrCreateFromCheckout($fullName, $email);
+            if (!$userId) {
+                $error = 'Unable to process your order. Please try again or sign in.';
+            }
+        }
+
+        if (!$error) {
         // Prepare shipping address
         $shippingAddress = [
             'first_name' => $firstName,
@@ -65,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             header('Refresh: 2; URL=order-confirmation.php?order_id=' . $orderId);
         } else {
             $error = 'Failed to place order. Please try again.';
+        }
         }
     }
 }

@@ -66,9 +66,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Link past guest orders to user accounts
+$order->backfillMissingUserIds();
+
 // Get all orders for display
 $orders = $order->getAll();
 $stats = $order->getStatistics();
+
+function orderCustomerName(array $orderItem, ?array $orderUser): string {
+    if ($orderUser) {
+        return $orderUser['name'];
+    }
+    $ship = $orderItem['shipping_address'] ?? [];
+    $name = trim(($ship['first_name'] ?? '') . ' ' . ($ship['last_name'] ?? ''));
+    return $name !== '' ? $name : 'Guest';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -227,7 +239,7 @@ $stats = $order->getStatistics();
                             <td>
                                 <?php
                                 $orderUser = $user->getById($order_item['user_id']);
-                                echo htmlspecialchars($orderUser ? $orderUser['name'] : 'Unknown User');
+                                echo htmlspecialchars(orderCustomerName($order_item, $orderUser));
                                 ?>
                             </td>
                             <td>
@@ -363,17 +375,39 @@ $stats = $order->getStatistics();
     </div>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Store orders data for JavaScript
         const orders = <?php echo json_encode($orders); ?>;
         const users = <?php echo json_encode($user->getAll()); ?>;
 
-        function viewOrder(id) {
-            const order = orders.find(o => o.id === id);
-            const orderUser = users.find(u => u.id === order.user_id);
+        function orderCustomerLabel(order, orderUser) {
+            if (orderUser) {
+                return {
+                    name: orderUser.name,
+                    email: orderUser.email,
+                };
+            }
+            const ship = order.shipping_address || {};
+            return {
+                name: [ship.first_name, ship.last_name].filter(Boolean).join(' ') || 'Guest',
+                email: ship.email || 'N/A',
+                phone: ship.phone || '',
+            };
+        }
 
-            if (order) {
-                let itemsHtml = '';
+        function viewOrder(id) {
+            const order = orders.find(o => Number(o.id) === Number(id));
+            if (!order) {
+                return;
+            }
+
+            const orderUser = order.user_id
+                ? users.find(u => Number(u.id) === Number(order.user_id))
+                : null;
+            const customer = orderCustomerLabel(order, orderUser);
+
+            let itemsHtml = '';
                 order.items.forEach(item => {
                     itemsHtml += `
                         <tr>
@@ -398,10 +432,11 @@ $stats = $order->getStatistics();
                         </div>
                         <div class="col-md-6">
                             <h6>Customer Information</h6>
-                            <p><strong>Name:</strong> ${orderUser ? orderUser.name : 'Unknown'}</p>
-                            <p><strong>Email:</strong> ${orderUser ? orderUser.email : 'N/A'}</p>
+                            <p><strong>Name:</strong> ${customer.name}</p>
+                            <p><strong>Email:</strong> ${customer.email}</p>
+                            ${customer.phone ? `<p><strong>Phone:</strong> ${customer.phone}</p>` : ''}
                             <h6 class="mt-3">Shipping Address</h6>
-                            <p>${order.shipping_address.street}<br>
+                            <p>${order.shipping_address.address || order.shipping_address.street}<br>
                             ${order.shipping_address.city}, ${order.shipping_address.postal_code}<br>
                             ${order.shipping_address.country}</p>
                         </div>
@@ -431,13 +466,14 @@ $stats = $order->getStatistics();
                     ${order.notes ? `<h6 class="mt-3">Notes</h6><p>${order.notes}</p>` : ''}
                 `;
 
-                document.getElementById('orderDetails').innerHTML = detailsHtml;
-                new bootstrap.Modal(document.getElementById('orderModal')).show();
-            }
+            document.getElementById('orderDetails').innerHTML = detailsHtml;
+            const modalEl = document.getElementById('orderModal');
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
         }
 
         function editOrder(id) {
-            const order = orders.find(o => o.id === id);
+            const order = orders.find(o => Number(o.id) === Number(id));
             if (order) {
                 document.getElementById('editId').value = order.id;
                 document.getElementById('editStatus').value = order.status;
@@ -462,7 +498,7 @@ $stats = $order->getStatistics();
 
             const tempForm = document.createElement('form');
             tempForm.method = 'POST';
-            tempForm.action = 'admin/orders.php';
+            tempForm.action = 'orders.php';
 
             tempForm.innerHTML = `
                 <input type="hidden" name="action" value="update_payment">
@@ -481,7 +517,7 @@ $stats = $order->getStatistics();
 
             const tempForm = document.createElement('form');
             tempForm.method = 'POST';
-            tempForm.action = 'admin/orders.php';
+            tempForm.action = 'orders.php';
 
             tempForm.innerHTML = `
                 <input type="hidden" name="action" value="update_tracking">

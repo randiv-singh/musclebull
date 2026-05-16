@@ -305,6 +305,32 @@ class Order {
         return (int) $stmt->fetchColumn();
     }
 
+    /**
+     * Link guest orders (null user_id) to users using shipping email.
+     */
+    public function backfillMissingUserIds() {
+        require_once __DIR__ . '/User.php';
+
+        $stmt = $this->pdo->query(
+            'SELECT id, ship_first_name, ship_last_name, ship_email
+             FROM orders WHERE user_id IS NULL'
+        );
+        $user = new User();
+        $updated = 0;
+
+        while ($row = $stmt->fetch()) {
+            $name = trim($row['ship_first_name'] . ' ' . $row['ship_last_name']);
+            $userId = $user->findOrCreateFromCheckout($name, $row['ship_email']);
+            if ($userId) {
+                $upd = $this->pdo->prepare('UPDATE orders SET user_id = ? WHERE id = ?');
+                $upd->execute([$userId, (int) $row['id']]);
+                $updated++;
+            }
+        }
+
+        return $updated;
+    }
+
     public function getStatistics() {
         $total = (int) $this->pdo->query('SELECT COUNT(*) FROM orders')->fetchColumn();
         $pending = (int) $this->pdo->query(
