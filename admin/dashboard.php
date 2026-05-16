@@ -82,6 +82,12 @@ $lowStockProducts = []; // Could be implemented later
             <a href="gift-cards.php" class="nav-link">
                 <i class="fa-solid fa-gift"></i> Gift Cards
             </a>
+            <a href="messages.php" class="nav-link">
+                <i class="fa-solid fa-envelope"></i> Messages
+            </a>
+            <a href="reviews.php" class="nav-link">
+                <i class="fa-solid fa-star"></i> Reviews
+            </a>
         </nav>
         
         <div class="user-info">

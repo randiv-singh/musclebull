@@ -1,10 +1,18 @@
 <?php
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once 'components/product-card.php';
 require_once 'classes/Product.php';
+require_once 'classes/Review.php';
 
-// Initialize Product
 $product = new Product();
+$reviewModel = new Review();
+$reviewError = '';
+$reviewSuccess = '';
+$isLoggedIn = isset($_SESSION['user_id']);
 
 // Get current product (default to first product for demo)
 $current_product_id = $_GET['id'] ?? 1;
@@ -21,6 +29,63 @@ $all_products = $product->getAll();
 $related_products = array_filter($all_products, function($product_item) use ($current_product) {
     return $current_product && $product_item['id'] != $current_product['id'];
 });
+
+$reviewSummary = ['count' => 0, 'average' => 0];
+$approvedReviews = [];
+$reviewForm = [
+    'rating' => 5,
+    'title' => '',
+    'body' => '',
+    'reviewer_name' => $isLoggedIn ? ($_SESSION['user_name'] ?? '') : '',
+    'reviewer_email' => $isLoggedIn ? ($_SESSION['user_email'] ?? '') : '',
+];
+
+if ($current_product) {
+    $reviewSummary = $reviewModel->getSummaryByProductId($current_product['id']);
+    $approvedReviews = $reviewModel->getApprovedByProductId($current_product['id']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review']) && $current_product) {
+    $reviewForm['rating'] = (int) ($_POST['rating'] ?? 5);
+    $reviewForm['title'] = trim($_POST['title'] ?? '');
+    $reviewForm['body'] = trim($_POST['body'] ?? '');
+    $reviewForm['reviewer_name'] = trim($_POST['reviewer_name'] ?? '');
+    $reviewForm['reviewer_email'] = trim($_POST['reviewer_email'] ?? '');
+
+    if ($reviewForm['body'] === '') {
+        $reviewError = 'Please write your review.';
+    } elseif ($reviewForm['rating'] < 1 || $reviewForm['rating'] > 5) {
+        $reviewError = 'Please select a rating between 1 and 5 stars.';
+    } elseif (!$isLoggedIn && ($reviewForm['reviewer_name'] === '' || $reviewForm['reviewer_email'] === '')) {
+        $reviewError = 'Please enter your name and email.';
+    } elseif (!$isLoggedIn && !filter_var($reviewForm['reviewer_email'], FILTER_VALIDATE_EMAIL)) {
+        $reviewError = 'Please enter a valid email address.';
+    } elseif (strlen($reviewForm['body']) < 10) {
+        $reviewError = 'Review must be at least 10 characters long.';
+    } else {
+        $userId = $isLoggedIn ? (int) $_SESSION['user_id'] : null;
+        $ok = $reviewModel->add(
+            $current_product['id'],
+            $reviewForm['rating'],
+            $reviewForm['body'],
+            $reviewForm['title'] !== '' ? $reviewForm['title'] : null,
+            $userId,
+            $userId === null ? $reviewForm['reviewer_name'] : null,
+            $userId === null ? $reviewForm['reviewer_email'] : null
+        );
+        if ($ok) {
+            $reviewSuccess = 'Thank you! Your review has been submitted and will appear after approval.';
+            $reviewForm['title'] = '';
+            $reviewForm['body'] = '';
+            if (!$isLoggedIn) {
+                $reviewForm['reviewer_name'] = '';
+                $reviewForm['reviewer_email'] = '';
+            }
+        } else {
+            $reviewError = 'Could not submit your review. Please try again.';
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,14 +170,16 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
                             <h1 class="product-title fw-bold text-uppercase mb-3"><?php echo htmlspecialchars($current_product['name']); ?></h1>
                             
                             <!-- Rating -->
+                            <?php if ($reviewSummary['count'] > 0): ?>
                             <div class="product-rating mb-3">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star-half-stroke"></i>
-                                <span class="ms-2 fw-medium">(4.5) 127 Reviews</span>
+                                <?php echo Review::renderStars($reviewSummary['average']); ?>
+                                <span class="ms-2 fw-medium">(<?php echo number_format($reviewSummary['average'], 1); ?>) <?php echo $reviewSummary['count']; ?> Review<?php echo $reviewSummary['count'] === 1 ? '' : 's'; ?></span>
                             </div>
+                            <?php else: ?>
+                            <div class="product-rating mb-3 text-muted">
+                                <span class="fw-medium">No reviews yet — be the first!</span>
+                            </div>
+                            <?php endif; ?>
                             
                             <!-- Price -->
                             <div class="product-price mb-4">
@@ -196,7 +263,7 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link product-tab-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-selected="false">
-                                        Reviews (127)
+                                        Reviews (<?php echo $reviewSummary['count']; ?>)
                                     </button>
                                 </li>
                             </ul>
@@ -221,39 +288,73 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
                                 </div>
                                 <div class="tab-pane fade" id="reviews" role="tabpanel">
                                     <div class="reviews-section">
-                                        <div class="review-item">
-                                            <div class="d-flex justify-content-between mb-2">
-                                                <div>
-                                                    <strong>John Doe</strong>
-                                                    <div class="review-stars">
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
+                                                                                <?php if ($reviewSuccess): ?>
+                                            <div class="alert alert-success rounded-0 mb-4"><?php echo htmlspecialchars($reviewSuccess); ?></div>
+                                        <?php endif; ?>
+                                        <?php if ($reviewError): ?>
+                                            <div class="alert alert-danger rounded-0 mb-4"><?php echo htmlspecialchars($reviewError); ?></div>
+                                        <?php endif; ?>
+
+                                        <div class="review-form-box border border-dark p-4 mb-5">
+                                            <h4 class="fw-bold text-uppercase mb-3">Write a Review</h4>
+                                            <form method="POST" action="product.php?id=<?php echo (int) $current_product['id']; ?>#reviews">
+                                                <input type="hidden" name="submit_review" value="1">
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold text-uppercase small">Your Rating</label>
+                                                    <select name="rating" class="form-select rounded-0 border-dark" required>
+                                                        <?php for ($r = 5; $r >= 1; $r--): ?>
+                                                            <option value="<?php echo $r; ?>" <?php echo $reviewForm['rating'] === $r ? 'selected' : ''; ?>><?php echo $r; ?> Star<?php echo $r === 1 ? '' : 's'; ?></option>
+                                                        <?php endfor; ?>
+                                                    </select>
+                                                </div>
+                                                <?php if (!$isLoggedIn): ?>
+                                                <div class="row g-3 mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold text-uppercase small">Your Name</label>
+                                                        <input type="text" name="reviewer_name" class="form-control rounded-0 border-dark" value="<?php echo htmlspecialchars($reviewForm['reviewer_name']); ?>" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-bold text-uppercase small">Your Email</label>
+                                                        <input type="email" name="reviewer_email" class="form-control rounded-0 border-dark" value="<?php echo htmlspecialchars($reviewForm['reviewer_email']); ?>" required>
                                                     </div>
                                                 </div>
-                                                <span class="text-muted small">2 days ago</span>
-                                            </div>
-                                            <p>Amazing quality! The fit is perfect and the material is super comfortable. Highly recommend!</p>
-                                        </div>
-                                        <hr>
-                                        <div class="review-item">
-                                            <div class="d-flex justify-content-between mb-2">
-                                                <div>
-                                                    <strong>Jane Smith</strong>
-                                                    <div class="review-stars">
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-solid fa-star"></i>
-                                                        <i class="fa-regular fa-star"></i>
-                                                    </div>
+                                                <?php endif; ?>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold text-uppercase small">Title (Optional)</label>
+                                                    <input type="text" name="title" class="form-control rounded-0 border-dark" value="<?php echo htmlspecialchars($reviewForm['title']); ?>" placeholder="Summarize your experience">
                                                 </div>
-                                                <span class="text-muted small">1 week ago</span>
-                                            </div>
-                                            <p>Great tee for the gym. Love the oversized fit!</p>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold text-uppercase small">Your Review</label>
+                                                    <textarea name="body" class="form-control rounded-0 border-dark" rows="4" required placeholder="Share your thoughts about this product..."><?php echo htmlspecialchars($reviewForm['body']); ?></textarea>
+                                                </div>
+                                                <p class="small text-muted mb-3">Reviews are moderated and will appear after admin approval.</p>
+                                                <button type="submit" class="btn btn-dark rounded-0 text-uppercase fw-bold px-4">Submit Review</button>
+                                            </form>
                                         </div>
+
+                                        <?php if (empty($approvedReviews)): ?>
+                                            <p class="text-muted mb-0">No approved reviews yet.</p>
+                                        <?php else: ?>
+                                            <?php foreach ($approvedReviews as $index => $rev): ?>
+                                                <?php if ($index > 0): ?><hr><?php endif; ?>
+                                                <div class="review-item">
+                                                    <div class="d-flex justify-content-between mb-2 flex-wrap gap-2">
+                                                        <div>
+                                                            <strong><?php echo htmlspecialchars($rev['reviewer_name']); ?></strong>
+                                                            <?php if (!empty($rev['user_id'])): ?>
+                                                                <span class="badge bg-light text-dark border ms-1">Verified Customer</span>
+                                                            <?php endif; ?>
+                                                            <?php echo Review::renderStars((int) $rev['rating']); ?>
+                                                            <?php if (!empty($rev['title'])): ?>
+                                                                <div class="fw-medium mt-1"><?php echo htmlspecialchars($rev['title']); ?></div>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                        <span class="text-muted small"><?php echo Review::timeAgo($rev['created_at']); ?></span>
+                                                    </div>
+                                                    <p class="mb-0"><?php echo nl2br(htmlspecialchars($rev['body'])); ?></p>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -300,5 +401,18 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
     <?php endif; ?>
     <script src="./assets/js/app.js"></script>
     <script src="./assets/js/product.js"></script>
+    <?php if ($reviewSuccess || $reviewError || (isset($_SERVER['REQUEST_URI']) && str_contains($_SERVER['REQUEST_URI'], '#reviews'))): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tab = document.getElementById('reviews-tab');
+            if (tab) {
+                bootstrap.Tab.getOrCreateInstance(tab).show();
+            }
+            if (window.location.hash === '#reviews' || <?php echo ($reviewSuccess || $reviewError) ? 'true' : 'false'; ?>) {
+                document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    </script>
+    <?php endif; ?>
 </body>
 </html>

@@ -109,3 +109,17 @@ ALTER TABLE product_thumbnails AUTO_INCREMENT = 25;
 ALTER TABLE gift_cards AUTO_INCREMENT = 4;
 ALTER TABLE orders AUTO_INCREMENT = 2;
 ALTER TABLE order_items AUTO_INCREMENT = 3;
+
+-- -----------------------------------------------------------------------------
+-- Product reviews (sample data)
+-- -----------------------------------------------------------------------------
+INSERT INTO product_reviews (product_id, user_id, reviewer_name, reviewer_email, rating, title, body, status, created_at) VALUES
+(1, 2, 'Test Test', 'test@gmail.com', 5, 'Perfect gym tee', 'Amazing quality! The fit is perfect and the material is super comfortable. Highly recommend!', 'approved', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(1, NULL, 'John Doe', 'john@example.com', 5, NULL, 'Best oversized tee I have owned. Logo print still looks new after many washes.', 'approved', DATE_SUB(NOW(), INTERVAL 5 DAY)),
+(1, NULL, 'Jane Smith', 'jane@example.com', 4, 'Great but runs large', 'Love the fabric. Size M was bigger than expected — size down if you want a snug fit.', 'approved', DATE_SUB(NOW(), INTERVAL 12 DAY)),
+(2, 2, 'Test Test', 'test@gmail.com', 4, 'Cozy hoodie', 'Very warm and soft. Zipper pocket would be a nice touch.', 'approved', DATE_SUB(NOW(), INTERVAL 3 DAY)),
+(2, NULL, 'Alex Perera', 'alex@example.com', 5, NULL, 'Perfect for early morning runs. True to size.', 'approved', DATE_SUB(NOW(), INTERVAL 8 DAY)),
+(2, NULL, 'Sam Fernando', 'sam@example.com', 3, 'Good not great', 'Comfortable but the hood is a bit small for my liking.', 'pending', DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(1, NULL, 'Chris Lee', 'chris@example.com', 5, 'Worth every rupee', 'Just ordered another one in a different color.', 'pending', NOW());
+
+ALTER TABLE product_reviews AUTO_INCREMENT = 8;

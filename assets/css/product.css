@@ -354,6 +354,21 @@
     margin-top: 5px;
 }
 
+.review-stars i {
+    margin-right: 2px;
+}
+
+.product-rating .review-stars {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 0;
+    margin-right: 4px;
+}
+
+.review-form-box {
+    background: var(--bg-light, #fafafa);
+}
+
 /* Responsive */
 @media (max-width: 991.98px) {
     .product-detail-info {

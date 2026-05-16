@@ -142,3 +142,49 @@ CREATE TABLE IF NOT EXISTS order_items (
     ON DELETE SET NULL
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------------
+-- Contact messages
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  order_number VARCHAR(64) NULL,
+  message TEXT NOT NULL,
+  status ENUM('new', 'read') NOT NULL DEFAULT 'new',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_contact_messages_status (status),
+  KEY idx_contact_messages_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------------
+-- Product reviews
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS product_reviews (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  product_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NULL,
+  reviewer_name VARCHAR(255) NOT NULL,
+  reviewer_email VARCHAR(255) NOT NULL,
+  rating TINYINT UNSIGNED NOT NULL,
+  title VARCHAR(255) NULL,
+  body TEXT NOT NULL,
+  status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_reviews_product (product_id),
+  KEY idx_reviews_status (status),
+  KEY idx_reviews_user (user_id),
+  CONSTRAINT fk_reviews_product
+    FOREIGN KEY (product_id) REFERENCES products (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT fk_reviews_user
+    FOREIGN KEY (user_id) REFERENCES users (id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
+  CONSTRAINT chk_reviews_rating CHECK (rating >= 1 AND rating <= 5)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
