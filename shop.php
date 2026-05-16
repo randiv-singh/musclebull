@@ -103,6 +103,18 @@ if (!$showAllCategories && count($selectedCategoryIds) === 1) {
     $shopHeading = 'Filtered Products';
 }
 
+$activeFilterCount = 0;
+if (!$showAllCategories && !empty($selectedCategoryIds)) {
+    $activeFilterCount += count($selectedCategoryIds);
+}
+if (!empty($selectedPriceRanges)) {
+    $activeFilterCount += count($selectedPriceRanges);
+}
+if ($selectedSize !== 'M') {
+    $activeFilterCount++;
+}
+$filtersOpenOnMobile = $activeFilterCount > 0;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,7 +127,7 @@ if (!$showAllCategories && count($selectedCategoryIds) === 1) {
     <link href="./assets/css/style.css" rel="stylesheet" />
     <link href="./assets/css/header.css" rel="stylesheet" />
     <link href="./assets/css/footer.css" rel="stylesheet" />
-    <link href="./assets/css/shop.css?v=2" rel="stylesheet" />
+    <link href="./assets/css/shop.css?v=3" rel="stylesheet" />
     <link href="./assets/css/product-card.css" rel="stylesheet" />
     <link href="./assets/css/checkout.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -148,13 +160,42 @@ if (!$showAllCategories && count($selectedCategoryIds) === 1) {
                     <input type="hidden" name="size" value="<?php echo htmlspecialchars($selectedSize); ?>">
                     <div class="row">
                         <!-- Filters Sidebar -->
-                        <div class="col-lg-3 mb-4 mb-lg-0">
-                            <div class="filters-sidebar">
-                                <h5 class="text-uppercase fw-bold mb-4">Filters</h5>
+                        <div class="col-lg-3 mb-4 mb-lg-0 shop-filters-col">
+                            <button
+                                type="button"
+                                class="shop-filters-toggle d-lg-none"
+                                id="shop-filters-toggle"
+                                aria-expanded="<?php echo $filtersOpenOnMobile ? 'true' : 'false'; ?>"
+                                aria-controls="shop-filters-panel"
+                            >
+                                <span class="shop-filters-toggle__label">
+                                    <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+                                    Filters
+                                    <?php if ($activeFilterCount > 0): ?>
+                                        <span class="shop-filters-toggle__badge"><?php echo $activeFilterCount; ?></span>
+                                    <?php endif; ?>
+                                </span>
+                                <i class="fa-solid fa-chevron-down shop-filters-toggle__icon" aria-hidden="true"></i>
+                            </button>
 
-                                <!-- Category -->
-                                <div class="filter-group mb-4">
-                                    <h6 class="filter-title text-uppercase fw-bold mb-3">Category</h6>
+                            <div id="shop-filters-panel"
+                                class="shop-filters-panel <?php echo $filtersOpenOnMobile ? 'is-open' : ''; ?>"
+                            >
+                            <div class="filters-sidebar">
+                                <h5 class="filters-sidebar__title text-uppercase fw-bold mb-0 d-none d-lg-block">Filters</h5>
+
+                                <div class="filter-group filter-accordion mb-0 mb-lg-4">
+                                    <button
+                                        type="button"
+                                        class="filter-accordion__trigger d-lg-none"
+                                        aria-expanded="true"
+                                        data-filter-accordion
+                                    >
+                                        <span class="filter-title text-uppercase fw-bold mb-0">Category</span>
+                                        <i class="fa-solid fa-chevron-down filter-accordion__icon" aria-hidden="true"></i>
+                                    </button>
+                                    <h6 class="filter-title text-uppercase fw-bold mb-3 d-none d-lg-block">Category</h6>
+                                    <div class="filter-accordion__body is-open">
                                     <div class="form-check mb-2">
                                         <input
                                             class="form-check-input shop-filter-auto"
@@ -182,11 +223,21 @@ if (!$showAllCategories && count($selectedCategoryIds) === 1) {
                                             </label>
                                         </div>
                                     <?php endforeach; ?>
+                                    </div>
                                 </div>
 
-                                <!-- Size (preference — all products available in every size) -->
-                                <div class="filter-group mb-4">
-                                    <h6 class="filter-title text-uppercase fw-bold mb-3">Size</h6>
+                                <div class="filter-group filter-accordion mb-0 mb-lg-4">
+                                    <button
+                                        type="button"
+                                        class="filter-accordion__trigger d-lg-none"
+                                        aria-expanded="true"
+                                        data-filter-accordion
+                                    >
+                                        <span class="filter-title text-uppercase fw-bold mb-0">Size</span>
+                                        <i class="fa-solid fa-chevron-down filter-accordion__icon" aria-hidden="true"></i>
+                                    </button>
+                                    <h6 class="filter-title text-uppercase fw-bold mb-3 d-none d-lg-block">Size</h6>
+                                    <div class="filter-accordion__body is-open">
                                     <div class="size-options">
                                         <?php foreach ($validSizes as $size): ?>
                                             <a
@@ -196,9 +247,11 @@ if (!$showAllCategories && count($selectedCategoryIds) === 1) {
                                         <?php endforeach; ?>
                                     </div>
                                     <p class="size-filter-hint">Saved for when you add items to cart.</p>
+                                    </div>
                                 </div>
 
                                 <a href="shop.php" class="btn btn-outline-dark w-100 text-uppercase fw-bold mt-3">Clear All</a>
+                            </div>
                             </div>
                         </div>
 

@@ -87,8 +87,8 @@
 .filters-sidebar .size-options {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    width: 80%;
+    gap: 10px;
+    width: 100%;
 }
 
 .filters-sidebar a.size-btn,
@@ -96,8 +96,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 70%;
-    min-height: 28px;
+    width: 100%;
+    min-height: 48px;
     aspect-ratio: 1;
     padding: 0;
     margin: 0;
@@ -331,19 +331,177 @@
     transform: translateY(-2px);
 }
 
+/* Mobile expandable filters */
+.shop-filters-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 0;
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    background: var(--white-color);
+    color: var(--black-color);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        border-radius 0.25s ease;
+}
+
+.shop-filters-toggle__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.shop-filters-toggle__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: var(--primary-color);
+    color: var(--white-color);
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.shop-filters-toggle__icon {
+    font-size: 0.85rem;
+    transition: transform 0.3s ease;
+}
+
+.shop-filters-toggle[aria-expanded="true"] {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent;
+    box-shadow: none;
+}
+
+.shop-filters-toggle[aria-expanded="true"] .shop-filters-toggle__icon {
+    transform: rotate(180deg);
+}
+
+.shop-filters-panel {
+    display: block;
+}
+
+.filter-accordion__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 0;
+    margin: 0;
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+
+.filter-accordion__trigger:first-of-type {
+    border-top: none;
+}
+
+.filter-accordion__icon {
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.45);
+    transition: transform 0.3s ease;
+}
+
+.filter-accordion__trigger[aria-expanded="true"] .filter-accordion__icon {
+    transform: rotate(180deg);
+}
+
 /* Responsive Adjustments */
 @media (max-width: 991.98px) {
+    .shop-filters-panel {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            max-height 0.4s ease,
+            opacity 0.3s ease,
+            visibility 0.3s ease;
+    }
+
+    .shop-filters-panel.is-open {
+        max-height: 1200px;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .shop-filters-panel.is-open .filters-sidebar {
+        border-top: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
     .filters-sidebar {
         position: relative;
         top: 0;
-        margin-bottom: 40px;
-        padding: 25px;
-        box-shadow: 0 2px 12px var(--shadow-light);
+        margin-bottom: 1.25rem;
+        padding: 18px 20px 20px;
+        border: 1.5px solid rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .filter-group.filter-accordion {
+        padding: 0;
+    }
+
+    .filter-accordion__body {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition:
+            max-height 0.35s ease,
+            opacity 0.25s ease;
+    }
+
+    .filter-accordion__body.is-open {
+        max-height: 500px;
+        opacity: 1;
+        padding-bottom: 16px;
     }
 
     .sort-select {
         max-width: 100%;
         margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 992px) {
+    .shop-filters-panel {
+        max-height: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        overflow: visible !important;
+    }
+
+    .filter-accordion__body {
+        max-height: none !important;
+        opacity: 1 !important;
+        overflow: visible !important;
+        padding-bottom: 0 !important;
     }
 }
 
