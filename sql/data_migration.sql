@@ -1,30 +1,10 @@
--- =============================================================================
--- Muscle Bull — static seed / data migration (legacy config/*.json snapshots)
--- =============================================================================
--- Apply after tables exist (run sql/schema.sql first).
---
--- Adjust the USE line below if your database name differs from schema (e.g. hosting).
---
--- Optional re-import: uncomment TRUNCATE block, then run this file again.
--- =============================================================================
 
 SET NAMES utf8mb4;
 
--- Must match DATABASE in sql/schema.sql
+
 USE musclebull;
 
 SET FOREIGN_KEY_CHECKS = 0;
-
--- Uncomment to replace all seeded rows before INSERT:
-/*
-TRUNCATE TABLE order_items;
-TRUNCATE TABLE orders;
-TRUNCATE TABLE product_thumbnails;
-TRUNCATE TABLE products;
-TRUNCATE TABLE gift_cards;
-TRUNCATE TABLE users;
-TRUNCATE TABLE categories;
-*/
 
 SET FOREIGN_KEY_CHECKS = 1;
 
