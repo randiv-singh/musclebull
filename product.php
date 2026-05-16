@@ -36,7 +36,7 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
     <link href="./assets/css/header.css" rel="stylesheet" />
     <link href="./assets/css/footer.css" rel="stylesheet" />
     <link href="./assets/css/shop.css" rel="stylesheet" />
-    <link href="./assets/css/product.css?v=2" rel="stylesheet" />
+    <link href="./assets/css/product.css?v=3" rel="stylesheet" />
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -55,6 +55,11 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="index.php" class="text-black">Home</a></li>
                         <li class="breadcrumb-item"><a href="shop.php" class="text-black">Shop</a></li>
+                        <?php if (!empty($current_product['category'])): ?>
+                        <li class="breadcrumb-item">
+                            <a href="shop.php" class="text-black"><?php echo htmlspecialchars($current_product['category']); ?></a>
+                        </li>
+                        <?php endif; ?>
                         <li class="breadcrumb-item active text-black fw-bold" aria-current="page"><?php echo htmlspecialchars($current_product['name']); ?></li>
                     </ol>
                 </nav>
@@ -86,12 +91,17 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
                     <!-- Product Info -->
                     <div class="col-lg-6">
                         <div class="product-detail-info">
-                            <!-- Badge -->
-                            <?php if ($current_product['isBestSeller']): ?>
-                                <span class="badge bg-primary mb-3 px-3 py-2 text-uppercase fw-bold">Best Seller</span>
-                            <?php endif; ?>
-                            
-                            <!-- Product Name -->
+                            <div class="product-meta-top">
+                                <?php if (!empty($current_product['category'])): ?>
+                                    <a href="shop.php" class="product-category-badge"><?php echo htmlspecialchars($current_product['category']); ?></a>
+                                <?php endif; ?>
+                                <?php if ($current_product['isBestSeller']): ?>
+                                    <span class="product-status-badge product-status-badge--hot">Best Seller</span>
+                                <?php elseif ($current_product['isFeatured']): ?>
+                                    <span class="product-status-badge">Featured</span>
+                                <?php endif; ?>
+                            </div>
+
                             <h1 class="product-title fw-bold text-uppercase mb-3"><?php echo htmlspecialchars($current_product['name']); ?></h1>
                             
                             <!-- Rating -->
@@ -198,6 +208,9 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
                                 </div>
                                 <div class="tab-pane fade" id="details" role="tabpanel">
                                     <ul class="details-list">
+                                        <?php if (!empty($current_product['category'])): ?>
+                                        <li><strong>Category:</strong> <?php echo htmlspecialchars($current_product['category']); ?></li>
+                                        <?php endif; ?>
                                         <li><strong>Material:</strong> 100% Premium Cotton</li>
                                         <li><strong>Fit:</strong> Oversized</li>
                                         <li><strong>Color:</strong> Black</li>
@@ -280,6 +293,8 @@ $related_products = array_filter($all_products, function($product_item) use ($cu
             'price' => $current_product['price'],
             'image' => $current_product['image'],
             'description' => $current_product['description'],
+            'category' => $current_product['category'],
+            'category_id' => $current_product['category_id'],
         ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     ?></script>
     <?php endif; ?>

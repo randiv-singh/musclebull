@@ -222,4 +222,111 @@ class Product {
         }
         return $out;
     }
+
+    /**
+     * Build WHERE clause for shop filters.
+     *
+     * @return array{0: string, 1: array<int|string>}
+     */
+    private function buildFilterWhere(array $categoryIds, array $priceRanges) {
+        $where = ['1 = 1'];
+        $params = [];
+
+        if (!empty($categoryIds)) {
+            $placeholders = implode(',', array_fill(0, count($categoryIds), '?'));
+            $where[] = "p.category_id IN ($placeholders)";
+            foreach ($categoryIds as $id) {
+                $params[] = (int) $id;
+            }
+        }
+
+        if (!empty($priceRanges)) {
+            $priceConditions = [];
+            foreach ($priceRanges as $range) {
+                switch ((string) $range) {
+                    case '1':
+                        $priceConditions[] = 'p.price < 3000';
+                        break;
+                    case '2':
+                        $priceConditions[] = '(p.price >= 3000 AND p.price <= 5000)';
+                        break;
+                    case '3':
+                        $priceConditions[] = '(p.price > 5000 AND p.price <= 7000)';
+                        break;
+                    case '4':
+                        $priceConditions[] = 'p.price > 7000';
+                        break;
+                }
+            }
+            if ($priceConditions) {
+                $where[] = '(' . implode(' OR ', $priceConditions) . ')';
+            }
+        }
+
+        return [implode(' AND ', $where), $params];
+    }
+
+    private function resolveSortOrder($sort) {
+        switch ($sort) {
+            case 'price_asc':
+                return 'p.price ASC, p.id ASC';
+            case 'price_desc':
+                return 'p.price DESC, p.id ASC';
+            case 'newest':
+                return 'p.id DESC';
+            case 'featured':
+            default:
+                return 'p.is_featured DESC, p.is_best_seller DESC, p.id ASC';
+        }
+    }
+
+    private function hydrateRows(array $rows) {
+        if (empty($rows)) {
+            return [];
+        }
+        $ids = array_column($rows, 'id');
+        $thumbMap = $this->fetchThumbnailsForProducts($ids);
+        $out = [];
+        foreach ($rows as $row) {
+            $pid = (int) $row['id'];
+            $thumbs = $thumbMap[$pid] ?? [$row['image']];
+            $out[] = $this->hydrateProductRow($row, $thumbs);
+        }
+        return $out;
+    }
+
+    public function countFiltered(array $categoryIds = [], array $priceRanges = []) {
+        [$whereSql, $params] = $this->buildFilterWhere($categoryIds, $priceRanges);
+        $stmt = $this->pdo->prepare(
+            'SELECT COUNT(*) FROM products p
+             INNER JOIN categories c ON c.id = p.category_id
+             WHERE ' . $whereSql
+        );
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * @param array<int> $categoryIds Empty = all categories
+     * @param array<string> $priceRanges Keys: 1–4 (shop price buckets)
+     */
+    public function getFiltered(
+        array $categoryIds = [],
+        array $priceRanges = [],
+        $sort = 'featured',
+        $limit = null,
+        $offset = 0
+    ) {
+        [$whereSql, $params] = $this->buildFilterWhere($categoryIds, $priceRanges);
+        $orderBy = $this->resolveSortOrder($sort);
+
+        $sql = $this->baseSelectSql() . ' WHERE ' . $whereSql . ' ORDER BY ' . $orderBy;
+        if ($limit !== null) {
+            $sql .= ' LIMIT ' . (int) $limit . ' OFFSET ' . max(0, (int) $offset);
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $this->hydrateRows($stmt->fetchAll());
+    }
 }
