@@ -146,45 +146,6 @@ $featured_products = $product->getFeatured();
             </div>
         </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="py-5 bg-white">
-            <div class="container py-5">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-8 text-center mb-5">
-                        <h2 class="fw-bold text-uppercase text-black">Get In Touch</h2>
-                        <p class="text-black">Have a question or need help with an order? Drop us a message.</p>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-8">
-                        <form class="bg-white p-4 p-md-5 border border-dark">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="name" class="form-label fw-bold text-black">Name</label>
-                                    <input type="text" class="form-control rounded-0 py-2 border-dark text-black" id="name" placeholder="Your Name">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="email" class="form-label fw-bold text-black">Email</label>
-                                    <input type="email" class="form-control rounded-0 py-2 border-dark text-black" id="email" placeholder="Your Email">
-                                </div>
-                                <div class="col-12">
-                                    <label for="subject" class="form-label fw-bold text-black">Subject</label>
-                                    <input type="text" class="form-control rounded-0 py-2 border-dark text-black" id="subject" placeholder="Subject">
-                                </div>
-                                <div class="col-12">
-                                    <label for="message" class="form-label fw-bold text-black">Message</label>
-                                    <textarea class="form-control rounded-0 py-2 border-dark text-black" id="message" rows="5" placeholder="Your Message"></textarea>
-                                </div>
-                                <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-dark btn-lg w-100 rounded-0 text-uppercase fw-bold">Send Message</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Features Section -->
         <section class="features-section bg-white py-5 ">
             <div class="container">
